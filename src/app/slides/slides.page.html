@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>PawTracker</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-slides [options] ="slideOptions" pager="true" #slider (ionSlidesDidLoad)="afterslidesLoad(slider)">
+    <ion-slide *ngFor="let item of data; let i = index">
+      <div class="slide">
+        <h2 class="slidertitle">{{item.title}}</h2>     
+        <img class="sliderimg" src="../../assets/img/{{item.img}}">   
+        <p class="sliderp" [innerHTML]="item.description"></p>     
+      </div>
+    </ion-slide> 
+  </ion-slides>
+</ion-content>
+
+<ion-footer>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="10" offset="1">
+        <ion-button class="btn-primary" color="primary" expand="full" shape="round" [routerLink] = "['/login']">
+          LOG IN
+        </ion-button>           
+      </ion-col>
+    </ion-row>   
+
+    <ion-row>
+      <ion-col size="10" offset="1">
+        <ion-button expand="full" fill="clear" [routerLink] = "['/signup']">
+          <ion-label color="primary">Sign In</ion-label>
+        </ion-button>           
+      </ion-col>
+    </ion-row>   
+
+  </ion-grid>
+</ion-footer>

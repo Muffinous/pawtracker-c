@@ -1,0 +1,32 @@
+/* Without setting height the slides will take up the height of the slide's content */
+ion-slides {
+    height: 100%;
+  }
+
+img { 
+  max-height: 400px;
+}
+
+.slidertitle {
+  font-family: 'Playfair Display';
+  font-weight: lighter;
+  margin-bottom: 10%;
+}
+
+.sliderimg {
+  padding: 40px;
+}
+
+.btn-primary {
+  height: 50px;
+}
+
+.sliderp {
+  margin-bottom: 20%;
+}
+
+@media screen and (max-height: 775px) {
+  img { 
+    width: 70%;
+  }
+}
