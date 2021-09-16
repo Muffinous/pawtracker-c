@@ -1,0 +1,7 @@
+{
+  "name": "pawtracker-c",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
