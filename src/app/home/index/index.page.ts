@@ -5,6 +5,7 @@ import { formatDate, registerLocaleData } from '@angular/common';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AlertController, ModalController } from '@ionic/angular';
 import { CalModalPage } from '../cal-modal/cal-modal.page';
+import { DataService } from '../data.service';
 
 declare var google;
 
@@ -34,7 +35,9 @@ export class IndexPage implements OnInit {
 
   public modalController: ModalController
 
-  constructor(private db: AngularFirestore,private alertCtrl: AlertController, private modalCtrl: ModalController, @Inject(LOCALE_ID) private locale: string,  ) {
+  constructor(private db: AngularFirestore,private alertCtrl: 
+    AlertController, private modalCtrl: ModalController, 
+    @Inject(LOCALE_ID) private locale: string, private dataService: DataService) {
     this.db.collection(`events`).snapshotChanges().subscribe(colSnap => {
       this.eventSource = [];
       colSnap.forEach(snap => {
@@ -75,6 +78,7 @@ export class IndexPage implements OnInit {
   }
 
   onTimeSelected(ev) {
+    this.selectedDate = ev.selectedTime;
     console.log('Selected time: ' + ev.selectedTime + ', hasEvents: ' +
       (ev.events !== undefined && ev.events.length !== 0) + ', disabled: ' + ev.disabled);
   }
@@ -87,7 +91,8 @@ export class IndexPage implements OnInit {
     console.log('range changed: startTime: ' + ev.startTime + ', endTime: ' + ev.endTime);
   }
 
-  async openCalModal() {
+  async openCalModal(ev) {
+    this.dataService.setSelectedDate(this.selectedDate);
     const modal = await this.modalCtrl.create({
       component: CalModalPage,
       cssClass: 'cal-modal',
@@ -99,28 +104,13 @@ export class IndexPage implements OnInit {
     modal.onDidDismiss().then((result) => {
       if (result.data && result.data.event) {
         let event = result.data.event;
-        if (event.allDay) {
-          let start = event.startTime;
-          event.startTime = new Date(
-            Date.UTC(
-              start.getUTCFullYear(),
-              start.getUTCMonth(),
-              start.getUTCDate()
-            )
-          );
-          event.endTime = new Date(
-            Date.UTC(
-              start.getUTCFullYear(),
-              start.getUTCMonth(),
-              start.getUTCDate() + 1
-            )
-          );
-        }
+
         this.eventSource.push(result.data.event);
         this.myCal.loadEvents();
       }
     });
   }
+
   async addNewEvent(event) {
 
     let now = formatDate(new Date(), "medium", this.locale);

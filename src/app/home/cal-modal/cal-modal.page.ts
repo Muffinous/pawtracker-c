@@ -1,17 +1,17 @@
 import { Component, AfterViewInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
- 
+import { ModalController, NavController, NavParams } from '@ionic/angular';
+import { DataService } from '../data.service';
+import { AngularFirestore } from '@angular/fire/firestore';
+
 @Component({
   selector: 'app-cal-modal',
   templateUrl: './cal-modal.page.html',
   styleUrls: ['./cal-modal.page.scss'],
 })
+
 export class CalModalPage implements AfterViewInit {
-  calendar = {
-    mode: 'month',
-    currentDate: new Date()
-  };
   viewTitle: string;
+  images: any[] = [];
 
   event = {
     title: '',
@@ -20,32 +20,74 @@ export class CalModalPage implements AfterViewInit {
     month: 'September',
     year: 2020,
     startTime: null,
-    endTime: '',
+    startTime2: "",
     allDay: true
   };
  
+  monthNames = [ 'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December' ];
   modalReady = false;
  
-  constructor(private modalCtrl: ModalController) { }
+  constructor(private db: AngularFirestore, private modalCtrl: ModalController, public navCtrl: NavController, private dataService: DataService) { }
  
+  ngOnInit() {
+    this.setDate(this.dataService.getSelectedDate());
+    this.getBuddiesImages();
+    console.log(this.images);
+  }
+
   ngAfterViewInit() {
     setTimeout(() => {
       this.modalReady = true;      
     }, 0);
   }
  
+  setDate(seldate: Date) {
+    console.log("cal ", seldate);
+    this.event.day = seldate.getDate();
+    this.event.month = this.monthNames[seldate.getMonth()];
+    this.event.year = seldate.getFullYear();
+  }
+
+  getBuddiesImages() {
+    this.images[0] = "../../assets/img/slide-1.jpg";
+    this.images[1] = "../../assets/img/slide-2.jpg";
+    this.images[2] = "../../assets/img/slide-2.jpg";
+    this.images[3] = "../../assets/img/slide-2.jpg";
+    this.images[4] = "../../assets/img/slide-2.jpg";
+    this.images[5] = "../../assets/img/slide-2.jpg";
+  }
+
   save() {    
+    console.log(this.event.startTime)   
+
+    var now = new Date(),
+    utcDate = new Date(
+
+      this.event.startTime.geUTCtHours(),
+      this.event.startTime.getUTCMinutes(), 
+      this.event.startTime.getUTCSeconds()
+    );
+    console.log(this.event.startTime2)
+    console.log(this.event.startTime)    
+    console.log(utcDate)
+
     this.modalCtrl.dismiss({event: this.event})
+    this.db.collection(`events`).add(this.event);
+
   }
  
   onViewTitleChanged(title) {
     this.viewTitle = title;
   }
  
-  onTimeSelected(ev) {    
-    this.event.startTime = new Date(ev.selectedTime);
+
+  onTimeSelected(ev) {
+    console.log('hiya')
+    console.log('Selectedd time: ' + ev.selectedTime + ', hasEvents: ' +
+      (ev.events !== undefined && ev.events.length !== 0) + ', disabled: ' + ev.disabled);
   }
- 
+
   close() {
     this.modalCtrl.dismiss();
   }
