@@ -30,12 +30,9 @@
 
     <ion-item>
       <ion-label>Start Time</ion-label>
-      <ion-datetime display-format="h:mm A" picker-format="h:mm A" value="07:43" [(ngModel)]="event.startTime" (onchange)="onTimeSelected($value)"></ion-datetime>
+      <ion-datetime display-format="HH:mm A" picker-format="HH:mm A" value="1990-02-19T07:43Z" [(ngModel)]="event.startTime" (onchange)="onTimeSelected($value)"></ion-datetime>
     </ion-item>
-    <ion-item>
-      <ion-label>HH:mm</ion-label>
-      <ion-datetime displayFormat="HH:mm" [(ngModel)]="event.startTime2"></ion-datetime>
-    </ion-item>
+
     <br>
     <ion-item-divider></ion-item-divider>
     <br>
@@ -54,3 +51,4 @@
   </ion-list>
 
 </ion-content>
+

@@ -19,8 +19,7 @@ export class CalModalPage implements AfterViewInit {
     day: 1,
     month: 'September',
     year: 2020,
-    startTime: null,
-    startTime2: "",
+    startTime: '1990-02-19T07:43Z',
     allDay: true
   };
  
@@ -60,17 +59,6 @@ export class CalModalPage implements AfterViewInit {
 
   save() {    
     console.log(this.event.startTime)   
-
-    var now = new Date(),
-    utcDate = new Date(
-
-      this.event.startTime.geUTCtHours(),
-      this.event.startTime.getUTCMinutes(), 
-      this.event.startTime.getUTCSeconds()
-    );
-    console.log(this.event.startTime2)
-    console.log(this.event.startTime)    
-    console.log(utcDate)
 
     this.modalCtrl.dismiss({event: this.event})
     this.db.collection(`events`).add(this.event);
