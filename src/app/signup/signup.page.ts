@@ -62,6 +62,7 @@ export class SignupPage implements OnInit {
       }    
   }
 
+  // https://stackblitz.com/edit/angular-form-array-example-dv2q7y?file=src%2Fapp%2Fapp.component.ts
   addBuddy() {
     console.log('new buddy')
     const buddy = this.form.controls.newbuddy as FormArray;
