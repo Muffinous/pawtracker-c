@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content>
-  <form #form="ngForm" (ngSubmit)="login()">
+  <form [formGroup]="ionicForm" (ngSubmit)="login()" novalidate>
     <ion-grid>
       <ion-row color="primary">
         <ion-col>
@@ -22,6 +22,7 @@
           </ion-row>
 
           <ion-row>              
+<<<<<<< HEAD
               <ion-col align-self-center size-md="6" size-lg="5" size-xs="10">
                
                 <ion-item>                    
@@ -49,7 +50,69 @@
                   <ion-item>
                     <ion-input [(ngModel)]="password2" name="password2" [type]="showConfPassword ? 'text' : 'password' " placeholder="repeat password" required></ion-input>                    
                     <ion-icon id="confirmpass" [name]="passwordToggleIcon2" (click)="toggleShow($event)"></ion-icon>
+=======
+              <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+                <div class="ion-text-center">
+                  <h3>Sign Up</h3>
+                </div>
+                
+                <div padding>
+                  <ion-item>
+                    <ion-input formControlName="name" name="name" type="text" placeholder="Name" required></ion-input>                    
+                    <ion-icon name="person"></ion-icon>
                   </ion-item>
+                  <!-- ERROR MESSAGES NAME -->
+                  <div class="validation-errors">
+                    <ng-container *ngFor="let validation of validation_messages.name">
+                      <div class="error-message" *ngIf="ionicForm.get('name').hasError(validation.type) && (ionicForm.get('name').dirty || ionicForm.get('name').touched)">
+                        {{ validation.message }}
+                      </div>
+                    </ng-container>
+                  </div>
+                  <ion-item>
+                    <ion-input formControlName="surname" name="surname" type="text" placeholder="Surname" required></ion-input>                    
+                    <ion-icon name="person-add"></ion-icon>
+                  </ion-item>
+                  <!-- ERROR MESSAGES SURNAME -->
+                  <div class="validation-errors">
+                    <ng-container *ngFor="let validation of validation_messages.surname">
+                      <div class="error-message" *ngIf="ionicForm.get('surname').hasError(validation.type) && (ionicForm.get('surname').dirty || ionicForm.get('surname').touched)">
+                        {{ validation.message }}
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+                <div linespace></div>
+                <ion-item>
+                  <ion-input formControlName="username" name="username" type="text" placeholder="username" required></ion-input>
+                  <ion-icon name="logo-octocat"></ion-icon>
+                </ion-item>
+                <!-- ERROR MESSAGES USERNAME -->
+                <div class="validation-errors">
+                  <ng-container *ngFor="let validation of validation_messages.username">
+                    <div class="error-message" *ngIf="ionicForm.get('username').hasError(validation.type) && (ionicForm.get('username').dirty || ionicForm.get('username').touched)">
+                      {{ validation.message }}
+                    </div>
+                  </ng-container>
+                </div>
+                <div linespace></div>
+                  <ion-item>
+                    <ion-input formControlName="password" name="password" [type]="showPassword ? 'text' : 'password' " placeholder="Password" required></ion-input>                    
+                    <ion-icon [name]="passwordToggleIcon" (click)="toggleShow()"></ion-icon>
+>>>>>>> 39b87c9 (sign up almost done, starting settings.)
+                  </ion-item>
+                  <ion-item>
+                    <ion-input formControlName="confirmed_password" name="confirmed_password" [type]="showPasswordC ? 'text' : 'password' " placeholder="Confirm Password" required></ion-input>                    
+                    <ion-icon [name]="passwordToggleIconC" (click)="toggleShowC()"></ion-icon>
+                  </ion-item>
+                  <!-- ERROR MESSAGES PASSWORD -->
+                  <div class="validation-errors">
+                    <ng-container *ngFor="let validation of validation_messages.password">
+                      <div class="error-message" *ngIf="ionicForm.get('password').hasError(validation.type) && (ionicForm.get('password').dirty || ionicForm.get('password').touched)">
+                        {{ validation.message }}
+                      </div>
+                    </ng-container>
+                  </div>
                 <div linespace></div>
 
                 
@@ -64,7 +127,7 @@
                 </div>
 
                 <div padding>
-                  <ion-button size="large" type="submit" [disabled]="form.invalid" expand="block">Register</ion-button>
+                   <ion-button size="large" type="submit" expand="block">Next Step</ion-button>  <!-- [disabled]="ionicForm.invalid" -->
                 </div>  
                 <div linespace></div>
                 <ion-item>

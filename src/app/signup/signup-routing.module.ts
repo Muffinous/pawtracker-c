@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: SignupPage
+  },
+  {
+    path: 'signup-animal',
+    loadChildren: () => import('./signup-animal/signup-animal.module').then( m => m.SignupAnimalPageModule)
   }
 ];
 

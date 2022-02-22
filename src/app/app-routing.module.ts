@@ -21,6 +21,14 @@ const routes: Routes = [
   {
     path: 'signup',
     loadChildren: () => import('./signup/signup.module').then( m => m.SignupPageModule)
+  },
+  {
+    path: 'settings',
+    loadChildren: () => import('./settings/settings.page').then( m => m.SettingsPage)
+  },
+  {
+    path: 'signup-animal',
+    loadChildren: () => import('./signup/signup-animal/signup-animal.module').then( m => m.SignupAnimalPageModule)
   }
 ];
 @NgModule({

@@ -4,22 +4,19 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { SignupPageRoutingModule } from './signup-routing.module';
+import { SignupAnimalPageRoutingModule } from './signup-animal-routing.module';
 
-import { SignupPage } from './signup.page';
+import { SignupAnimalPage } from './signup-animal.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-<<<<<<< HEAD
-=======
     FormsModule,
->>>>>>> 39b87c9 (sign up almost done, starting settings.)
     ReactiveFormsModule,
-    SignupPageRoutingModule
+    SignupAnimalPageRoutingModule
   ],
-  declarations: [SignupPage]
+  declarations: [SignupAnimalPage]
 })
-export class SignupPageModule {}
+export class SignupAnimalPageModule {}
