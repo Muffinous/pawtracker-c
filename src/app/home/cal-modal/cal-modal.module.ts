@@ -13,7 +13,7 @@ import { CalModalPage } from './cal-modal.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    CalModalPageRoutingModule
+    CalModalPageRoutingModule,
   ],
   declarations: [CalModalPage]
 })

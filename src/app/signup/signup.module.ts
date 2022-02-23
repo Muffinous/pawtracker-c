@@ -13,10 +13,7 @@ import { SignupPage } from './signup.page';
     CommonModule,
     FormsModule,
     IonicModule,
-<<<<<<< HEAD
-=======
     FormsModule,
->>>>>>> 39b87c9 (sign up almost done, starting settings.)
     ReactiveFormsModule,
     SignupPageRoutingModule
   ],

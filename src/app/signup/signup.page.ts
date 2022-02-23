@@ -1,9 +1,5 @@
 import { Component, ContentChild, OnInit } from '@angular/core';
-<<<<<<< HEAD
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-=======
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
->>>>>>> 39b87c9 (sign up almost done, starting settings.)
 import { Router } from '@angular/router';
 import { IonInput } from '@ionic/angular';
 
@@ -18,41 +14,20 @@ export class SignupPage implements OnInit {
   ionicForm: FormGroup;
 
   showPassword = false;
-<<<<<<< HEAD
   showConfPassword = false;
   passwordToggleIcon;
   passwordToggleIcon2;
-=======
   showPasswordC = false;
-  passwordToggleIcon;
   passwordToggleIconC;
   
->>>>>>> 39b87c9 (sign up almost done, starting settings.)
   username: string;
-  name: string;
   lastname: string;
-
   password: string;
-<<<<<<< HEAD
   name: string;
   surname: string;
   email: string;
   form: FormGroup;
-  
-  @ContentChild(IonInput) input: IonInput;
-
-  constructor(private route:Router, private formBuilder: FormBuilder) { 
-    this.form = this.formBuilder.group({
-      newbuddy: this.formBuilder.array([]),
-    });
-  }
-
-  ngOnInit() {
-    this.passwordToggleIcon = 'eye';
-    this.passwordToggleIcon2 = 'eye';
-=======
   confirmed_password: string;
-
 
   validation_messages = {
     'name': [
@@ -90,7 +65,6 @@ export class SignupPage implements OnInit {
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmed_password: ['', [Validators.required]],
     })
->>>>>>> 39b87c9 (sign up almost done, starting settings.)
   }
 
   toggleShow(name) {
@@ -102,7 +76,6 @@ export class SignupPage implements OnInit {
     }
   }
 
-<<<<<<< HEAD
   passToggle() {
       this.showPassword = !this.showPassword;
       if (this.passwordToggleIcon === 'eye') {
@@ -123,17 +96,6 @@ export class SignupPage implements OnInit {
       }    
   }
 
-  // https://stackblitz.com/edit/angular-form-array-example-dv2q7y?file=src%2Fapp%2Fapp.component.ts
-  addBuddy() {
-    console.log('new buddy')
-    const buddy = this.form.controls.newbuddy as FormArray;
-    buddy.push(
-      this.formBuilder.group({
-        name: '',
-        breed: '',
-      })
-    );
-=======
   toggleShowC() {
     this.showPasswordC = !this.showPasswordC;
     if (this.passwordToggleIconC === 'eye') {
@@ -152,6 +114,5 @@ export class SignupPage implements OnInit {
       console.log(this.ionicForm.value)
       this.route.navigateByUrl('/signup-animal', {replaceUrl:true})
     }
->>>>>>> 39b87c9 (sign up almost done, starting settings.)
   }
 }

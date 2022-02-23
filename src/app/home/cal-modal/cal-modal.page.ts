@@ -1,7 +1,9 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { ModalController, NavController, NavParams } from '@ionic/angular';
 import { DataService } from '../data.service';
-import { AngularFirestore } from '@angular/fire/firestore';
+// import { AngularFirestore } from '@angular/fire/firestore';
+import { Firestore, collectionData, collection } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-cal-modal',
@@ -27,7 +29,10 @@ export class CalModalPage implements AfterViewInit {
   'July', 'August', 'September', 'October', 'November', 'December' ];
   modalReady = false;
  
-  constructor(private db: AngularFirestore, private modalCtrl: ModalController, public navCtrl: NavController, private dataService: DataService) { }
+  constructor(private db: Firestore, private modalCtrl: ModalController, public navCtrl: NavController, private dataService: DataService) { 
+    const collect = collection(db, 'events');
+    // this.event = collectionData(collect)
+  }
  
   ngOnInit() {
     this.setDate(this.dataService.getSelectedDate());
@@ -61,7 +66,7 @@ export class CalModalPage implements AfterViewInit {
     console.log(this.event.startTime)   
 
     this.modalCtrl.dismiss({event: this.event})
-    this.db.collection(`events`).add(this.event);
+    // this.db.collection(`events`).add(this.event);
 
   }
  

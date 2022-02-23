@@ -2,10 +2,10 @@ import { Component, Inject, LOCALE_ID, OnInit, ViewChild } from '@angular/core';
 import { CalendarComponent } from 'ionic2-calendar';
 import locale from '@angular/common/locales/es';
 import { formatDate, registerLocaleData } from '@angular/common';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { AlertController, ModalController } from '@ionic/angular';
 import { CalModalPage } from '../cal-modal/cal-modal.page';
 import { DataService } from '../data.service';
+import { Firestore, collectionData, collection } from '@angular/fire/firestore';
 
 declare var google;
 
@@ -35,17 +35,17 @@ export class IndexPage implements OnInit {
 
   public modalController: ModalController
 
-  constructor(private db: AngularFirestore,private alertCtrl: 
+  constructor(private db: Firestore,private alertCtrl: 
     AlertController, private modalCtrl: ModalController, 
     @Inject(LOCALE_ID) private locale: string, private dataService: DataService) {
-    this.db.collection(`events`).snapshotChanges().subscribe(colSnap => {
-      this.eventSource = [];
-      colSnap.forEach(snap => {
-        let event:any = snap.payload.doc.data();
-        event.id = snap.payload.doc['id'];
-        this.eventSource.push(event);
-      });
-    });  
+    // this.db.collection(`events`).snapshotChanges().subscribe(colSnap => {
+    //   this.eventSource = [];
+    //   colSnap.forEach(snap => {
+    //     let event:any = snap.payload.doc.data();
+    //     event.id = snap.payload.doc['id'];
+    //     this.eventSource.push(event);
+    //   });
+    // });  
   }
 
   ngOnInit() {
