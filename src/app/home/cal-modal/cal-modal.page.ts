@@ -4,6 +4,8 @@ import { DataService } from '../data.service';
 // import { AngularFirestore } from '@angular/fire/firestore';
 import { Firestore, collectionData, collection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { doc, setDoc } from 'firebase/firestore';
+import { docData } from 'rxfire/firestore';
 
 @Component({
   selector: 'app-cal-modal',
@@ -31,7 +33,7 @@ export class CalModalPage implements AfterViewInit {
  
   constructor(private db: Firestore, private modalCtrl: ModalController, public navCtrl: NavController, private dataService: DataService) { 
     const collect = collection(db, 'events');
-    // this.event = collectionData(collect)
+    //this.event = collectionData(collect)
   }
  
   ngOnInit() {
@@ -62,12 +64,12 @@ export class CalModalPage implements AfterViewInit {
     this.images[5] = "../../assets/img/slide-2.jpg";
   }
 
-  save() {    
+  async save() {    
     console.log(this.event.startTime)   
 
     this.modalCtrl.dismiss({event: this.event})
-    // this.db.collection(`events`).add(this.event);
-
+    console.log(this.event)
+    await setDoc(doc(this.db, "event", this.event.title), this.event)
   }
  
   onViewTitleChanged(title) {

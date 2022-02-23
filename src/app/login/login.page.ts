@@ -1,6 +1,8 @@
 import { Component, ContentChild, OnInit } from '@angular/core';
 import { IonInput } from '@ionic/angular';
 import {Router} from '@angular/router'; 
+import { collection, doc, getDoc, query, where } from 'firebase/firestore';
+import { docSnapshots, Firestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +17,9 @@ export class LoginPage implements OnInit {
 
   @ContentChild(IonInput) input: IonInput;
 
-  constructor(private route:Router) { }
+  constructor(private db: Firestore, private route:Router) {
+    const users = collection(db, "Users")
+   }
 
   ngOnInit() {
     this.passwordToggleIcon = 'eye';
@@ -31,11 +35,18 @@ export class LoginPage implements OnInit {
     }
   }
   
-  login(){
+  async login(){
     console.log('submitted');
     console.log(this.username);
     console.log(this.password);
-    this.route.navigate(['/home']);
+    const docRef = query(collection(this.db, "Users"), where("username", "==", this.username))
+
+    if (docRef) {
+      console.log("Document data: ", docRef)
+    } else {
+      console.log("No exists")
+    }
+    // this.route.navigate(['/home']);
     console.log('navigate');
   }
 }
