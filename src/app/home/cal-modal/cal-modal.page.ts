@@ -1,11 +1,8 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { ModalController, NavController, NavParams } from '@ionic/angular';
 import { DataService } from '../data.service';
-// import { AngularFirestore } from '@angular/fire/firestore';
 import { Firestore, collectionData, collection } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
 import { doc, setDoc } from 'firebase/firestore';
-import { docData } from 'rxfire/firestore';
 
 @Component({
   selector: 'app-cal-modal',

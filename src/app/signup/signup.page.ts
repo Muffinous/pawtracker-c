@@ -1,7 +1,10 @@
 import { Component, ContentChild, OnInit } from '@angular/core';
+import { Firestore } from '@angular/fire/firestore';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonInput } from '@ionic/angular';
+import { doc, setDoc } from 'firebase/firestore';
+import { UserModel } from '../models/user.model';
 
 @Component({
   selector: 'app-signup',
@@ -20,14 +23,11 @@ export class SignupPage implements OnInit {
   showPasswordC = false;
   passwordToggleIconC;
   
-  username: string;
-  lastname: string;
-  password: string;
-  name: string;
-  surname: string;
-  email: string;
+  username : string;
   form: FormGroup;
   confirmed_password: string;
+
+  user : UserModel
 
   validation_messages = {
     'name': [
@@ -43,6 +43,10 @@ export class SignupPage implements OnInit {
       { type: 'pattern', message: 'Your username must contain only numbers and letters.' },
       { type: 'validUsername', message: 'Your username has already been taken.' }
     ],
+    'email': [
+      { type: 'required', message: 'Email is required.' },
+      { type: 'minlength', message: 'Email must be at least 8 characters long.' },
+    ],  
     'password': [
       { type: 'required', message: 'Password is required.' },
       { type: 'minlength', message: 'Password must be at least 8 characters long.' },
@@ -52,7 +56,7 @@ export class SignupPage implements OnInit {
       { type: 'minlength', message: 'Confirmed Password must be at least 8 characters long.' },
     ],  
   }
-  constructor(private route:Router, public formBuilder: FormBuilder) { }
+  constructor(private db: Firestore, private route:Router, public formBuilder: FormBuilder) { }
 
   ngOnInit() {
     this.passwordToggleIcon = 'eye';
@@ -62,6 +66,7 @@ export class SignupPage implements OnInit {
       name: ['', [Validators.required, Validators.minLength(2)]],
       surname: ['', [Validators.required]],
       username: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(12)]],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmed_password: ['', [Validators.required]],
     })
@@ -96,7 +101,7 @@ export class SignupPage implements OnInit {
       }    
   }
 
-  toggleShowC() {
+  toggleShowC() { 
     this.showPasswordC = !this.showPasswordC;
     if (this.passwordToggleIconC === 'eye') {
           this.passwordToggleIconC = 'eye-off';
@@ -106,13 +111,25 @@ export class SignupPage implements OnInit {
     }
   }
 
-  login() {
+  async signUp() {
+    // console.log("username ", this.ionicForm.value.username)
+    this.username = this.ionicForm.value.username
     if (!this.ionicForm.valid) {
       console.log('Please provide all the required values!')
       return false;
     } else {
-      console.log(this.ionicForm.value)
-      this.route.navigateByUrl('/signup-animal', {replaceUrl:true})
+      this.user = new UserModel();
+      this.user.setUsername(this.ionicForm.value.username)
+      this.user.setSurname(this.ionicForm.value.surname)
+      this.user.setName(this.ionicForm.value.name)
+      this.user.setEmail(this.ionicForm.value.email)
+
+      console.log(this.user)
+      await setDoc(doc(this.db, "user", this.ionicForm.value.username), this.user.User)
+
+      // await setDoc(doc(this.db, "Users", ), this.ionicForm)
+
+    // this.route.navigateByUrl('/signup-animal', {state: this.ionicForm.value, replaceUrl:true})
     }
   }
 }

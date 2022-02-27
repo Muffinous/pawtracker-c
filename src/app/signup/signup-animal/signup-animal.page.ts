@@ -35,7 +35,7 @@ export class SignupAnimalPage implements OnInit {
     'Sphynx',
     'Turkish Angora'
   ]
-  buddyBDAY;
+  personParams;
 
   buddy = []
 
@@ -57,14 +57,19 @@ export class SignupAnimalPage implements OnInit {
     ]
   }
 
-  constructor(private route:Router, private formBuilder: FormBuilder) { }
+  constructor(private router:Router, private formBuilder: FormBuilder) {
+    if (router.getCurrentNavigation().extras.state) {
+      this.personParams = this.router.getCurrentNavigation().extras.state;
+      console.log('sign up animal ', this.personParams)
+    }
+  }
 
   ngOnInit() {
-    console.log(this.breeds);
     this.ionicForm = this.formBuilder.group({
       personName: ['', [Validators.required, Validators.minLength(2)]],   
-      attributes: this.formBuilder.array([ this.initAttributesFields() ]) 
+      attributes: this.formBuilder.array([ this.initAttributesFields()]) 
     })
+    this.ionicForm.get('personName').setValue(this.personParams.name)
   }
 
   initAttributesFields() : FormGroup {
@@ -94,13 +99,19 @@ export class SignupAnimalPage implements OnInit {
     this.formArr.removeAt(index)
   }
 
-  login() {
+  async login() {
+    console.log('VALID', this.ionicForm.valid)
     if (!this.ionicForm.valid) {
+      console.log('.value ', this.ionicForm.controls.attributes.value)
+      console.log('buddyname ', this.ionicForm.value)
+      console.log('.attributes ', this.ionicForm.get('attributes'))
+      // console.log('buddyName: ', this.ionicForm.get('attributes').get('buddyName').hasError(this.validation_messages[0]))
       console.log('Please provide all the required values!')
       return false;
     } else {
-      this.ionicForm.value.buddyBday = this.ionicForm.value.buddyBday.split('T')[0];
+      this.ionicForm.value.attributes[0].buddyBday = this.ionicForm.value.attributes[0].buddyBday.split('T')[0];
       console.log(this.ionicForm.value)
+      return true
       //this.route.navigateByUrl('/signup-animal', {replaceUrl:true})
     }
   }

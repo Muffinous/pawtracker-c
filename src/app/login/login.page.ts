@@ -3,6 +3,7 @@ import { IonInput } from '@ionic/angular';
 import {Router} from '@angular/router'; 
 import { collection, doc, getDoc, query, where } from 'firebase/firestore';
 import { docSnapshots, Firestore } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -39,8 +40,8 @@ export class LoginPage implements OnInit {
     console.log('submitted');
     console.log(this.username);
     console.log(this.password);
-    const docRef = query(collection(this.db, "Users"), where("username", "==", this.username))
 
+    const docRef = query(collection(this.db, "Users"), where("username", "==", this.username))
     if (docRef) {
       console.log("Document data: ", docRef)
     } else {
@@ -49,4 +50,5 @@ export class LoginPage implements OnInit {
     // this.route.navigate(['/home']);
     console.log('navigate');
   }
+
 }

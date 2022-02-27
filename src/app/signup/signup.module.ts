@@ -13,7 +13,6 @@ import { SignupPage } from './signup.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    FormsModule,
     ReactiveFormsModule,
     SignupPageRoutingModule
   ],

@@ -13,7 +13,6 @@ import { SignupAnimalPage } from './signup-animal.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    FormsModule,
     ReactiveFormsModule,
     SignupAnimalPageRoutingModule
   ],

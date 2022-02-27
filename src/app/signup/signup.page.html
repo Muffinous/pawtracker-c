@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="ionicForm" (ngSubmit)="login()" novalidate>
+  <form [formGroup]="ionicForm" (ngSubmit)="signUp()" novalidate>
     <ion-grid>
       <ion-row color="primary">
         <ion-col>
@@ -59,6 +59,18 @@
                 <div class="validation-errors">
                   <ng-container *ngFor="let validation of validation_messages.username">
                     <div class="error-message" *ngIf="ionicForm.get('username').hasError(validation.type) && (ionicForm.get('username').dirty || ionicForm.get('username').touched)">
+                      {{ validation.message }}
+                    </div>
+                  </ng-container>
+                </div>
+                <ion-item>
+                  <ion-input formControlName="email" name="email" type="text" placeholder="email" required></ion-input>
+                  <ion-icon name="mail"></ion-icon>
+                </ion-item>
+                <!-- ERROR MESSAGES EMAIL -->
+                <div class="validation-errors">
+                  <ng-container *ngFor="let validation of validation_messages.email">
+                    <div class="error-message" *ngIf="ionicForm.get('email').hasError(validation.type) && (ionicForm.get('email').dirty || ionicForm.get('email').touched)">
                       {{ validation.message }}
                     </div>
                   </ng-container>
