@@ -92,6 +92,10 @@
                       </div>
                     </ng-container>
                   </div>
+                  <div class='form-text error' *ngIf="ionicForm.controls.confirmed_password.touched">
+                    <div class='form-text error' *ngIf="ionicForm.controls.confirmed_password.touched"></div>
+                    <div *ngIf="ionicForm.hasError('mismatchedPasswords')">Passwords do not match.</div>
+                </div> 
                 <div linespace></div>
 
                 <div padding>
