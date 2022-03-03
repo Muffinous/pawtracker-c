@@ -57,16 +57,17 @@ export class LoginComponent implements OnInit {
           .then(function(error) {
             console.log("EL FUCKING ERROR", error)
             // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage : string = error.message;            
-            console.log('errorcode' , errorCode);
-            console.log('error' , errorMessage);
-            if (errorCode === 'auth/wrong-password') {
-              presentAlert('Wrong password!')
-            } else {
-              presentAlert(errorMessage)
+            if (error) {
+              var errorCode = error.code;
+              var errorMessage : string = error.message;            
+              console.log('errorcode' , errorCode);
+              console.log('error' , errorMessage);
+              if (errorCode === 'auth/wrong-password') {
+                presentAlert('Wrong password!')
+              } else {
+                presentAlert(errorMessage)
+              }              
             }
-
           });
         } else {
           presentAlert('Wrong username!')
