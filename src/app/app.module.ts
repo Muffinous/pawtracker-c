@@ -36,7 +36,7 @@ import { LoginComponent } from './login/login.component';
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireDatabaseModule,
-    AngularFirestoreModule.enablePersistence()
+    AngularFirestoreModule.enablePersistence(),
   ],
     
   providers: [AuthService, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],

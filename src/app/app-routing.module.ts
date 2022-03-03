@@ -27,7 +27,7 @@ const routes: Routes = [
   },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'signup', component: SignupComponent },
-  { path: 'login-c', component: LoginComponent },
+  { path: 'login', component: LoginComponent },
 
 ];
 @NgModule({

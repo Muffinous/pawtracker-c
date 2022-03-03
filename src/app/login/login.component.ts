@@ -1,9 +1,9 @@
 import { Component, ContentChild, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { docSnapshots } from '@angular/fire/firestore';
 import { IonInput } from '@ionic/angular';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../models/user';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -15,12 +15,22 @@ export class LoginComponent implements OnInit {
   passwordToggleIcon;
   username: string;
   password: string;
-  usernameExists: boolean
-  
+
   @ContentChild(IonInput) input: IonInput;
 
+  validation_messages = {
+    'username': [
+      { type: 'exists', message: 'Username does not exist.' },
+    ],
+    'password': [
+      { type: 'required', message: 'Password required.' },
+      { type: 'minlength', message: 'Passwod must be at least 6 characters long.' },
+      { type: 'maxlength', message: 'Password cannot be more than 30 characters long.' },    
+    ]
+  }
   // DATABASE
-  constructor( public database: AngularFirestore, private authService: AuthService) {}
+  constructor( public database: AngularFirestore, private authService: AuthService) {  
+  }
 
   ngOnInit() {
     this.passwordToggleIcon = 'eye';
@@ -35,27 +45,61 @@ export class LoginComponent implements OnInit {
     }
   }
   
-  async login(){
-    // this.database.collection("users").ref.where('username', '==', this.username).get().then(function(querySnapshot) {
-    //   querySnapshot.forEach(function(doc) {
-    //       // doc.data() is never undefined for query doc snapshots
-    //       console.log(doc.id, " => ", doc.data() as User);
-    //       const docData = doc.data() as User
-    //       console.log(docData.email)
-    //   });
-    // });
+  login(){
+    const usernameExists = this.authService.usernameExists(this.username) // usernameExists return if the username already exists in the database
 
-    this.database.doc(`/users/${this.username}`).ref.get().then(snapshot => {
-      const myuser = snapshot.data() as User
-      console.log(myuser.email)
-      this.usernameExists = snapshot.exists
-      if (this.usernameExists) {
-        this.authService.SignIn(myuser.email, this.password)
-      } else {
-        console.log('username DOES NOT exist');
-      }
-    });
+    // if (usernameExists) { // if the user exists we'll do a query to get the email
+      this.database.doc(`/users/${this.username}`).ref.get().then(snapshot => {
+        console.log("user exists", snapshot.exists)
+        if (snapshot.exists) {
+          const myuser = snapshot.data() as User
+          this.authService.SignIn(myuser.email, this.password)
+          .then(function(error) {
+            console.log("EL FUCKING ERROR", error)
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage : string = error.message;            
+            console.log('errorcode' , errorCode);
+            console.log('error' , errorMessage);
+            if (errorCode === 'auth/wrong-password') {
+              presentAlert('Wrong password!')
+            } else {
+              presentAlert(errorMessage)
+            }
+
+          });
+        } else {
+          presentAlert('Wrong username!')
+        }
+      });
+
     // this.route.navigate(['/home']);
-    console.log('navigate');
   }
+
+  // async presentAlert() { 
+  //   // console.log('message alert', message)
+  //   const alert = document.createElement('ion-alert');
+  //   alert.cssClass = 'my-custom-class';
+  //   alert.header = 'Error';
+  //   // alert.subHeader = 'Subtitle';
+  //   alert.message = 'message';
+  //   alert.buttons = ['OK'];
+
+  //   document.body.appendChild(alert);
+  //   await alert.present();
+
+  //   const { role } = await alert.onDidDismiss();
+  // }
 }
+async function presentAlert(message: string) {
+  const alert = document.createElement('ion-alert');
+  alert.cssClass = 'my-custom-class';
+  alert.header = 'Error';
+  // alert.subHeader = 'Subtitle';
+  alert.message = message;
+  alert.buttons = ['OK'];
+
+  document.body.appendChild(alert);
+  await alert.present();
+}
+

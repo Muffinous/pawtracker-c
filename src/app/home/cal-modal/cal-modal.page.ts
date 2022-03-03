@@ -1,7 +1,7 @@
 import { Component, AfterViewInit } from '@angular/core';
-import { ModalController, NavController, NavParams } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { DataService } from '../data.service';
-import { Firestore, collectionData, collection } from '@angular/fire/firestore';
+import { Firestore, collection } from '@angular/fire/firestore';
 import { doc, setDoc } from 'firebase/firestore';
 
 @Component({

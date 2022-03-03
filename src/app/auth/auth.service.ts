@@ -7,6 +7,7 @@ import {
 } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import { User } from '../models/user';
+import { snapshotChanges } from '@angular/fire/compat/database';
 
 @Injectable({
   providedIn: 'root',
@@ -45,7 +46,8 @@ export class AuthService {
         this.SetUserData(result.user);
       })
       .catch((error) => {
-        window.alert(error.message);
+        console.log('error in auth login', error)
+        return error
       });
   }
 
@@ -157,5 +159,12 @@ export class AuthService {
       localStorage.removeItem('user');
       this.router.navigate(['sign-in']);
     });
+  }
+
+ usernameExists(username:string) {
+    this.afs.doc(`/users/${username}`).ref.get().then(snapshot => {
+      return snapshot.exists
+      // console.log('username ', username ,'exists', snapshot.exists)
+    })
   }
 }
