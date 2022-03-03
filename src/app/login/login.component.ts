@@ -46,16 +46,11 @@ export class LoginComponent implements OnInit {
   }
   
   login(){
-    const usernameExists = this.authService.usernameExists(this.username) // usernameExists return if the username already exists in the database
-
-    // if (usernameExists) { // if the user exists we'll do a query to get the email
       this.database.doc(`/users/${this.username}`).ref.get().then(snapshot => {
-        console.log("user exists", snapshot.exists)
         if (snapshot.exists) {
           const myuser = snapshot.data() as User
-          this.authService.SignIn(myuser.email, this.password)
+          this.authService.SignIn(myuser.email, this.password) // this sign in goes to home || this.route.navigate(['/home']);
           .then(function(error) {
-            console.log("EL FUCKING ERROR", error)
             // Handle Errors here.
             if (error) {
               var errorCode = error.code;
@@ -73,25 +68,10 @@ export class LoginComponent implements OnInit {
           presentAlert('Wrong username!')
         }
       });
-
-    // this.route.navigate(['/home']);
   }
 
-  // async presentAlert() { 
-  //   // console.log('message alert', message)
-  //   const alert = document.createElement('ion-alert');
-  //   alert.cssClass = 'my-custom-class';
-  //   alert.header = 'Error';
-  //   // alert.subHeader = 'Subtitle';
-  //   alert.message = 'message';
-  //   alert.buttons = ['OK'];
-
-  //   document.body.appendChild(alert);
-  //   await alert.present();
-
-  //   const { role } = await alert.onDidDismiss();
-  // }
 }
+
 async function presentAlert(message: string) {
   const alert = document.createElement('ion-alert');
   alert.cssClass = 'my-custom-class';

@@ -1,0 +1,27 @@
+.thumnails {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    .list-thumbnail{
+      height: 100%;
+      white-space: nowrap;
+      .buddy-img {
+        height: 15vh;
+        width: 15vh;
+        border: 1px solid #fff;
+        border-radius: 50%;
+        display: inline-block;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .selected-img{
+        border: 2px solid color( primary);
+      }
+    }
+  }
+::-webkit-scrollbar { 
+    display: none; 
+}
+
+.ion-item {
+    padding: 3px;;
+}

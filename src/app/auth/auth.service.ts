@@ -7,7 +7,6 @@ import {
 } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import { User } from '../models/user';
-import { snapshotChanges } from '@angular/fire/compat/database';
 
 @Injectable({
   providedIn: 'root',
@@ -43,7 +42,7 @@ export class AuthService {
         this.ngZone.run(() => {
           this.router.navigate(['home']);
         });
-        this.SetUserData(result.user);
+      //  this.SetUserData(result.user);
       })
       .catch((error) => {
         console.log('error in auth login', error)
@@ -51,23 +50,29 @@ export class AuthService {
       });
   }
 
-  
   // Sign up with email/password
-  SignUp(user, password: string) {
-    return this.afAuth
-      .createUserWithEmailAndPassword(user.email, password)
-      .then((result) => {
-        /* Call the SendVerificaitonMail() function when new user sign 
-        up and returns promise */
-       // this.SendVerificationMail();
-        console.log('result.user', result.user)
+  SignUp(user: User, password: string) {
+    this.afs.doc(`/users/${user.username}`).ref.get().then(snapshot => {
+      if (!snapshot.exists) {
+        return this.afAuth
+          .createUserWithEmailAndPassword(user.email, password)
+          .then((result) => {
+            /* Call the SendVerificaitonMail() function when new user sign 
+            up and returns promise */
+          // this.SendVerificationMail();
+            console.log('result.user', result.user)
 
-        this.SetProfileData(result.user, user);
-      })
-      .catch((error) => {
-        window.alert(error.message);
-      });
+            this.SetProfileData(result.user, user);
+          })
+          .catch((error) => {
+            window.alert(error.message);
+          });
+      } else {
+        presentAlert('Username already exists!')
+      }
+    })
   }
+
   // Send email verfificaiton when new user sign up
   SendVerificationMail() {
     return this.afAuth.currentUser
@@ -76,6 +81,7 @@ export class AuthService {
         this.router.navigate(['verify-email-address']);
       });
   }
+
   // Reset Forggot password
   ForgotPassword(passwordResetEmail: string) {
     return this.afAuth
@@ -87,11 +93,13 @@ export class AuthService {
         window.alert(error);
       });
   }
+
   // Returns true when user is looged in and email is verified
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user')!);
     return user !== null && user.emailVerified !== false ? true : false;
   }
+
   // Sign in with Google
   GoogleAuth() {
     return this.AuthLogin(new auth.GoogleAuthProvider()).then((res: any) => {
@@ -100,6 +108,7 @@ export class AuthService {
       }
     });
   }
+
   // Auth logic to run auth providers
   AuthLogin(provider: any) {
     return this.afAuth
@@ -167,4 +176,23 @@ export class AuthService {
       // console.log('username ', username ,'exists', snapshot.exists)
     })
   }
+
+  getCurrentUser() {
+  var user1 = this.afAuth.currentUser
+  const user = JSON.parse(localStorage.getItem('user')!);
+    console.log('user1', user1)
+    console.log(user.uid)
+    
+  }  
 }
+  async function presentAlert(message: string) {
+    const alert = document.createElement('ion-alert');
+    alert.cssClass = 'my-custom-class';
+    alert.header = 'Error';
+    // alert.subHeader = 'Subtitle';
+    alert.message = message;
+    alert.buttons = ['OK'];
+  
+    document.body.appendChild(alert);
+    await alert.present();
+  }

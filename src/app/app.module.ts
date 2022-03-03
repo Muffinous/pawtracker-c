@@ -24,9 +24,10 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { CommonModule } from '@angular/common';
 import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
+import { CalModalComponent } from './home/cal-modal/cal-modal.component';
 
 @NgModule({
-  declarations: [AppComponent, SignupComponent, LoginComponent],
+  declarations: [AppComponent, SignupComponent, LoginComponent, CalModalComponent],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, NgCalendarModule, FormsModule, ReactiveFormsModule, CommonModule,
     // provideFirebaseApp(() => initializeApp(environment.firebase)),

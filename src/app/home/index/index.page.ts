@@ -3,9 +3,8 @@ import { CalendarComponent } from 'ionic2-calendar';
 import locale from '@angular/common/locales/es';
 import { formatDate, registerLocaleData } from '@angular/common';
 import { AlertController, ModalController } from '@ionic/angular';
-import { CalModalPage } from '../cal-modal/cal-modal.page';
 import { DataService } from '../data.service';
-import { Firestore, collectionData, collection } from '@angular/fire/firestore';
+import { CalModalComponent } from '../cal-modal/cal-modal.component';
 
 declare var google;
 
@@ -35,8 +34,7 @@ export class IndexPage implements OnInit {
 
   public modalController: ModalController
 
-  constructor(private db: Firestore,private alertCtrl: 
-    AlertController, private modalCtrl: ModalController, 
+  constructor(private alertCtrl: AlertController, private modalCtrl: ModalController, 
     @Inject(LOCALE_ID) private locale: string, private dataService: DataService) {
     // this.db.collection(`events`).snapshotChanges().subscribe(colSnap => {
     //   this.eventSource = [];
@@ -94,7 +92,7 @@ export class IndexPage implements OnInit {
   async openCalModal(ev) {
     this.dataService.setSelectedDate(this.selectedDate);
     const modal = await this.modalCtrl.create({
-      component: CalModalPage,
+      component: CalModalComponent,
       cssClass: 'cal-modal',
       backdropDismiss: false
     });
