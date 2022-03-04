@@ -185,12 +185,6 @@ export class AuthService {
   const user = JSON.parse(localStorage.getItem('user')!);
   console.log(user)
   return user.displayName
-    // console.log(user)
-    //  return this.afs.doc(`/users/${user.displayName}`).ref.get().then(snapshot => {
-    //   if (snapshot.exists) {
-    //     console.log(user.displayName)
-    //   }
-    // })
   }  
 }
   async function presentAlert(message: string) {

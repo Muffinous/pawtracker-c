@@ -28,6 +28,7 @@ export class CalModalComponent implements OnInit {
   }
  
   ngOnInit() {
+    //this.getAllEvents()
     this.setDate(this.dataService.getSelectedDate());
     this.getBuddiesImages();
     console.log(this.images);
@@ -56,8 +57,6 @@ export class CalModalComponent implements OnInit {
   }
 
   async save() {    
-    console.log(this.event.startTime)   
-
     this.modalCtrl.dismiss({event: this.event})
     console.log(this.event)
     this.user.username = this.authService.getCurrentUsername()
@@ -65,16 +64,12 @@ export class CalModalComponent implements OnInit {
     this.db.doc(`/users/${this.user.username}`).ref.get().then(snapshot => {
       if (snapshot.exists) {
         this.db.doc(`/users/${this.user.username}/events/${this.event.title}`).set(this.event).then(res => {
-          console.log('uploaded', res)      
+          console.log('uploaded')      
         }).catch(err => {
             console.log(err);
           });
       }
     })
-    // AngularFirestoreDocument<any> = this.db.doc(
-    //   `users/${user.username}/events/${this.event.title}&`
-    // );
-    // await setDoc(doc(this.db, "event", this.event.title), this.event)
   }
  
   onViewTitleChanged(title) {
@@ -90,5 +85,21 @@ export class CalModalComponent implements OnInit {
 
   close() {
     this.modalCtrl.dismiss();
+  }
+
+  getAllEvents() {
+    console.log('getallevents..')
+    this.user.username = this.authService.getCurrentUsername()
+    console.log(this.user.username)
+    this.db.doc(`/users/${this.user.username}/events/`).ref.get().then(snapshot => {
+      if (snapshot.exists) {
+        console.log(snapshot.data)
+        // this.db.doc(`/users/${this.user.username}/events/${this.event.title}`).set(this.event).then(res => {
+        //   console.log('uploaded', res)      
+        // }).catch(err => {
+        //     console.log(err);
+        //   });
+      }
+    })
   }
 }

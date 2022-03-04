@@ -82,7 +82,7 @@ export class IndexPage implements OnInit {
   }
 
   onCurrentDateChanged(event: Date) {
-    console.log('current date change: ' + event);
+   // console.log('current date change: ' + event);
   }
 
   onRangeChanged(ev) {
@@ -100,11 +100,12 @@ export class IndexPage implements OnInit {
     await modal.present();
    
     modal.onDidDismiss().then((result) => {
+      console.log('opencalmodal', result)
       if (result.data && result.data.event) {
         let event = result.data.event;
-
-        this.eventSource.push(result.data.event);
-        this.myCal.loadEvents();
+        //this.eventSource.push(result.data.event);
+        this.myCal.eventSource.push(event)
+        this.myCal.loadEvents()
       }
     });
   }
