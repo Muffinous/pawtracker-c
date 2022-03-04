@@ -7,6 +7,7 @@ import {
 } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import { User } from '../models/user';
+import { getAuth, updateProfile } from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root',
@@ -142,7 +143,7 @@ export class AuthService {
   }
 
   /* Setting user data + profile data (name, surname, username) */
-  SetProfileData(user: any, profile: any) {
+  async SetProfileData(user: any, profile: any) {
     console.log('PROFILE', user)
     console.log('PROFILE', profile)
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(
@@ -156,6 +157,9 @@ export class AuthService {
       username: profile.username,
       emailVerified: user.emailVerified
     };
+    await updateProfile(auth.getAuth().currentUser, { displayName: profile.username }).catch( // save the username in displayname 4 future access
+      (err) => console.log(err)
+    );
     console.log('userdata ', userData)
     return userRef.set(userData, {
       merge: true,
@@ -170,19 +174,23 @@ export class AuthService {
     });
   }
 
- usernameExists(username:string) {
+  usernameExists(username:string) {
     this.afs.doc(`/users/${username}`).ref.get().then(snapshot => {
       return snapshot.exists
       // console.log('username ', username ,'exists', snapshot.exists)
     })
   }
 
-  getCurrentUser() {
-  var user1 = this.afAuth.currentUser
+  getCurrentUsername() {
   const user = JSON.parse(localStorage.getItem('user')!);
-    console.log('user1', user1)
-    console.log(user.uid)
-    
+  console.log(user)
+  return user.displayName
+    // console.log(user)
+    //  return this.afs.doc(`/users/${user.displayName}`).ref.get().then(snapshot => {
+    //   if (snapshot.exists) {
+    //     console.log(user.displayName)
+    //   }
+    // })
   }  
 }
   async function presentAlert(message: string) {

@@ -17,12 +17,12 @@ export class CalModalComponent implements OnInit {
   images: any[] = [];
   user = {} as User
   event = {} as Event
- 
+
   monthNames = [ 'January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December' ];
   modalReady = false;
  
-  constructor(private db: AngularFirestore, private modalCtrl: ModalController, public navCtrl: NavController, private dataService: DataService, private authService: AuthService) { 
+  constructor(public db: AngularFirestore, private modalCtrl: ModalController, public navCtrl: NavController, private dataService: DataService, private authService: AuthService) { 
     const eventsDB = db.collection('events');
     //this.event = collectionData(collect)
   }
@@ -60,7 +60,17 @@ export class CalModalComponent implements OnInit {
 
     this.modalCtrl.dismiss({event: this.event})
     console.log(this.event)
-    this.authService.getCurrentUser()
+    this.user.username = this.authService.getCurrentUsername()
+    console.log(this.user.username)
+    this.db.doc(`/users/${this.user.username}`).ref.get().then(snapshot => {
+      if (snapshot.exists) {
+        this.db.doc(`/users/${this.user.username}/events/${this.event.title}`).set(this.event).then(res => {
+          console.log('uploaded', res)      
+        }).catch(err => {
+            console.log(err);
+          });
+      }
+    })
     // AngularFirestoreDocument<any> = this.db.doc(
     //   `users/${user.username}/events/${this.event.title}&`
     // );

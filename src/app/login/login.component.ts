@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
     ]
   }
   // DATABASE
-  constructor( public database: AngularFirestore, private authService: AuthService) {  
+  constructor(public database: AngularFirestore, private authService: AuthService) {  
   }
 
   ngOnInit() {
