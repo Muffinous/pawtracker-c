@@ -22,18 +22,26 @@
       <ion-input placeholder="Title" tpye="text" [(ngModel)]="event.title"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-input placeholder="Description" tpye="text" [(ngModel)]="event.desc"></ion-input>
+      <ion-input placeholder="Description" tpye="text" [(ngModel)]="event.description"></ion-input>
     </ion-item>
     
     <br>
     <ion-item-divider></ion-item-divider>
     <br>
-
     <ion-item>
-      <ion-label>Start Time</ion-label>
-      <ion-datetime display-format="HH:mm A" picker-format="HH:mm A" value="1990-02-19T07:43Z" [(ngModel)]="event.startTime" (onchange)="onTimeSelected($value)"></ion-datetime>
+      <ion-label>All day</ion-label>
+      <ion-toggle slot="end" name="allDay" color="dark" [(ngModel)]="event.allDay" [checked]="event.allDay" (onchange)="onToogleChange()" checked></ion-toggle>
     </ion-item>
 
+    <ion-item [disabled]="event.allDay">
+      <ion-label>Start Time</ion-label>
+      <ion-datetime display-format="HH:mm A" picker-format="HH:mm A" [(ngModel)]="event.startTime" (onchange)="onTimeSelected($value)"></ion-datetime>
+    </ion-item>
+
+    <ion-item [disabled]="event.allDay">
+      <ion-label>End Time</ion-label>
+      <ion-datetime display-format="HH:mm A" picker-format="HH:mm A" [(ngModel)]="event.endTime" (onchange)="onTimeSelected($value)"></ion-datetime>
+    </ion-item>
     <br>
     <ion-item-divider></ion-item-divider>
     <br>

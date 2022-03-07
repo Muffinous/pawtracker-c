@@ -34,6 +34,7 @@
     "cordova-plugin-firebase": "^2.0.5",
     "firebase": "^9.6.7",
     "ionic2-calendar": "^0.6.9",
+    "moment": "^2.29.1",
     "rxfire": "^6.0.0",
     "rxjs": "~6.6.0",
     "zone.js": "~0.11.4"

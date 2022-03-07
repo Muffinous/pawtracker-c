@@ -21,17 +21,14 @@ export class CalModalComponent implements OnInit {
   monthNames = [ 'January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December' ];
   modalReady = false;
- 
+
   constructor(public db: AngularFirestore, private modalCtrl: ModalController, public navCtrl: NavController, private dataService: DataService, private authService: AuthService) { 
-    const eventsDB = db.collection('events');
-    //this.event = collectionData(collect)
   }
  
   ngOnInit() {
     //this.getAllEvents()
     this.setDate(this.dataService.getSelectedDate());
     this.getBuddiesImages();
-    console.log(this.images);
   }
 
   ngAfterViewInit() {
@@ -41,7 +38,6 @@ export class CalModalComponent implements OnInit {
   }
  
   setDate(seldate: Date) {
-    console.log("cal ", seldate);
     this.event.day = seldate.getDate();
     this.event.month = this.monthNames[seldate.getMonth()];
     this.event.year = seldate.getFullYear();
@@ -76,10 +72,13 @@ export class CalModalComponent implements OnInit {
     this.viewTitle = title;
   }
  
+  onToogleChange() {
+    console.log('ALL DAY', this.event.allDay)
+    this.event.allDay = !this.event.allDay
+  }
 
   onTimeSelected(ev) {
-    console.log('hiya')
-    console.log('Selectedd time: ' + ev.selectedTime + ', hasEvents: ' +
+    console.log('Selected time COMPONENT: ' + ev.selectedTime + ', hasEvents: ' +
       (ev.events !== undefined && ev.events.length !== 0) + ', disabled: ' + ev.disabled);
   }
 
@@ -88,7 +87,6 @@ export class CalModalComponent implements OnInit {
   }
 
   getAllEvents() {
-    console.log('getallevents..')
     this.user.username = this.authService.getCurrentUsername()
     console.log(this.user.username)
     this.db.doc(`/users/${this.user.username}/events/`).ref.get().then(snapshot => {

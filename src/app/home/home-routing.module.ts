@@ -33,10 +33,6 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'cal-modal',
-    loadChildren: () => import('./cal-modal/cal-modal.module').then( m => m.CalModalPageModule)
-  },
-  {
     path: 'profile',
     loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
   },

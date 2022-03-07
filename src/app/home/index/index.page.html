@@ -21,7 +21,9 @@
       <ion-card-subtitle>blah blah blah</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content class="transparent-card">
-      <calendar [currentDate]="calendar.currentDate"
+      <calendar
+              [eventSource]="eventSource"
+              [currentDate]="calendar.currentDate"
               (onCurrentDateChanged)="onCurrentDateChanged($event)"
               (onRangeChanged)="reloadSource(startTime, endTime)"
               (onEventSelected)="onEventSelected($event)"
@@ -30,11 +32,11 @@
               step="30">
       </calendar> 
       <div style="display: flex; justify-content: center;">
-        <ion-button (click)="openCalModal($event)">add new appointment</ion-button>
+        <ion-button (click)="openCalModal()">add new appointment</ion-button>
       </div>
     </ion-card-content>
   </ion-card>
-  
+
   <ion-card>
     <ion-card-header>
       <ion-card-title>
