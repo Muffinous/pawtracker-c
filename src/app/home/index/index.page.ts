@@ -1,10 +1,13 @@
 import { Component, Inject, LOCALE_ID, OnInit, ViewChild } from '@angular/core';
 import { CalendarComponent } from 'ionic2-calendar';
+
 import locale from '@angular/common/locales/es';
 import { formatDate, registerLocaleData } from '@angular/common';
 import { AlertController, ModalController } from '@ionic/angular';
 import { DataService } from '../data.service';
 import { CalModalComponent } from '../cal-modal/cal-modal.component';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Event } from 'src/app/models/event';
 
 declare var google;
 
@@ -20,30 +23,33 @@ export class IndexPage implements OnInit {
   rootPage:any = 'TabsPage';
   
   // calendar shit
-  eventSource = []; 
+  eventSource: Event[] = [];
   viewTitle: string;
 
+  dateRange: { from: string; to: string; };
+  type: 'string';
   calendar = {
     mode: 'month',
     currentDate: new Date()
   }
   selectedDate = new Date();
 
+  
   @ViewChild(CalendarComponent) myCal: CalendarComponent;
   // calendar shit
 
   public modalController: ModalController
 
-  constructor(private alertCtrl: AlertController, private modalCtrl: ModalController, 
+  constructor(public db: AngularFirestore, private alertCtrl: AlertController, private modalCtrl: ModalController, 
     @Inject(LOCALE_ID) private locale: string, private dataService: DataService) {
-    // this.db.collection(`events`).snapshotChanges().subscribe(colSnap => {
-    //   this.eventSource = [];
-    //   colSnap.forEach(snap => {
-    //     let event:any = snap.payload.doc.data();
-    //     event.id = snap.payload.doc['id'];
-    //     this.eventSource.push(event);
-    //   });
-    // });  
+    this.db.collection(`events`).snapshotChanges().subscribe(colSnap => {
+      this.eventSource = [];
+      colSnap.forEach(snap => {
+        let event:any = snap.payload.doc.data();
+        event.id = snap.payload.doc['id'];
+        this.eventSource.push(event);
+      });
+    });  
   }
 
   ngOnInit() {
@@ -72,16 +78,17 @@ export class IndexPage implements OnInit {
   }
 
   onEventSelected(event) {
-    console.log('Event selected:' + event.startTime + '-' + event.endTime + ',' + event.title); 
+    console.log('Event selected INDEX :' + event.startTime + '-' + event.endTime + ',' + event.title); 
   }
 
   onTimeSelected(ev) {
     this.selectedDate = ev.selectedTime;
-    console.log('Selected time: ' + ev.selectedTime + ', hasEvents: ' +
+    console.log('Selected time INDEX : ' + ev.selectedTime + ', hasEvents: ' +
       (ev.events !== undefined && ev.events.length !== 0) + ', disabled: ' + ev.disabled);
   }
 
-  onCurrentDateChanged(event: Date) {
+  onCurrentDateChanged(event) {
+    this.selectedDate = event.selectedTime
    // console.log('current date change: ' + event);
   }
 
@@ -89,24 +96,39 @@ export class IndexPage implements OnInit {
     console.log('range changed: startTime: ' + ev.startTime + ', endTime: ' + ev.endTime);
   }
 
-  async openCalModal(ev) {
+  async openCalModal() {
     this.dataService.setSelectedDate(this.selectedDate);
     const modal = await this.modalCtrl.create({
       component: CalModalComponent,
       cssClass: 'cal-modal',
-      backdropDismiss: false
+      backdropDismiss: false,
     });
    
     await modal.present();
    
     modal.onDidDismiss().then((result) => {
-      console.log('opencalmodal', result)
       if (result.data && result.data.event) {
-        let event = result.data.event;
-        //this.eventSource.push(result.data.event);
-        this.myCal.eventSource.push(event)
-        this.myCal.loadEvents()
+        let eventData = result.data.event;
+        if (eventData.allDay) {
+          eventData.startTime = new Date(this.selectedDate);
+          eventData.endTime = new Date(this.selectedDate)
+        } else {
+          eventData.startTime = new Date(result.data.event.startTime);
+          eventData.endTime = new Date(result.data.event.endTime)          
+        }
+
+        console.log('event', eventData)
+        this.dataService.addEvent(eventData) // makes the push to array
+        this.eventSource = this.dataService.getAllEvents(); // ARR
+        
+        let events = this.eventSource;
+        this.eventSource = [];
+        setTimeout(() => {
+          this.eventSource = events;
+        });      
       }
+      this.myCal.update()
+      this.myCal.loadEvents()
     });
   }
 
