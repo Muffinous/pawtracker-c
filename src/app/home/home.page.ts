@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../services/auth/auth.service';
 
 declare var google;
 
@@ -13,8 +14,9 @@ export class HomePage implements OnInit{
   @ViewChild('mapElement') mapElement;
   public folder: string;
   rootPage:any = 'TabsPage';
+  
 
-  constructor(private activatedRoute: ActivatedRoute) { }
+  constructor(private activatedRoute: ActivatedRoute, private authService: AuthService) { }
 
   ngOnInit() {
      this.folder = this.activatedRoute.snapshot.paramMap.get('id');
@@ -26,11 +28,9 @@ export class HomePage implements OnInit{
     { title: 'Buddies', url: 'buddies', icon: 'paw' },
     { title: 'Settings', url: 'settings', icon: 'settings' },
     { title: 'Dark mode', url: '/folder/Archived', icon: 'toggle' },
-    { title: 'Sign out', url: '/folder/Trash', icon: 'log-out' },
   ];
 
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];  
-
 
   // loadMap() {
   //   const mapEle: HTMLElement = document.getElementById('map');

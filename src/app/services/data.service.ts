@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Event } from '../models/event';
-import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +11,6 @@ export class DataService {
   selectedDate: Date;
 
   setSelectedDate(data) {
-   // let preselectedDate = moment(data.format());
     console.log("service ", data, '->')
     this.selectedDate = data;
   }

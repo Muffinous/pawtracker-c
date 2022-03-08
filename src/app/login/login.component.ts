@@ -1,7 +1,7 @@
 import { Component, ContentChild, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { IonInput } from '@ionic/angular';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../services/auth/auth.service';
 import { User } from '../models/user';
 
 @Component({

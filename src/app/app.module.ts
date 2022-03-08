@@ -19,7 +19,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { AuthService } from './auth/auth.service';
+import { AuthService } from './services/auth/auth.service';
 import { AngularFireModule } from '@angular/fire/compat';
 import { CommonModule } from '@angular/common';
 import { SignupComponent } from './signup/signup.component';

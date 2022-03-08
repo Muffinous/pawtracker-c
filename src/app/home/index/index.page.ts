@@ -4,7 +4,7 @@ import { CalendarComponent } from 'ionic2-calendar';
 import locale from '@angular/common/locales/es';
 import { formatDate, registerLocaleData } from '@angular/common';
 import { AlertController, ModalController } from '@ionic/angular';
-import { DataService } from '../data.service';
+import { DataService } from '../../services/data.service';
 import { CalModalComponent } from '../cal-modal/cal-modal.component';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Event } from 'src/app/models/event';
@@ -109,7 +109,7 @@ export class IndexPage implements OnInit {
     modal.onDidDismiss().then((result) => {
       if (result.data && result.data.event) {
         let eventData = result.data.event;
-        if (eventData.allDay) {
+        if (eventData.allDay) { // manage if event is allday or not
           eventData.startTime = new Date(this.selectedDate);
           eventData.endTime = new Date(this.selectedDate)
         } else {
@@ -132,27 +132,4 @@ export class IndexPage implements OnInit {
     });
   }
 
-  async addNewEvent(event) {
-
-    let now = formatDate(new Date(), "medium", this.locale);
-    let end = formatDate(new Date(), "medium", this.locale);
-
-    const alert = await this.alertCtrl.create({
-      header: event.title,
-      subHeader: event.desc,
-      message: 'From: ' + now + '<br><br>To: ' + end,
-      buttons: ['OK'],
-    });
-    alert.present();
-
-    // end.setMinutes(end.getMinutes() + 60);
-    // let event = {
-    // title: 'Event #' + now.getMinutes(), 
-    // startTime: now,
-    // endTime: end,
-    // allDay: true
-    // }
-    console.log(event);
- //   this.db.collection(`events`).add(event);
-  }
 }
