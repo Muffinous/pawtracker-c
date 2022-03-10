@@ -22,7 +22,7 @@
                   <h3>Sign Up Buddy</h3>
                 </div>
 
-                <form [formGroup]="ionicForm" (ngSubmit)="login()" novalidate>
+                <form [formGroup]="ionicForm" (ngSubmit)="registerBuddies()" novalidate>
                   <div formArrayName="attributes">
                       <section [formGroupName]="i" *ngFor="let animals of ionicForm.controls.attributes.controls; let i = index">
                         <ion-item-group>

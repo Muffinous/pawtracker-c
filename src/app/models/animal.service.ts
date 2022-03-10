@@ -4,6 +4,11 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AnimalService {
-
+  buddyname: string
+  buddyage: number
+  buddyGender: string
+  buddyBreed: []
+  buddyBday: string
+  
   constructor() { }
 }
