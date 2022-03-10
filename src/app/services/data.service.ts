@@ -22,6 +22,7 @@ export class DataService {
   
   addEvent(event: Event){
     this.events.push(event);
+    console.log('new event added array', this.events)
   }
 
   getAllEvents():Event[]{  

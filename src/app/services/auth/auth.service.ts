@@ -5,7 +5,7 @@ import {
   AngularFirestore,
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { User } from '../../models/user';
 import { getAuth, updateProfile } from 'firebase/auth';
 
@@ -14,7 +14,7 @@ import { getAuth, updateProfile } from 'firebase/auth';
 })
 export class AuthService {
   userData: any; // Save logged in user data
-
+  curUser = {} as User
   constructor(
     public afs: AngularFirestore, // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth service
@@ -24,7 +24,7 @@ export class AuthService {
     /* Saving user data in localstorage when 
     logged in and setting up null when logged out */
     this.afAuth.authState.subscribe((user) => {
-      console.log('user', user)
+      // console.log('user', user)
       if (user) {
         this.userData = user;
         localStorage.setItem('user', JSON.stringify(this.userData));
@@ -36,12 +36,19 @@ export class AuthService {
     });
   }
   // Sign in with email/password
-  SignIn(email: string, password: string) {
+  SignIn(user: User, password: string) {
     return this.afAuth
-      .signInWithEmailAndPassword(email, password)
+      .signInWithEmailAndPassword(user.email, password)
       .then((result) => {
         this.ngZone.run(() => {
-          this.router.navigate(['home']);
+          let navigationExtras: NavigationExtras = {
+            state: {
+              email: user.email,
+              uid: user.uid
+            }
+          };
+          console.log('NAV EXTR', navigationExtras)
+          this.router.navigate(['home/' + user.username], navigationExtras);
         });
       //  this.SetUserData(result.user);
       })
@@ -62,7 +69,6 @@ export class AuthService {
             up and returns promise */
           // this.SendVerificationMail();
             console.log('result.user', result.user)
-
             this.SetProfileData(result.user, user);
           })
           .catch((error) => {
@@ -181,11 +187,37 @@ export class AuthService {
     })
   }
 
-  getCurrentUsername() {
-  const user = JSON.parse(localStorage.getItem('user')!);
-  console.log(user)
-  return user.displayName
+  getAuthUser() {
+    return JSON.parse(localStorage.getItem('user'));
   }  
+
+  getCurrentUsername() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    console.log(user)
+    return user.displayName
+  }  
+
+  getCurrentUser() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    console.log('CONS USER', user)
+    this.afs.doc(`users/${user.displayName}/`).ref.get().then((snapshot) => {
+      if (snapshot.exists) {
+        const myuser = snapshot.data() as User
+        this.curUser.email = myuser.email        
+        this.curUser.emailVerified = myuser.emailVerified
+        this.curUser.name = myuser.name
+        this.curUser.uid = myuser.uid
+        this.curUser.username = myuser.username
+      }
+    })
+    .catch((error) => {
+      window.alert(error.message);
+    });        
+  }
+
+  getUserEmail() {
+    return this.curUser.email
+  }
 }
   async function presentAlert(message: string) {
     const alert = document.createElement('ion-alert');

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonInput } from '@ionic/angular';
 import { AuthService } from '../services/auth/auth.service';
 import { User } from '../models/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -49,7 +50,7 @@ export class SignupComponent implements OnInit {
     ],  
   }
 
-  constructor(public formBuilder: FormBuilder,  public fb: FormBuilder, public authService: AuthService) { 
+  constructor(private router: Router, public formBuilder: FormBuilder,  public fb: FormBuilder, public authService: AuthService) { 
 
     let EMAILPATTERN = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
 
@@ -138,7 +139,7 @@ export class SignupComponent implements OnInit {
       console.log("USER INTERFACE ", this.user)
       this.authService.SignUp(this.user, this.ionicForm.get("password").value)
      // await setDoc(doc(this.db, "user", this.ionicForm.value.username), this.user.User)
-     // this.route.navigateByUrl('/signup-animal', {state: this.ionicForm.value, replaceUrl:true})
+     this.router.navigateByUrl('/signup-animal', {state: this.ionicForm.value, replaceUrl:true})
     }
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ModalController, NavController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Event } from 'src/app/models/event';
@@ -54,9 +54,8 @@ export class CalModalComponent implements OnInit {
 
   async save() {    
     this.modalCtrl.dismiss({event: this.event})
-    console.log(this.event)
+    console.log('save in calmodal', this.event)
     this.user.username = this.authService.getCurrentUsername()
-    console.log(this.user.username)
     this.db.doc(`/users/${this.user.username}`).ref.get().then(snapshot => {
       if (snapshot.exists) {
         this.db.doc(`/users/${this.user.username}/events/${this.event.title}`).set(this.event).then(res => {
@@ -86,18 +85,17 @@ export class CalModalComponent implements OnInit {
     this.modalCtrl.dismiss();
   }
 
-  getAllEvents() {
-    this.user.username = this.authService.getCurrentUsername()
-    console.log(this.user.username)
-    this.db.doc(`/users/${this.user.username}/events/`).ref.get().then(snapshot => {
-      if (snapshot.exists) {
-        console.log(snapshot.data)
-        // this.db.doc(`/users/${this.user.username}/events/${this.event.title}`).set(this.event).then(res => {
-        //   console.log('uploaded', res)      
-        // }).catch(err => {
-        //     console.log(err);
-        //   });
-      }
-    })
-  }
+  // getUserEvents() {
+  //   this.user.username = this.authService.getCurrentUsername()
+  //   console.log('calmodal getuserev', this.user.username)
+  //   this.db.collection(`/users/${this.user.username}/events/`).get().forEach(snapshot => { // get all events 4 that user
+  //     const evs = [];
+  //     console.log('first', snapshot)
+  //     snapshot.forEach(doc => {
+  //         const ev = { [doc.id]: doc.data()}
+  //         evs.push(ev)
+  //     })
+  //     console.log(evs)
+  //   })
+  // }
 }

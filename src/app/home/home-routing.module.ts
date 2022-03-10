@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { SettingsComponent } from '../settings/settings.component';
 import { HomePage } from './home.page';
 
 const routes: Routes = [
@@ -19,7 +20,8 @@ const routes: Routes = [
         path: '',
         redirectTo: 'index',
         pathMatch: 'full'
-      }
+      },
+      { path: 'settingsnew', component: SettingsComponent },
     ]
   },
   {
@@ -31,15 +33,14 @@ const routes: Routes = [
     path: '',
     redirectTo: 'index',
     pathMatch: 'full'
-  },
-  {
-    path: 'profile',
-    loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
-  },
-  {
-    path: 'settings',
-    loadChildren: () => import('../settings/settings.module').then( m => m.SettingsPageModule)
-  }
+  },     
+  { path: 'settingsnew', component: SettingsComponent },
+
+  // {
+  //   path: 'settings',
+  //   loadChildren: () => import('../settings/settings.module').then( m => m.SettingsPageModule)
+  // },
+
 ];
 
 @NgModule({

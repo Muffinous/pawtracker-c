@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { User } from '../models/user';
 import { AuthService } from '../services/auth/auth.service';
 
 declare var google;
@@ -10,28 +11,57 @@ declare var google;
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit{
-  map = null;
-  @ViewChild('mapElement') mapElement;
-  public folder: string;
-  rootPage:any = 'TabsPage';
-  
+  map = null
+  @ViewChild('mapElement') mapElement
+  public folder: string
+  rootPage:any = 'TabsPage'
+  user = {} as User
+  selectedIndex
 
-  constructor(private activatedRoute: ActivatedRoute, private authService: AuthService) { }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private authService: AuthService) { 
+    this.activatedRoute.params.subscribe(params => {
+      if (params) {
+        this.user.username = params.username
+      }
+    })
+
+    if (this.router.getCurrentNavigation().extras.state.email) {
+      console.log('HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+      let email = this.router.getCurrentNavigation().extras.state.email;
+      let uid = this.router.getCurrentNavigation().extras.state.uid;
+      this.user.email = email
+      this.user.uid = uid
+    }
+  }
 
   ngOnInit() {
-     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
-    // this.loadMap();
+    this.selectedIndex = -1
+    this.folder = this.activatedRoute.snapshot.paramMap.get('id');
+    // this.loadMap();      
   }
 
   public appPages = [
-    { title: 'My profile', url: 'profile', icon: 'person' },
-    { title: 'Buddies', url: 'buddies', icon: 'paw' },
-    { title: 'Settings', url: 'settings', icon: 'settings' },
-    { title: 'Dark mode', url: '/folder/Archived', icon: 'toggle' },
+    { title: 'My profile', url: 'profile', icon: 'person', index: 0},
+    { title: 'Buddies', url: 'buddies', icon: 'paw', index: 1},
+    { title: 'Settings', url: `/settingsnew`, icon: 'settings', index: 2 },
+    { title: 'Dark mode', url: '', icon: 'toggle', index: 3 },
+    // { title: 'Sign Out', url: `this.authService.SignOut()`, icon: 'log-out', index: 4 },
   ];
 
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];  
 
+  setUser() {
+    const us = this.authService.getAuthUser()
+    console.log('USSSSS', us)
+    // this.user.email = us.email
+    // this.user.username = us.displayName
+    // this.user.uid = us.uid
+  }
+
+  goSettings() {
+    console.log('gosettings')
+    this.router.navigateByUrl('/settingsnew')
+  }
   // loadMap() {
   //   const mapEle: HTMLElement = document.getElementById('map');
   //   console.log(mapEle);

@@ -5,7 +5,7 @@ export interface Event {
     day: Number,
     month: string,
     year: Number,
-    startTime: string,
-    endTime: string,
+    startTime: Date,
+    endTime: Date,
     allDay: boolean
 }
