@@ -4,6 +4,8 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonInput } from '@ionic/angular';
 import { AnimalService } from 'src/app/models/animal.service';
+import { User } from 'src/app/models/user';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-signup-animal',
@@ -37,8 +39,8 @@ export class SignupAnimalPage implements OnInit {
     'Sphynx',
     'Turkish Angora'
   ]
-  personParams;
-
+  user = {} as User
+  pass: string
   buddy = []
 
   validation_messages = {
@@ -59,10 +61,14 @@ export class SignupAnimalPage implements OnInit {
     ]
   }
 
-  constructor(public afs: AngularFirestore, private router:Router, private formBuilder: FormBuilder) {
+  constructor(public afs: AngularFirestore, private router:Router, private formBuilder: FormBuilder,  private authService: AuthService) {
     if (router.getCurrentNavigation().extras.state) {
-      this.personParams = this.router.getCurrentNavigation().extras.state;
-      console.log('sign up animal ', this.personParams)
+      this.user.name = this.router.getCurrentNavigation().extras.state.name;
+      this.user.surname = this.router.getCurrentNavigation().extras.state.surname;
+      this.user.username = this.router.getCurrentNavigation().extras.state.username;
+      this.user.email = this.router.getCurrentNavigation().extras.state.email;
+      this.pass = this.router.getCurrentNavigation().extras.state.password;
+      console.log('sign up animal ', this.user)
     }
   }
 
@@ -71,7 +77,7 @@ export class SignupAnimalPage implements OnInit {
       personName: ['', [Validators.required, Validators.minLength(2)]],   
       attributes: this.formBuilder.array([ this.initAttributesFields()]) 
     })
-    this.ionicForm.get('personName').setValue(this.personParams.name)
+    this.ionicForm.get('personName').setValue(this.user.name)
   }
 
   initAttributesFields() : FormGroup {
@@ -102,7 +108,6 @@ export class SignupAnimalPage implements OnInit {
   }
 
   async registerBuddies() {
-    console.log('VALID', this.ionicForm.valid)
     if (!this.ionicForm.valid) {
       console.log('.value ', this.ionicForm.controls.attributes.value)
       console.log('buddyname ', this.ionicForm.value)
@@ -116,24 +121,13 @@ export class SignupAnimalPage implements OnInit {
       console.log(nAnimals)
       for (let i=0; i<nAnimals; i++) {
         const userRef: AngularFirestoreDocument<any> = this.afs.doc(
-          `users/${this.personParams.username}/buddies/${this.ionicForm.value.attributes[i].buddyName}`
+          `users/${this.user.username}/buddies/${this.ionicForm.value.attributes[i].buddyName}`
           );      
           userRef.set(this.ionicForm.value.attributes[0], {
           merge: true,
       });
       }
-
-      // const buddyInfo: AnimalService = {
-      //   buddyBday: user.uid,
-      //   email: user.email,
-      //   name: profile.name,
-      //   surname: profile.surname,
-      //   username: profile.username,
-      //   emailVerified: user.emailVerified
-      // };
-
-      return true
-      //this.route.navigateByUrl('/signup-animal', {replaceUrl:true})
+      this.authService.SignIn(this.user, this.pass)
     }
   }
 }
