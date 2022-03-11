@@ -7,10 +7,10 @@
       </div>
       <div class="card-body">
         <div class="user-meta ion-text-center">
-          <h3 class="playername">Roger Federer</h3>
-          <h5 class="country">Switzerland</h5>
-          <h6 class="ranking">Buddies <ion-chip>
-              <ion-label>2</ion-label>
+          <h3 class="playername">{{this.userService.user.name}} {{this.userService.user.surname}}</h3>
+          <h5 class="country">{{this.userService.user.username}}</h5>
+          <h6 class="ranking">Buddies<ion-chip>
+              <ion-label>{{this.userService.user.nAnimals}}</ion-label>
             </ion-chip>
           </h6>
         </div>

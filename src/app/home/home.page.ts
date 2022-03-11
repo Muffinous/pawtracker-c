@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../models/user';
 import { AuthService } from '../services/auth/auth.service';
+import { UserService } from '../services/auth/user/user.service';
 
 declare var google;
 
@@ -18,22 +19,12 @@ export class HomePage implements OnInit{
   user = {} as User
   selectedIndex
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private authService: AuthService) { 
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private authService: AuthService, private userService: UserService) { 
     this.activatedRoute.params.subscribe(params => {
       if (params) {
         this.user.username = params.username
       }
     })
-
-    // if (this.router.getCurrentNavigation().extras.state.email) {
-    //   console.log('HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
-    //   let email = this.router.getCurrentNavigation().extras.state.email;
-    //   let uid = this.router.getCurrentNavigation().extras.state.uid;
-    //   this.user.email = email
-    //   this.user.uid = uid
-    // }
-    this.user.email = 'email'
-    this.user.uid = 'uid'
   }
 
   ngOnInit() {

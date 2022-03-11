@@ -5,4 +5,5 @@ export interface User {
     surname: string;
     username: string;
     emailVerified: boolean;
+    nAnimals: number;
  }

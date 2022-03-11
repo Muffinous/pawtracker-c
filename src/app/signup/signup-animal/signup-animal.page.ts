@@ -109,24 +109,28 @@ export class SignupAnimalPage implements OnInit {
 
   async registerBuddies() {
     if (!this.ionicForm.valid) {
-      console.log('.value ', this.ionicForm.controls.attributes.value)
-      console.log('buddyname ', this.ionicForm.value)
-      console.log('.attributes ', this.ionicForm.get('attributes'))
-      // console.log('buddyName: ', this.ionicForm.get('attributes').get('buddyName').hasError(this.validation_messages[0]))
       console.log('Please provide all the required values!')
       return false;
     } else {
       
-      let nAnimals = this.ionicForm.value.attributes.length
-      console.log(nAnimals)
-      for (let i=0; i<nAnimals; i++) {
-        const userRef: AngularFirestoreDocument<any> = this.afs.doc(
+      let userAnimals = this.ionicForm.value.attributes.length
+      console.log(userAnimals)
+      for (let i=0; i<userAnimals; i++) {
+        const userBuddiesRef: AngularFirestoreDocument<any> = this.afs.doc(
           `users/${this.user.username}/buddies/${this.ionicForm.value.attributes[i].buddyName}`
           );      
-          userRef.set(this.ionicForm.value.attributes[0], {
+          userBuddiesRef.set(this.ionicForm.value.attributes[0], {
           merge: true,
       });
       }
+
+      const userRef: AngularFirestoreDocument<any> = this.afs.doc(
+        `users/${this.user.username}/`
+      );      
+      userRef.update({nAnimals: userAnimals}), {
+        merge: true,
+      }
+      this.user.nAnimals = userAnimals // UPDATE USER ANIMALS NUMBER TO WHATEVER IT IS
       this.authService.SignIn(this.user, this.pass)
     }
   }

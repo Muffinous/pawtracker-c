@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { User } from 'src/app/models/user';
+import { UserService } from 'src/app/services/auth/user/user.service';
 
 @Component({
   selector: 'app-profile',
@@ -6,9 +9,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./profile.page.scss'],
 })
 export class ProfilePage implements OnInit {
+  user = {} as User
 
-  constructor() {
-
+  constructor(private router: Router, private userService: UserService) {
+      console.log('USERSERVICE USER ', this.userService.user)
   }
 
   ngOnInit() {

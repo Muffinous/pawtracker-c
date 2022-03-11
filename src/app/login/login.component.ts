@@ -48,7 +48,8 @@ export class LoginComponent implements OnInit {
   login(){
       this.database.doc(`/users/${this.username}`).ref.get().then(snapshot => {
         if (snapshot.exists) {
-          const myuser = snapshot.data() as User
+          const myuser = snapshot.data() as User          
+          console.log('MYUSER INFO', myuser)
           this.authService.SignIn(myuser, this.password) // this sign in goes to home || this.route.navigate(['/home']);
           .then(function(error) {
             // Handle Errors here.

@@ -9,6 +9,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { User } from '../../models/user';
 import { getAuth, updateProfile } from 'firebase/auth';
 import { IonLoaderService } from '../ion-loader.service';
+import { UserService } from './user/user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +22,8 @@ export class AuthService {
     public afAuth: AngularFireAuth, // Inject Firebase auth service
     public router: Router,
     public ngZone: NgZone, // NgZone service to remove outside scope warning
-    public ionLoader: IonLoaderService
+    public ionLoader: IonLoaderService,
+    private userService: UserService
   ) {
     /* Saving user data in localstorage when 
     logged in and setting up null when logged out */
@@ -44,14 +46,11 @@ export class AuthService {
       .signInWithEmailAndPassword(user.email, password)
       .then((result) => {
         this.ngZone.run(() => {
-          let navigationExtras: NavigationExtras = {
-            state: {
-              email: user.email,
-              uid: user.uid
-            }
-          };
-          console.log('NAV EXTR', navigationExtras)
-          this.router.navigate(['home/' + user.username], navigationExtras);
+          console.log(result.user)
+          user.emailVerified = result.user.emailVerified
+          user.uid = result.user.uid
+          this.addUserService(user) // save the user's info 
+          this.router.navigate(['home/' + user.username]);
         });
       //  this.SetUserData(result.user);
       })
@@ -164,7 +163,8 @@ export class AuthService {
       name: profile.name,
       surname: profile.surname,
       username: profile.username,
-      emailVerified: user.emailVerified
+      emailVerified: user.emailVerified,
+      nAnimals: profile.nAnimals
     };
     await updateProfile(auth.getAuth().currentUser, { displayName: profile.username }).catch( // save the username in displayname 4 future access
       (err) => console.log(err)
@@ -220,6 +220,17 @@ export class AuthService {
 
   getUserEmail() {
     return this.curUser.email
+  }
+
+  addUserService(user: User) {
+    this.userService.user.email = user.email
+    this.userService.user.uid = user.uid
+    this.userService.user.name = user.name
+    this.userService.user.surname = user.surname
+    this.userService.user.emailVerified = user.emailVerified
+    this.userService.user.username = user.username
+    this.userService.user.nAnimals = user.nAnimals
+
   }
 
   async openLoader() {

@@ -7,8 +7,8 @@
     </ion-header>
     <ion-content>
       <ion-list>
-          <ion-list-header>{{user.username}}</ion-list-header>
-          <ion-note>{{user.email}}</ion-note>
+          <ion-list-header>{{this.userService.user.username}}</ion-list-header>
+          <ion-note>{{this.userService.user.email}}</ion-note>
           <ion-menu-toggle auto-hide="false" side=end *ngFor="let p of appPages; let i = index">
             <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false"  [class.selected]="selectedIndex === i" >
               <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>

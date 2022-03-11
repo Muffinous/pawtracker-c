@@ -135,7 +135,8 @@ export class SignupComponent implements OnInit {
       this.user.surname = this.ionicForm.get("surname").value
       this.user.username = this.ionicForm.get("username").value
       this.user.email = this.ionicForm.get("email").value
-
+      this.user.nAnimals = 0
+      
       console.log("USER INTERFACE ", this.user)
       this.authService.SignUp(this.user, this.ionicForm.get("password").value)
      // await setDoc(doc(this.db, "user", this.ionicForm.value.username), this.user.User)
