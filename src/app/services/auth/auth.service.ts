@@ -8,6 +8,7 @@ import {
 import { NavigationExtras, Router } from '@angular/router';
 import { User } from '../../models/user';
 import { getAuth, updateProfile } from 'firebase/auth';
+import { IonLoaderService } from '../ion-loader.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,8 @@ export class AuthService {
     public afs: AngularFirestore, // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth service
     public router: Router,
-    public ngZone: NgZone // NgZone service to remove outside scope warning
+    public ngZone: NgZone, // NgZone service to remove outside scope warning
+    public ionLoader: IonLoaderService
   ) {
     /* Saving user data in localstorage when 
     logged in and setting up null when logged out */
@@ -37,6 +39,7 @@ export class AuthService {
   }
   // Sign in with email/password
   SignIn(user: User, password: string) {
+    this.openLoader()
     return this.afAuth
       .signInWithEmailAndPassword(user.email, password)
       .then((result) => {
@@ -218,6 +221,11 @@ export class AuthService {
   getUserEmail() {
     return this.curUser.email
   }
+
+  async openLoader() {
+    await this.ionLoader.simpleLoader()
+  }
+  
 }
   async function presentAlert(message: string) {
     const alert = document.createElement('ion-alert');

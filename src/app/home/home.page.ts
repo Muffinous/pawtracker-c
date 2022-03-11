@@ -25,13 +25,15 @@ export class HomePage implements OnInit{
       }
     })
 
-    if (this.router.getCurrentNavigation().extras.state.email) {
-      console.log('HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
-      let email = this.router.getCurrentNavigation().extras.state.email;
-      let uid = this.router.getCurrentNavigation().extras.state.uid;
-      this.user.email = email
-      this.user.uid = uid
-    }
+    // if (this.router.getCurrentNavigation().extras.state.email) {
+    //   console.log('HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+    //   let email = this.router.getCurrentNavigation().extras.state.email;
+    //   let uid = this.router.getCurrentNavigation().extras.state.uid;
+    //   this.user.email = email
+    //   this.user.uid = uid
+    // }
+    this.user.email = 'email'
+    this.user.uid = 'uid'
   }
 
   ngOnInit() {
@@ -61,6 +63,10 @@ export class HomePage implements OnInit{
   goSettings() {
     console.log('gosettings')
     this.router.navigateByUrl('/settingsnew')
+  }
+
+  public getUser() {
+    return this.user
   }
   // loadMap() {
   //   const mapEle: HTMLElement = document.getElementById('map');
