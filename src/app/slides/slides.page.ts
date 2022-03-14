@@ -1,9 +1,13 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, ViewEncapsulation} from '@angular/core';
+import SwiperCore, { Autoplay } from 'swiper';
+
+SwiperCore.use([Autoplay]);
 
 @Component({
   selector: 'app-slides',
   templateUrl: './slides.page.html',
   styleUrls: ['./slides.page.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class SlidesPage implements OnInit {
@@ -36,7 +40,11 @@ export class SlidesPage implements OnInit {
   ngOnInit() {
   }
 
-afterslidesLoad(slides) {
-  slides.startAutoplay();
-}
+  onSlideChange() {
+
+  }
+
+  afterslidesLoad(slides) {
+    slides.startAutoplay();
+  }
 }

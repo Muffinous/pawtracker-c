@@ -16,9 +16,6 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 
 import { environment } from 'src/environments/environment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { AuthService } from './services/auth/auth.service';
 import { AngularFireModule } from '@angular/fire/compat';
 import { CommonModule } from '@angular/common';
@@ -26,6 +23,7 @@ import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
 import { CalModalComponent } from './home/cal-modal/cal-modal.component';
 import { SettingsComponent } from './settings/settings.component';
+import { SwiperModule } from 'swiper/angular';
 
 @NgModule({
   declarations: [AppComponent, SignupComponent, LoginComponent, CalModalComponent, SettingsComponent],
@@ -39,6 +37,7 @@ import { SettingsComponent } from './settings/settings.component';
     AngularFireStorageModule,
     AngularFireDatabaseModule,
     AngularFirestoreModule.enablePersistence(),
+    SwiperModule
   ],
     
   providers: [AuthService, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],

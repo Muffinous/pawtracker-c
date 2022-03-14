@@ -5,15 +5,25 @@
 </ion-header>
 
 <ion-content>
-  <ion-slides [options] ="slideOptions" pager="true" #slider (ionSlidesDidLoad)="afterslidesLoad(slider)">
+  <swiper [autoplay]="true" (slideChange)="onSlideChange()">
+    <ng-template swiperSlide *ngFor="let item of data; let i = index">
+      <h2 class="slidertitle">{{item.title}}</h2>     
+      <img class="sliderimg" src="../../assets/img/{{item.img}}">   
+      <p class="sliderp" [innerHTML]="item.description"></p>    
+    </ng-template>
+  </swiper>
+
+
+  <!-- <ion-slides [options] ="slideOptions" pager="true" #slider (ionSlidesDidLoad)="afterslidesLoad(slider)">
     <ion-slide *ngFor="let item of data; let i = index">
       <div class="slide">
         <h2 class="slidertitle">{{item.title}}</h2>     
         <img class="sliderimg" src="../../assets/img/{{item.img}}">   
         <p class="sliderp" [innerHTML]="item.description"></p>     
       </div>
-    </ion-slide> 
-  </ion-slides>
+    </ion-slide>
+  </ion-slides> -->
+
 </ion-content>
 
 <ion-footer>

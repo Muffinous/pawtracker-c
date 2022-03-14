@@ -29,9 +29,12 @@ export class SignupComponent implements OnInit {
       { type: 'required', message: 'Name is required.' },
       { type: 'pattern',  message: 'Just use alphabet character' },
       { type: 'minlength', message: 'Name must be at least 6 characters long.' },
-      { type: 'maxlength', message: 'Name Username cannot be more than 30 characters long.' }    ],
+      { type: 'maxlength', message: 'Name cannot be more than 30 characters long.' }    
+    ],
     'surname': [
-      { type: 'required', message: 'Surname is required.' }
+      { type: 'required', message: 'Surname is required.' },
+      { type: 'minlength', message: 'Surname must be at least 6 characters long.' },
+      { type: 'maxlength', message: 'Surname cannot be more than 30 characters long.' }
     ],
     'username': [
       { type: 'required', message: 'Username is required.' },
@@ -128,6 +131,8 @@ export class SignupComponent implements OnInit {
 
   signUp() {
     if (!this.ionicForm.valid) {
+      console.log(this.ionicForm)
+      console.log(this.ionicForm.value)
       console.log('Please provide all the required values!')
       return false;
     } else {
