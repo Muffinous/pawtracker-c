@@ -9,6 +9,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Event } from 'src/app/models/event';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { User } from 'src/app/models/user';
+import { UserService } from 'src/app/services/auth/user/user.service';
 
 declare var google;
 
@@ -42,14 +43,14 @@ export class IndexPage implements OnInit {
   // calendar shit
   public modalController: ModalController
 
-  constructor(public db: AngularFirestore, private alertCtrl: AlertController, private modalCtrl: ModalController, 
+  constructor(private userService: UserService , public db: AngularFirestore, private alertCtrl: AlertController, private modalCtrl: ModalController, 
     @Inject(LOCALE_ID) private locale: string, private dataService: DataService, private authService: AuthService, ) {
 
   }
 
   ngOnInit() {    
     //this.calModal.getUserEvents()
-    this.getUserEvents(this.user.username)
+    this.getUserEvents(this.userService.user.username)
     registerLocaleData(locale);
     //this.loadMap();
   }
@@ -132,27 +133,24 @@ export class IndexPage implements OnInit {
     });
   }
 
-  getUserEvents(username) {
-    this.db.collection(`/users/${username}/events/`).get().forEach(snapshot => { // get all events 4 that user
+  async getUserEvents(username: string) {
+
+    await this.db.collection(`/users/${username}/events/`).get()
+    .forEach(snapshot => { // get all events 4 that user
       const evs = [];
       snapshot.forEach(doc => {
-          let ev
-          ev = doc.data()
-          //this.dataService.addEvent(ev)
+          const ev = doc.data()        
+          console.log('each event', ev)
           evs.push(ev)
+          this.dataService.addEvent(ev)
       })
+      console.log('ARRAY EVENTS', evs)
     }).catch((error) => {
       console.log('Error getting users events', error)
       return error
     });    
-       this.eventSource = this.dataService.getAllEvents(); // ARRAY
-      //  console.log('eventsource', this.eventSource)
-      // let events = this.eventSource;
-      // this.eventSource = [];
-      // setTimeout(() => {
-      //   this.eventSource = events;
-      // }); 
-      // this.myCal.update()
-      // this.myCal.loadEvents()
+    
+    this.eventSource = this.dataService.getAllEvents(); // ARRAY
+    console.log('eventsource', this.eventSource)
   }
 }

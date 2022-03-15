@@ -20,7 +20,7 @@ export class DataService {
   }
 
   
-  addEvent(event: Event){
+  addEvent(event){
     this.events.push(event);
     console.log('new event added array', this.events)
   }

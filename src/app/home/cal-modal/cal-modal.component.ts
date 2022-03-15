@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { Event } from 'src/app/models/event';
 import { User } from 'src/app/models/user';
 import { DataService } from '../../services/data.service';
+import { UserService } from 'src/app/services/auth/user/user.service';
 
 @Component({
   selector: 'app-cal-modal',
@@ -22,11 +23,11 @@ export class CalModalComponent implements OnInit {
   'July', 'August', 'September', 'October', 'November', 'December' ];
   modalReady = false;
 
-  constructor(public db: AngularFirestore, private modalCtrl: ModalController, public navCtrl: NavController, private dataService: DataService, private authService: AuthService) { 
+  constructor(private userService: UserService, public db: AngularFirestore, private modalCtrl: ModalController, public navCtrl: NavController, private dataService: DataService, private authService: AuthService) { 
   }
  
   ngOnInit() {
-    //this.getAllEvents()
+    // this.getUserEvents(this.userService.user.username)
     this.setDate(this.dataService.getSelectedDate());
     this.getBuddiesImages();
   }
@@ -85,17 +86,5 @@ export class CalModalComponent implements OnInit {
     this.modalCtrl.dismiss();
   }
 
-  // getUserEvents() {
-  //   this.user.username = this.authService.getCurrentUsername()
-  //   console.log('calmodal getuserev', this.user.username)
-  //   this.db.collection(`/users/${this.user.username}/events/`).get().forEach(snapshot => { // get all events 4 that user
-  //     const evs = [];
-  //     console.log('first', snapshot)
-  //     snapshot.forEach(doc => {
-  //         const ev = { [doc.id]: doc.data()}
-  //         evs.push(ev)
-  //     })
-  //     console.log(evs)
-  //   })
-  // }
 }
+
