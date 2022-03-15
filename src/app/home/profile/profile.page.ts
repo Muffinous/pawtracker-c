@@ -21,7 +21,8 @@ export class ProfilePage implements OnInit {
   length = 0;
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
 
-  constructor(private animalService: AnimalService, private toastController: ToastController) {
+  // userService is used in the html DO NOT TOUCH
+  constructor(private router: Router, private userService: UserService, private animalService: AnimalService, private toastController: ToastController) {
        this.animals = this.animalService.userAnimals
        this.showedAnimals=this.animals.slice(0,1)     // add the first animal   
   }
