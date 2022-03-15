@@ -28,7 +28,7 @@ export class IonLoaderService {
     autoLoader() {
       this.loadingController.create({
         message: 'Loader hides after 4 seconds',
-        duration: 4000
+        duration: 500
       }).then((response) => {
         response.present();
         response.onDidDismiss().then((response) => {

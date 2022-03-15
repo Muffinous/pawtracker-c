@@ -3,7 +3,7 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonInput } from '@ionic/angular';
-import { AnimalService } from 'src/app/models/animal.service';
+import { AnimalService } from 'src/app/services/animal/animal.service';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
@@ -112,14 +112,13 @@ export class SignupAnimalPage implements OnInit {
       console.log('Please provide all the required values!')
       return false;
     } else {
-      
       let userAnimals = this.ionicForm.value.attributes.length
       console.log(userAnimals)
       for (let i=0; i<userAnimals; i++) {
         const userBuddiesRef: AngularFirestoreDocument<any> = this.afs.doc(
           `users/${this.user.username}/buddies/${this.ionicForm.value.attributes[i].buddyName}`
           );      
-          userBuddiesRef.set(this.ionicForm.value.attributes[0], {
+          userBuddiesRef.set(this.ionicForm.value.attributes[i], {
           merge: true,
       });
       }

@@ -15,9 +15,15 @@
           </h6>
         </div>
 
-        <ion-button expand="full" color="primary">http://rogerfederer.com</ion-button>
-        <ion-button expand="full" color="secondary">@RogerFederer on Twitter</ion-button>
-        <ion-button expand="full" color="secondary">View profile at ATP</ion-button>
+        <ion-card class="welcome-card" *ngFor="let animal of showedAnimals">
+          <h1>{{animal.buddyName}}</h1>
+          <img src='../../../assets/img/slide-1.jpg'>
+        </ion-card>
+
+        <ion-infinite-scroll threshold="100px" id="infinite-scroll"(ionInfinite)="loadData()">
+          <ion-infinite-scroll-content loading-spinner="bubbles" loading-text="Loading more buddies...">            
+          </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
       </div>
     </div>
 </ion-content>

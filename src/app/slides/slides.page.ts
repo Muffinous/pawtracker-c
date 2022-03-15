@@ -1,5 +1,7 @@
-import { Component, OnInit, ViewEncapsulation} from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import SwiperCore, { Autoplay } from 'swiper';
+import { IonInfiniteScroll, IonList } from '@ionic/angular';
+import { UserService } from '../services/auth/user/user.service';
 
 SwiperCore.use([Autoplay]);
 
@@ -30,21 +32,13 @@ export class SlidesPage implements OnInit {
     }
   ]
 
-  slideOptions = {
-    initialSlide: 0,
-    speed: 400,
-  };
-
-  constructor() {}
+  constructor(private userService: UserService) {}
 
   ngOnInit() {
   }
 
+
   onSlideChange() {
-
   }
 
-  afterslidesLoad(slides) {
-    slides.startAutoplay();
-  }
 }

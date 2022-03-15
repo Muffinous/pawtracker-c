@@ -10,6 +10,7 @@ import { User } from '../../models/user';
 import { getAuth, updateProfile } from 'firebase/auth';
 import { IonLoaderService } from '../ion-loader.service';
 import { UserService } from './user/user.service';
+import { AnimalService } from '../animal/animal.service';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +24,8 @@ export class AuthService {
     public router: Router,
     public ngZone: NgZone, // NgZone service to remove outside scope warning
     public ionLoader: IonLoaderService,
-    private userService: UserService
+    private userService: UserService,
+    private animalService: AnimalService
   ) {
     /* Saving user data in localstorage when 
     logged in and setting up null when logged out */
@@ -50,6 +52,7 @@ export class AuthService {
           user.emailVerified = result.user.emailVerified
           user.uid = result.user.uid
           this.addUserService(user) // save the user's info 
+          this.loadUserAnimals(user.username)
           this.router.navigate(['home/' + user.username]);
         });
       //  this.SetUserData(result.user);
@@ -231,6 +234,10 @@ export class AuthService {
     this.userService.user.username = user.username
     this.userService.user.nAnimals = user.nAnimals
 
+  }
+
+  loadUserAnimals(username: string) {
+    this.animalService.loadUserBuddies(username)
   }
 
   async openLoader() {

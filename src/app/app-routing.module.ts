@@ -22,6 +22,10 @@ const routes: Routes = [
     path: 'signup-animal',
     loadChildren: () => import('./signup/signup-animal/signup-animal.module').then( m => m.SignupAnimalPageModule)
   },
+  {
+    path: 'profile',
+    loadChildren: () => import('./home/profile/profile.module').then( m => m.ProfilePageModule)
+  },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
