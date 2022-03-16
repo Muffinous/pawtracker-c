@@ -2,10 +2,10 @@ export interface Event {
     id: number,
     title: string,
     description: string,
-    day: Number,
+    day: number,
     month: string,
-    year: Number,
-    startTime: Date,
-    endTime: Date,
+    year: number,
+    startTime: string,
+    endTime: string,
     allDay: boolean
 }

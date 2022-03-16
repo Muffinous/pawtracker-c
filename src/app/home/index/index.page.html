@@ -1,5 +1,5 @@
 <ion-content class="ion-padding">
-  <ion-card>
+  <!-- <ion-card>
     <ion-card-header>
       <ion-card-title>
         <ion-icon name="navigate"></ion-icon>
@@ -10,7 +10,7 @@
     <ion-card-content class="transparent-card">
       <div id="map" style="height: 150px;"></div>
     </ion-card-content>
-  </ion-card>
+  </ion-card> -->
 
   <ion-card>
     <ion-card-header>
@@ -18,10 +18,36 @@
         <ion-icon name="navigate"></ion-icon>
         Appointments
       </ion-card-title>              
-      <ion-card-subtitle>blah blah blah</ion-card-subtitle>
+      <!-- <ion-card-subtitle>blah blah blah</ion-card-subtitle> -->
+
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button color="Dark" (click)="today()">Today</ion-button>
+          <ion-button color="Dark" (click)="changeMode('month')">Month</ion-button>
+          <ion-button color="Dark" (click)="changeMode('week')">Week</ion-button>
+          <ion-button color="Dark" (click)="changeMode('day')">Day</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
     </ion-card-header>
+    <ion-row>
+      <ion-col size="2">
+        <ion-button fill="clear" (click)="prevMonth()">
+          <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col size="8" class="ion-text-center">
+        <h2>{{currentMonth}}</h2>
+      </ion-col>
+      <ion-col size="2">
+        <ion-button fill="clear" (click)="nextMonth()">
+          <ion-icon name="arrow-forward" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
     <ion-card-content class="transparent-card">
       <calendar
+              [calendarMode]="calendar.mode"
               [eventSource]="eventSource"
               [currentDate]="calendar.currentDate"
               (onCurrentDateChanged)="onCurrentDateChanged($event)"

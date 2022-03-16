@@ -35,12 +35,12 @@
 
     <ion-item [disabled]="event.allDay">
       <ion-label>Start Time</ion-label>
-      <ion-datetime display-format="HH:mm A" picker-format="HH:mm A" [(ngModel)]="event.startTime" (onchange)="onTimeSelected($value)"></ion-datetime>
+      <ion-datetime display-format="DD/MM/YYYY HH:mm" picker-format="MMM DHH:mm" [(ngModel)]="event.startTime" [min]="minDate" (ionChange)="startTimeSelected($value)"></ion-datetime>
     </ion-item>
 
     <ion-item [disabled]="event.allDay">
       <ion-label>End Time</ion-label>
-      <ion-datetime display-format="HH:mm A" picker-format="HH:mm A" [(ngModel)]="event.endTime" (onchange)="onTimeSelected($value)"></ion-datetime>
+      <ion-datetime display-format="DD/MM/YYYY HH:mm" picker-format="MMM DHH:mm" [(ngModel)]="event.endTime" [min]="minDate" (ionChange)="endTimeSelected($value)"></ion-datetime>
     </ion-item>
     <br>
     <ion-item-divider></ion-item-divider>

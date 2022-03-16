@@ -24,6 +24,10 @@ export class CalModalComponent implements OnInit {
   modalReady = false;
 
   constructor(private userService: UserService, public db: AngularFirestore, private modalCtrl: ModalController, public navCtrl: NavController, private dataService: DataService, private authService: AuthService) { 
+    console.log(this.dataService.selectedDate)
+    this.event.startTime = this.dataService.selectedDate.toISOString()
+    this.event.endTime = this.dataService.selectedDate.toISOString()
+    console.log('constr', this.event.startTime)
   }
  
   ngOnInit() {
@@ -40,7 +44,7 @@ export class CalModalComponent implements OnInit {
  
   setDate(seldate: Date) {
     this.event.day = seldate.getDate();
-    this.event.month = this.monthNames[seldate.getMonth()];
+    this.event.month = this.monthNames[seldate.getMonth()]; // get the name -> this.monthNames[seldate.getMonth()];
     this.event.year = seldate.getFullYear();
   }
 
@@ -55,17 +59,7 @@ export class CalModalComponent implements OnInit {
 
   async save() {    
     this.modalCtrl.dismiss({event: this.event})
-    console.log('save in calmodal', this.event)
-    this.user.username = this.authService.getCurrentUsername()
-    this.db.doc(`/users/${this.user.username}`).ref.get().then(snapshot => {
-      if (snapshot.exists) {
-        this.db.doc(`/users/${this.user.username}/events/${this.event.title}`).set(this.event).then(res => {
-          console.log('uploaded')      
-        }).catch(err => {
-            console.log(err);
-          });
-      }
-    })
+    console.log('event to save', this.event)
   }
  
   onViewTitleChanged(title) {
@@ -77,9 +71,22 @@ export class CalModalComponent implements OnInit {
     this.event.allDay = !this.event.allDay
   }
 
-  onTimeSelected(ev) {
-    console.log('Selected time COMPONENT: ' + ev.selectedTime + ', hasEvents: ' +
-      (ev.events !== undefined && ev.events.length !== 0) + ', disabled: ' + ev.disabled);
+  startTimeSelected(ev) {
+    console.log('Selected time', this.event.startTime)
+    // let time = new Date(this.event.startTime)
+    // time.setDate(this.event.day)
+    // // time.setMonth(this.event.month)
+    // // time.setFullYear(this.event.year, this.event.month, this.event.day)
+    // console.log('time', time)
+  }
+
+  endTimeSelected(ev) {
+    // console.log('Selected time', this.event.endTime.setDate(7))
+    // let time = new Date(this.event.endTime)
+    // time.setDate(this.event.day)
+    // // time.setMonth(this.event.month)
+    // // time.setFullYear(this.event.year, this.event.month, this.event.day)
+    // console.log('time', time)
   }
 
   close() {

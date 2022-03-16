@@ -31,26 +31,39 @@ export class IndexPage implements OnInit {
   user = {} as User
 
   dateRange: { from: string; to: string; }
-  type: 'string'
+
   calendar = {
     mode: 'month',
     currentDate: new Date()
   }
   selectedDate = new Date();
+  currentMonth: string
 
   @ViewChild(CalendarComponent) myCal: CalendarComponent;
- // @ViewChild(CalModalComponent) calModal: CalModalComponent;
-  // calendar shit
   public modalController: ModalController
 
   constructor(private userService: UserService , public db: AngularFirestore, private alertCtrl: AlertController, private modalCtrl: ModalController, 
     @Inject(LOCALE_ID) private locale: string, private dataService: DataService, private authService: AuthService, ) {
 
+      this.db.collection(`/users/testuser/events/`).get().subscribe(snapshot => { // load all events from user DB
+        snapshot.forEach(snap => {
+          let event:any = snap.data()         
+          // console.log('constructor event ', event)
+          event.id = snap.id
+          event.startTime = event.startTime.toDate()
+          event.endTime = event.endTime.toDate()
+          this.dataService.addEvent(event)
+        })
+        this.eventSource = this.dataService.getAllEvents(); // loadd events in calendar
+        let events = this.eventSource;
+        this.eventSource = [];
+        setTimeout(() => {
+          this.eventSource = events;
+        });  
+      })
   }
 
   ngOnInit() {    
-    //this.calModal.getUserEvents()
-    this.getUserEvents(this.userService.user.username)
     registerLocaleData(locale);
     //this.loadMap();
   }
@@ -70,8 +83,8 @@ export class IndexPage implements OnInit {
 
   // calendar events
 
-  onViewTitleChanged(title) {
-    // console.log(title);
+  onViewTitleChanged(title) { // changes the month title
+    this.currentMonth = title
   }
 
   onEventSelected(event) {
@@ -79,6 +92,7 @@ export class IndexPage implements OnInit {
   }
 
   onTimeSelected(ev) {
+    console.log('selected', ev)
     this.selectedDate = ev.selectedTime;
     // console.log('Selected time INDEX : ' + ev.selectedTime + ', hasEvents: ' +
     //   (ev.events !== undefined && ev.events.length !== 0) + ', disabled: ' + ev.disabled);
@@ -104,21 +118,26 @@ export class IndexPage implements OnInit {
     await modal.present();
    
     modal.onDidDismiss().then((result) => {
-      if (result.data && result.data.event) {
-        let eventData = result.data.event;
-        console.log('EVENTDATA', eventData)
+      if (result.data.event) {
+        let eventData = result.data.event;    
+        console.log('event', eventData)
+
         if (eventData.allDay) { // manage if event is allday or not
-          eventData.startTime = new Date(this.selectedDate);
+          eventData.startTime = new Date(this.selectedDate)
           eventData.endTime = new Date(this.selectedDate)
         } else {
-          eventData.startTime = new Date(result.data.event.startTime);
-          eventData.endTime = new Date(result.data.event.endTime)          
+          eventData.startTime = new Date(eventData.startTime)
+          eventData.endTime = new Date(eventData.endTime)    
         }
-
         console.log('event', eventData)
+
+        this.saveEventDB(eventData)
+
         this.dataService.addEvent(eventData) // makes the push to array
         this.eventSource = this.dataService.getAllEvents(); // ARRAY
+
         console.log('EVENTSOURCE', this.eventSource)
+
         let events = this.eventSource;
         this.eventSource = [];
         setTimeout(() => {
@@ -133,24 +152,45 @@ export class IndexPage implements OnInit {
     });
   }
 
-  async getUserEvents(username: string) {
-
-    await this.db.collection(`/users/${username}/events/`).get()
-    .forEach(snapshot => { // get all events 4 that user
-      const evs = [];
-      snapshot.forEach(doc => {
-          const ev = doc.data()        
-          console.log('each event', ev)
-          evs.push(ev)
-          this.dataService.addEvent(ev)
-      })
-      console.log('ARRAY EVENTS', evs)
+  saveEventDB(event) { // save the event in the database
+    this.db.doc(`/users/${this.userService.user.username}`).ref.get().then(snapshot => {
+      if (snapshot.exists) {
+        this.db.doc(`/users/${this.userService.user.username}/events/${event.title}`).set(event).then(res => {
+        }).catch(err => {
+            console.log(err);
+          });
+      }
     }).catch((error) => {
-      console.log('Error getting users events', error)
-      return error
-    });    
-    
-    this.eventSource = this.dataService.getAllEvents(); // ARRAY
-    console.log('eventsource', this.eventSource)
+      this.presentAlert(error)
+    })
   }
-}
+
+  prevMonth() {
+    this.myCal.slidePrev()
+  }
+
+  nextMonth() {
+    this.myCal.slideNext()
+  }
+
+  today() { // set today date day calendar
+    this.calendar.currentDate = new Date()
+  }
+
+  changeMode(mode){
+    console.log('mode', mode)
+    this.calendar.mode = mode
+  }
+
+  async presentAlert(message: string) {
+      const alert = document.createElement('ion-alert');
+      alert.cssClass = 'my-custom-class';
+      alert.header = 'Error';
+      // alert.subHeader = 'Subtitle';
+      alert.message = message;
+      alert.buttons = ['OK'];
+    
+      document.body.appendChild(alert);
+      await alert.present();
+    }
+  }
