@@ -10,6 +10,7 @@ import { Event } from 'src/app/models/event';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/auth/user/user.service';
+import { EventDetailsPage } from '../event-details/event-details.page';
 
 declare var google;
 
@@ -38,9 +39,9 @@ export class IndexPage implements OnInit {
   }
   selectedDate = new Date();
   currentMonth: string
+  newEvent
 
   @ViewChild(CalendarComponent) myCal: CalendarComponent;
-  public modalController: ModalController
 
   constructor(private userService: UserService , public db: AngularFirestore, private alertCtrl: AlertController, private modalCtrl: ModalController, 
     @Inject(LOCALE_ID) private locale: string, private dataService: DataService, private authService: AuthService, ) {
@@ -87,8 +88,14 @@ export class IndexPage implements OnInit {
     this.currentMonth = title
   }
 
-  onEventSelected(event) {
-    // console.log('Event selected INDEX :' + event.startTime + '-' + event.endTime + ',' + event.title); 
+  async onEventSelected(ev) {
+    this.newEvent = ev
+    console.log('event', ev)
+    const modal = await this.modalCtrl.create({
+      component: EventDetailsPage,
+      componentProps: ev
+    })
+    return await modal.present()
   }
 
   onTimeSelected(ev) {
@@ -129,14 +136,10 @@ export class IndexPage implements OnInit {
           eventData.startTime = new Date(eventData.startTime)
           eventData.endTime = new Date(eventData.endTime)    
         }
-        console.log('event', eventData)
-
-        this.saveEventDB(eventData)
+        this.saveEventDB(eventData) // save new event to firebase db
 
         this.dataService.addEvent(eventData) // makes the push to array
-        this.eventSource = this.dataService.getAllEvents(); // ARRAY
-
-        console.log('EVENTSOURCE', this.eventSource)
+        this.eventSource = this.dataService.getAllEvents(); // return array with all of the events
 
         let events = this.eventSource;
         this.eventSource = [];

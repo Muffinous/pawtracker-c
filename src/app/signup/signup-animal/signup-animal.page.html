@@ -46,7 +46,7 @@
                           <div linespace></div>
                           <ion-item>
                             <ion-icon name="heart-half"></ion-icon>
-                            <ion-select formControlName="buddyGender" name="buddyGender" placeholder="Gender" interface="action-sheet">
+                            <ion-select formControlName="buddyGender" name="buddyGender" placeholder="Gender" interface="action-sheet" required>
                               <ion-select-option value="F">Female</ion-select-option>
                               <ion-select-option value="M">Male</ion-select-option>
                             </ion-select>
@@ -62,7 +62,7 @@
                           <div linespace></div>
                           <ion-item>
                             <ion-icon name="list"></ion-icon>
-                            <ion-select formControlName="buddyBreed" name="buddyBreed" placeholder="Breed/Breeds"  multiple="true"> <!-- interface="action-sheet" -->
+                            <ion-select formControlName="buddyBreed" name="buddyBreed" placeholder="Breed/Breeds"  multiple="true" required> <!-- interface="action-sheet" -->
                               <ion-select-option *ngFor="let breed of breeds" [value]="breed">{{breed}}</ion-select-option>
                             </ion-select>
                           </ion-item>
@@ -91,7 +91,7 @@
                           <ion-item [hidden]="buddyBday">
                             <ion-icon name="gift"></ion-icon>
                             <ion-label>Buddy Birthday</ion-label>
-                            <ion-datetime formControlName="buddyBday" name="buddyBday" (ionChange)="change($event.target.value)" displayFormat="MMM-DD-YYYY" pickerFormat="MMM DD YYYY"></ion-datetime>
+                            <ion-datetime formControlName="buddyBday" name="buddyBday" (ionChange)="change($event.target.value)" displayFormat="MMM-DD-YYYY" pickerFormat="MMM DD YYYY" required></ion-datetime>
                           </ion-item>
                           <!-- ERROR MESSAGES BDAY -->
                           <!-- <div class="validation-errors">
@@ -101,6 +101,12 @@
                               </div>
                             </ng-container>
                           </div> -->
+                          <div linespace></div>
+                          <ion-item [hidden]="buddyPic">
+                            <ion-icon name="camera"></ion-icon>
+                            <!-- <ion-label>Upload Image</ion-label> -->
+                            <ion-input formControlName="buddyPic" type="file" name="buddyPic" (change)="uploadFile($event)" accept="image/png, image/jpeg" required ></ion-input>
+                          </ion-item>
                           <div linespace></div>
                           <ion-row style="height: 20px"></ion-row>
                         </ion-item-group>

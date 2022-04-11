@@ -34,7 +34,15 @@ const routes: Routes = [
     redirectTo: 'index',
     pathMatch: 'full'
   },     
-  { path: 'settingsnew', component: SettingsComponent },
+  { path: 'settingsnew', component: SettingsComponent },  {
+    path: 'event-details',
+    loadChildren: () => import('./event-details/event-details.module').then( m => m.EventDetailsPageModule)
+  },
+  {
+    path: 'buddy',
+    loadChildren: () => import('./buddy/buddy.module').then( m => m.BuddyPageModule)
+  },
+
 
   // {
   //   path: 'settings',

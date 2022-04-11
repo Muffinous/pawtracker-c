@@ -71,24 +71,6 @@ export class CalModalComponent implements OnInit {
     this.event.allDay = !this.event.allDay
   }
 
-  startTimeSelected(ev) {
-    console.log('Selected time', this.event.startTime)
-    // let time = new Date(this.event.startTime)
-    // time.setDate(this.event.day)
-    // // time.setMonth(this.event.month)
-    // // time.setFullYear(this.event.year, this.event.month, this.event.day)
-    // console.log('time', time)
-  }
-
-  endTimeSelected(ev) {
-    // console.log('Selected time', this.event.endTime.setDate(7))
-    // let time = new Date(this.event.endTime)
-    // time.setDate(this.event.day)
-    // // time.setMonth(this.event.month)
-    // // time.setFullYear(this.event.year, this.event.month, this.event.day)
-    // console.log('time', time)
-  }
-
   close() {
     this.modalCtrl.dismiss();
   }

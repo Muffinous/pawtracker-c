@@ -41,7 +41,6 @@ export class SignupAnimalPage implements OnInit {
   ]
   user = {} as User
   pass: string
-  buddy = []
 
   validation_messages = {
     'buddyName': [
@@ -87,6 +86,7 @@ export class SignupAnimalPage implements OnInit {
       buddyAge: ['', [Validators.required]],
       buddyBreed: ['', [Validators.required]],
       buddyBday: ['', [Validators.required]],   
+      buddyPic: ['', [Validators.required]]
     })
   }
 
@@ -133,4 +133,23 @@ export class SignupAnimalPage implements OnInit {
       this.authService.SignIn(this.user, this.pass)
     }
   }
+
+  uploadFile(event) {
+
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.readAsArrayBuffer(file);
+
+    reader.onload = () => {
+      // get the blob of the image:
+      let blob: Blob = new Blob([new Uint8Array((reader.result as ArrayBuffer))]);
+      console.log('blob', blob)
+      // create blobURL, such that we could use it in an image element:
+      let blobURL: string = URL.createObjectURL(blob);
+    };
+  
+    reader.onerror = (error) => { 
+      //handle errors
+    };
+  };
 }

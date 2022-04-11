@@ -15,7 +15,7 @@
           </h6>
         </div>
 
-        <ion-card class="welcome-card" *ngFor="let animal of showedAnimals">
+        <ion-card class="welcome-card" *ngFor="let animal of showedAnimals" (click)="onAnimalSelected(animal)">
           <h1>{{animal.buddyName}}</h1>
           <img src='../../../assets/img/slide-1.jpg'>
         </ion-card>
