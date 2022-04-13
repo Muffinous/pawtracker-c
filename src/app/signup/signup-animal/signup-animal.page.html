@@ -105,7 +105,7 @@
                           <ion-item [hidden]="buddyPic">
                             <ion-icon name="camera"></ion-icon>
                             <!-- <ion-label>Upload Image</ion-label> -->
-                            <ion-input formControlName="buddyPic" type="file" name="buddyPic" (change)="uploadFile($event)" accept="image/png, image/jpeg" required ></ion-input>
+                            <ion-input formControlName="buddyPic" type="file" name="buddyPic" (change)="onFileSelected($event)" accept="image/png, image/jpeg" required ></ion-input>
                           </ion-item>
                           <div linespace></div>
                           <ion-row style="height: 20px"></ion-row>

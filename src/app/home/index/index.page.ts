@@ -38,6 +38,7 @@ export class IndexPage implements OnInit {
     currentDate: new Date()
   }
   selectedDate = new Date();
+  currentDate: string
   currentMonth: string
   newEvent
 
@@ -98,9 +99,9 @@ export class IndexPage implements OnInit {
     return await modal.present()
   }
 
-  onTimeSelected(ev) {
-    console.log('selected', ev)
+  onTimeSelected(ev) {    
     this.selectedDate = ev.selectedTime;
+    this.currentDate = this.selectedDate.toDateString()
     // console.log('Selected time INDEX : ' + ev.selectedTime + ', hasEvents: ' +
     //   (ev.events !== undefined && ev.events.length !== 0) + ', disabled: ' + ev.disabled);
   }
@@ -195,5 +196,9 @@ export class IndexPage implements OnInit {
     
       document.body.appendChild(alert);
       await alert.present();
-    }
+  }
+
+  monthString(month) {
+    // months = ['January', 'February', '']
+  }
   }

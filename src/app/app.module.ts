@@ -24,6 +24,8 @@ import { LoginComponent } from './login/login.component';
 import { CalModalComponent } from './home/cal-modal/cal-modal.component';
 import { SettingsComponent } from './settings/settings.component';
 import { SwiperModule } from 'swiper/angular';
+import { Camera } from '@ionic-native/Camera/ngx';
+import { File } from '@ionic-native/file/ngx';
 
 @NgModule({
   declarations: [AppComponent, SignupComponent, LoginComponent, CalModalComponent, SettingsComponent],
@@ -37,10 +39,10 @@ import { SwiperModule } from 'swiper/angular';
     AngularFireStorageModule,
     AngularFireDatabaseModule,
     AngularFirestoreModule.enablePersistence(),
-    SwiperModule
+    SwiperModule,
   ],
     
-  providers: [AuthService, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [AuthService, Camera, File, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

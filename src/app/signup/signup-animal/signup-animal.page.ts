@@ -6,6 +6,10 @@ import { IonInput } from '@ionic/angular';
 import { AnimalService } from 'src/app/services/animal/animal.service';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { Camera, CameraResultType } from '@capacitor/camera';
+import { AngularFireStorage } from "@angular/fire/compat/storage";
+import { map, finalize } from "rxjs/operators";
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-signup-animal',
@@ -41,6 +45,7 @@ export class SignupAnimalPage implements OnInit {
   ]
   user = {} as User
   pass: string
+  downloadURL: Observable<string>;
 
   validation_messages = {
     'buddyName': [
@@ -59,8 +64,9 @@ export class SignupAnimalPage implements OnInit {
       { type: 'required', message: 'Birthday is required.' }
     ]
   }
+  fb: string;
 
-  constructor(public afs: AngularFirestore, private router:Router, private formBuilder: FormBuilder,  private authService: AuthService) {
+  constructor(public afs: AngularFirestore, private router:Router, private formBuilder: FormBuilder,  private authService: AuthService, private storage: AngularFireStorage) {
     if (router.getCurrentNavigation().extras.state) {
       this.user.name = this.router.getCurrentNavigation().extras.state.name;
       this.user.surname = this.router.getCurrentNavigation().extras.state.surname;
@@ -134,22 +140,42 @@ export class SignupAnimalPage implements OnInit {
     }
   }
 
-  uploadFile(event) {
+  async takePicture() {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: true,
+      resultType: CameraResultType.Uri
+    });
+  }
 
+
+  onFileSelected(event) {
+    console.log('event', event)
+    console.log('images', this.ionicForm.value.attributes[0].buddyPic)
+    var n = Date.now();
     const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.readAsArrayBuffer(file);
+    const filePath = `BuddyImages/${this.user.username}/${n}`;
+    const fileRef = this.storage.ref(filePath);
+    const task = this.storage.upload(`BuddyImages/${this.user.username}/${n}`, file);
+    task
+      .snapshotChanges()
+      .pipe(
+        finalize(() => {
+          this.downloadURL = fileRef.getDownloadURL();
+          this.downloadURL.subscribe(url => {
+            if (url) {
+              this.fb = url;
+            }
+            // console.log('url', this.downloadURL)
+            // this.ionicForm.value.attributes[0].buddyPic = this.downloadURL
+          });
+        })
+      )
+      .subscribe(url => {
+        if (url) {
+          console.log(url);
+        }
+      });
+  }
 
-    reader.onload = () => {
-      // get the blob of the image:
-      let blob: Blob = new Blob([new Uint8Array((reader.result as ArrayBuffer))]);
-      console.log('blob', blob)
-      // create blobURL, such that we could use it in an image element:
-      let blobURL: string = URL.createObjectURL(blob);
-    };
-  
-    reader.onerror = (error) => { 
-      //handle errors
-    };
-  };
 }

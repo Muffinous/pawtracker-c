@@ -2,9 +2,20 @@
     <div class="card">
       <div class="header">
         <div class="avatar">
-          <img src="../../../assets/icon/caticon.png" alt="">
-        </div>
+          <img src="../../../assets/icon/caticon.png" alt="" (click)="presentActionSheet()">
       </div>
+      </div>
+      <!-- <ion-input type="file" name="buddyPic" (change)="this.cameraService.onFileSelected($event, 'Profile', this.user.username)" accept="image/png, image/jpeg" required ></ion-input> -->
+
+      <!-- OPTIONS 4 AVATAR -->
+        <!-- <div class="avatar">
+            <ion-select value="imageOptions" interface="action-sheet">
+              <img value="imageOptions" src="../../../assets/icon/caticon.png" alt="" >
+              <ion-select-option value="selectPhoto">Select Photo</ion-select-option>
+              <ion-select-option value="takePhoto">Take Photo</ion-select-option>
+            </ion-select>          
+        </div> -->
+
       <div class="card-body">
         <div class="user-meta ion-text-center">
           <h3 class="playername">{{this.userService.user.name}} {{this.userService.user.surname}}</h3>
