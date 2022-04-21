@@ -60,7 +60,6 @@ export class SignupComponent implements OnInit {
     this.ionicForm = fb.group({
       name: ['', Validators.compose([
           //UsernameValidator.validUsername,
-          Validators.minLength(6),
           Validators.maxLength(30),
           Validators.pattern('[a-zA-Z ]*'),
           Validators.required
@@ -68,7 +67,6 @@ export class SignupComponent implements OnInit {
       surname: ['', Validators.compose([
           Validators.required, 
           Validators.pattern('[a-zA-Z ]*'), 
-          Validators.minLength(6),
           Validators.maxLength(30)
       ])],    
       username: ['', Validators.compose([

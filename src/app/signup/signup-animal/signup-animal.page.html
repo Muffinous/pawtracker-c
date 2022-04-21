@@ -61,6 +61,22 @@
                           </div> -->
                           <div linespace></div>
                           <ion-item>
+                            <ion-icon name="information-circle-outline"></ion-icon>
+                            <ion-select #buddyType id="buddyType" (ionChange)="changeBreed(buddyType.value)" formControlName="buddyType" name="buddyType" placeholder="Type of animal" interface="action-sheet" required>
+                              <ion-select-option value="Dog">Dog</ion-select-option>
+                              <ion-select-option value="Cat">Cat</ion-select-option>
+                              <ion-select-option value="Pig">Pig</ion-select-option>
+                              <ion-select-option value="Bird">Bird</ion-select-option>
+                              <ion-select-option value="Fish">Fish</ion-select-option>
+                              <ion-select-option value="Hamster">Hamster</ion-select-option>
+                              <ion-select-option value="Mice">Mice</ion-select-option>
+                              <ion-select-option value="Rabbit">Rabbit</ion-select-option>
+                              <ion-select-option value="Turtle">Turtle</ion-select-option>
+                            </ion-select>
+                          </ion-item>
+
+                          <div linespace></div>
+                          <ion-item *ngIf="hasBreed">
                             <ion-icon name="list"></ion-icon>
                             <ion-select formControlName="buddyBreed" name="buddyBreed" placeholder="Breed/Breeds"  multiple="true" required> <!-- interface="action-sheet" -->
                               <ion-select-option *ngFor="let breed of breeds" [value]="breed">{{breed}}</ion-select-option>
@@ -102,10 +118,13 @@
                             </ng-container>
                           </div> -->
                           <div linespace></div>
+                          <div style="text-align:center;">
+                            <img src="{{imageUrl[i]}}" width="100"/>
+                          </div>
                           <ion-item [hidden]="buddyPic">
                             <ion-icon name="camera"></ion-icon>
                             <!-- <ion-label>Upload Image</ion-label> -->
-                            <ion-input formControlName="buddyPic" type="file" name="buddyPic" (change)="onFileSelected($event)" accept="image/png, image/jpeg" required ></ion-input>
+                            <ion-input formControlName="buddyPic" type="file" name="buddyPic" (change)="onFileSelected($event, i)" accept="image/png, image/jpeg" required ></ion-input>
                           </ion-item>
                           <div linespace></div>
                           <ion-row style="height: 20px"></ion-row>
