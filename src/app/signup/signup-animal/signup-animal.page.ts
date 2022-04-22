@@ -588,7 +588,8 @@ export class SignupAnimalPage implements OnInit {
 
   constructor(public afs: AngularFirestore, private router:Router, private formBuilder: FormBuilder,  private authService: AuthService, private storage: AngularFireStorage) {
     if (router.getCurrentNavigation().extras.state) {
-      this.user.name = this.router.getCurrentNavigation().extras.state.name;
+      this.user.name = 'test'
+      // this.user.name = this.router.getCurrentNavigation().extras.state.name;
       this.user.surname = this.router.getCurrentNavigation().extras.state.surname;
       this.user.username = this.router.getCurrentNavigation().extras.state.username;
       this.user.email = this.router.getCurrentNavigation().extras.state.email;
@@ -602,7 +603,7 @@ export class SignupAnimalPage implements OnInit {
       personName: ['', [Validators.required, Validators.minLength(2)]],   
       attributes: this.formBuilder.array([ this.initAttributesFields()]) 
     })
-    this.ionicForm.get('personName').setValue(this.user.name)
+    this.ionicForm.get('personName').setValue('test')
   }
 
   initAttributesFields() : FormGroup {
@@ -640,7 +641,7 @@ export class SignupAnimalPage implements OnInit {
 
     for (let i=0; i<userAnimals; i++) {
       let imagen = this.ionicForm.value.attributes[i].buddyPic
-      console.log('animal:', i, 'pic:', imagen.target)
+      console.log('animal:', i, 'pic:', imagen)
     }
     if (!this.ionicForm.valid) {
       console.log('Please provide all the required values!')
@@ -688,7 +689,7 @@ export class SignupAnimalPage implements OnInit {
     reader.readAsDataURL(file) // para que aparezca la imagen en la pantalla
     console.log('file', file)
 
-    // this.uploadImage(event, id)
+    this.uploadImage(event, id)
   }
 
   uploadImage(event, id) { // esta funcion es para subir la imagen a la base de datos
@@ -697,26 +698,27 @@ export class SignupAnimalPage implements OnInit {
     const filePath = `BuddyImages/${this.user.username}/${n}`;
     const fileRef = this.storage.ref(filePath);
     console.log(filePath)
-    this.ionicForm.value.attributes[id].buddyPic = filePath // asign image path to animal database
-
-    console.log('images', this.ionicForm.value.attributes[id].buddyPic)
-    const task = this.storage.upload(`BuddyImages/${this.user.username}/${n}`, file);
+    
+    const task = this.storage.upload(filePath, file);
     task
       .snapshotChanges()
       .pipe(
         finalize(() => {
           this.downloadURL = fileRef.getDownloadURL();
+          this.ionicForm.value.attributes[id].buddyPic = this.downloadURL
           console.log('download', this.downloadURL)
           this.downloadURL.subscribe(url => {
             if (url) {
               this.fb = url;
+              this.ionicForm.value.attributes[id].buddyPic = filePath
+              console.log('fb', this.fb)
             }
           });
         })
       )
       .subscribe(url => {
         if (url) {
-          console.log('url', url);
+          // console.log('url', url);
         }
       });
   }

@@ -129,14 +129,16 @@ export class IndexPage implements OnInit {
       if (result.data.event) {
         let eventData = result.data.event;    
         console.log('event', eventData)
-
+        console.log('ALL DAY', eventData.allDay)
         if (eventData.allDay) { // manage if event is allday or not
           eventData.startTime = new Date(this.selectedDate)
           eventData.endTime = new Date(this.selectedDate)
         } else {
+          eventData.allDay = false
           eventData.startTime = new Date(eventData.startTime)
           eventData.endTime = new Date(eventData.endTime)    
         }
+        console.log('ALL DAY 2', eventData.allDay)
         this.saveEventDB(eventData) // save new event to firebase db
 
         this.dataService.addEvent(eventData) // makes the push to array

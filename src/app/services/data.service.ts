@@ -11,7 +11,6 @@ export class DataService {
   selectedDate: Date;
 
   setSelectedDate(data) {
-    console.log("service ", data, '->')
     this.selectedDate = data;
   }
 

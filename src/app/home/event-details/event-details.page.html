@@ -16,7 +16,8 @@
     <ion-card-header>
       <ion-card-subtitle>Destination</ion-card-subtitle>
       <ion-card-title>Madison, WI</ion-card-title>
-      <ion-card-subtitle>{{this.start.getHours()}}:{{this.start.getMinutes()}} - {{this.end.getHours()}}:{{this.end.getMinutes()}} </ion-card-subtitle>
+      <ion-card-subtitle *ngIf="this.event.allDay">{{this.start.getHours()}}:{{this.minutesStart}} - {{this.end.getHours()}}:{{this.minutesEnd}} </ion-card-subtitle>
+      <ion-card-subtitle *ngIf="!this.event.allDay">All Day </ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
       {{event.description}}

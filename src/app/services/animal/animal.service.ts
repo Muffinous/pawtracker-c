@@ -21,11 +21,11 @@ export class AnimalService {
     console.log('searching buddies 4', username)
 
     await this.database.collection(`/users/${username}/buddies/`).get()
-    .forEach(snapshot => { // get all events 4 that user
+    .forEach(snapshot => { // get all buddies 4 that user
       //console.log('snapshot', snapshot.docs.map(snapshot => snapshot.data()))
       snapshot.forEach(doc => {
-          const animal = doc.data()        
-          console.log('each animal', animal)
+          const animal = doc.data()  
+          console.log('animal', animal)      
           this.userAnimals.push(animal)
       })
       console.log('ARRAY ANIMALS', this.userAnimals)

@@ -6,6 +6,7 @@ import { Event } from 'src/app/models/event';
 import { User } from 'src/app/models/user';
 import { DataService } from '../../services/data.service';
 import { UserService } from 'src/app/services/auth/user/user.service';
+import { AnimalService } from 'src/app/services/animal/animal.service';
 
 @Component({
   selector: 'app-cal-modal',
@@ -16,18 +17,17 @@ export class CalModalComponent implements OnInit {
 
   viewTitle: string;
   images: any[] = [];
-  user = {} as User
+  // user = {} as User
   event = {} as Event
 
   monthNames = [ 'January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December' ];
   modalReady = false;
 
-  constructor(private userService: UserService, public db: AngularFirestore, private modalCtrl: ModalController, public navCtrl: NavController, private dataService: DataService, private authService: AuthService) { 
-    console.log(this.dataService.selectedDate)
+  constructor(private userService: UserService, private animalService: AnimalService, public db: AngularFirestore, private modalCtrl: ModalController, public navCtrl: NavController, private dataService: DataService, private authService: AuthService) { 
     this.event.startTime = this.dataService.selectedDate.toISOString()
     this.event.endTime = this.dataService.selectedDate.toISOString()
-    console.log('constr', this.event.startTime)
+
   }
  
   ngOnInit() {
@@ -49,12 +49,16 @@ export class CalModalComponent implements OnInit {
   }
 
   getBuddiesImages() {
-    this.images[0] = "../../assets/img/slide-1.jpg";
-    this.images[1] = "../../assets/img/slide-2.jpg";
-    this.images[2] = "../../assets/img/slide-2.jpg";
-    this.images[3] = "../../assets/img/slide-2.jpg";
-    this.images[4] = "../../assets/img/slide-2.jpg";
-    this.images[5] = "../../assets/img/slide-2.jpg";
+    let animals = this.userService.user.nAnimals
+    console.log('animals', animals)
+    let i
+    let animalsArray = this.animalService.userAnimals
+
+    for(i=0; i<animals; i++) {
+      console.log('animals array ', animalsArray[i])
+      this.images[i] = "../../assets/img/slide-"+i+".jpg"; // this.userService.
+    }
+    console.log(this.images)
   }
 
   async save() {    
