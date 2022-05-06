@@ -597,7 +597,7 @@ export class SignupAnimalComponent implements OnInit {
       this.user.surname = this.router.getCurrentNavigation().extras.state.surname;
       this.user.username = this.router.getCurrentNavigation().extras.state.username;
       this.user.email = this.router.getCurrentNavigation().extras.state.email;
-      this.user.nAnimals = this.router.getCurrentNavigation().extras.state.nAnimals;
+      this.user.nAnimals = 0; // inicializo xq es la primera vez que se registra el user. Tiene CERO ANIMALES. Aquí los añade.
       this.pass = this.router.getCurrentNavigation().extras.state.password;
       console.log('extras sign up animal', this.user, this.pass)
       this.popup = false
