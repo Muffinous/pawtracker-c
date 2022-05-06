@@ -143,7 +143,7 @@ export class SignupComponent implements OnInit {
       console.log("USER INTERFACE ", this.user)
       this.authService.SignUp(this.user, this.ionicForm.get("password").value)
      // await setDoc(doc(this.db, "user", this.ionicForm.value.username), this.user.User)
-     this.router.navigateByUrl('/signup-animal', {state: this.ionicForm.value, replaceUrl:true})
+     this.router.navigateByUrl('/signupanimal', {state: this.ionicForm.value, replaceUrl:true})
     }
   }
 }

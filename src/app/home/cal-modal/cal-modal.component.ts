@@ -7,6 +7,8 @@ import { User } from 'src/app/models/user';
 import { DataService } from '../../services/data.service';
 import { UserService } from 'src/app/services/auth/user/user.service';
 import { AnimalService } from 'src/app/services/animal/animal.service';
+import { AngularFireStorage } from "@angular/fire/compat/storage";
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cal-modal',
@@ -24,7 +26,7 @@ export class CalModalComponent implements OnInit {
   'July', 'August', 'September', 'October', 'November', 'December' ];
   modalReady = false;
 
-  constructor(private userService: UserService, private animalService: AnimalService, public db: AngularFirestore, private modalCtrl: ModalController, public navCtrl: NavController, private dataService: DataService, private authService: AuthService) { 
+  constructor(private userService: UserService, private animalService: AnimalService, public db: AngularFirestore, private modalCtrl: ModalController, public navCtrl: NavController, private dataService: DataService, private authService: AuthService, private storage: AngularFireStorage) { 
     this.event.startTime = this.dataService.selectedDate.toISOString()
     this.event.endTime = this.dataService.selectedDate.toISOString()
 
@@ -50,15 +52,17 @@ export class CalModalComponent implements OnInit {
 
   getBuddiesImages() {
     let animals = this.userService.user.nAnimals
-    console.log('animals', animals)
     let i
     let animalsArray = this.animalService.userAnimals
 
     for(i=0; i<animals; i++) {
       console.log('animals array ', animalsArray[i])
-      this.images[i] = "../../assets/img/slide-"+i+".jpg"; // this.userService.
+      const imageRef = this.storage.ref(animalsArray[i].buddyPic)
+      
+      imageRef.child(animalsArray[i].buddyPic).getDownloadURL()
+
+      this.images[i] = animalsArray[i].buddyPic; // this.userService.
     }
-    console.log(this.images)
   }
 
   async save() {    

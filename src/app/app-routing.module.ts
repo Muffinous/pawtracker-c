@@ -3,6 +3,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { LoginComponent } from './login/login.component';
 import { SettingsComponent } from './settings/settings.component';
+import { SignupAnimalComponent } from './signup/signup-animal-comp/signup-animal.component';
 import { SignupComponent } from './signup/signup.component';
 
 const routes: Routes = [
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
   { path: 'settingsnew', component: SettingsComponent },
+  { path: 'signupanimal', component: SignupAnimalComponent },
 
 ];
 @NgModule({

@@ -8,6 +8,8 @@ import { IonLoaderService } from 'src/app/services/ion-loader.service';
 import { BuddyPage } from '../buddy/buddy.page';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import { CameraService } from 'src/app/services/camera/camera.service';
+import { SignupAnimalPage } from 'src/app/signup/signup-animal/signup-animal.page';
+import { SignupAnimalComponent } from 'src/app/signup/signup-animal-comp/signup-animal.component';
 
 @Component({
   selector: 'app-profile',
@@ -18,6 +20,7 @@ export class ProfilePage implements OnInit {
   user = {} as User
   animals = []
 
+  animalsLoaded = false
   topLimit: number = 1
   showedAnimals = []
 
@@ -45,12 +48,9 @@ export class ProfilePage implements OnInit {
       this.infiniteScroll.complete()
       if (this.animals.length === this.showedAnimals.length){
         this.infiniteScroll.disabled        
+        this.animalsLoaded = true
         this.presentToast('No more data available', 2000);
-        console.log('Done');  
-      } else {
-        console.log('No more data')
       }
-       console.log('pushed', this.showedAnimals)
     }, 400);  
   }
 
@@ -122,5 +122,27 @@ export class ProfilePage implements OnInit {
     };
     reader.readAsDataURL(file);
 
+  }
+
+  async addNewBuddy() {
+    console.log('new buddy..', this.userService.user)
+    const modal = await this.modalController.create({
+      component: SignupAnimalComponent,
+      cssClass: 'cal-modal',
+      backdropDismiss: false,
+      swipeToClose: true,
+      componentProps: {
+        user: this.userService.user
+      }
+    })
+
+    await modal.present();
+   
+    modal.onDidDismiss().then((result) => {
+      console.log('result', result)
+    }).catch((error) => {
+      console.log('Error getting addNewBuddy() result', error)
+      return error
+    });
   }
 }

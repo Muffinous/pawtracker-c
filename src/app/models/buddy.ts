@@ -1,8 +1,9 @@
 export interface Buddy {
     buddyName: string,
     buddyAge: number,
+    buddyBreed: [],    
     buddyGender: string,
-    buddyBreed: [],
     buddyBday: string,
-    userAnimals : []
+    buddyType: string,
+    buddyPic: string
 }

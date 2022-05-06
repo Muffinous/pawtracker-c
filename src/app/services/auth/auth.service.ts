@@ -7,7 +7,7 @@ import {
 } from '@angular/fire/compat/firestore';
 import { NavigationExtras, Router } from '@angular/router';
 import { User } from '../../models/user';
-import { getAuth, updateProfile } from 'firebase/auth';
+import { getAuth, reload, updateProfile } from 'firebase/auth';
 import { IonLoaderService } from '../ion-loader.service';
 import { UserService } from './user/user.service';
 import { AnimalService } from '../animal/animal.service';
@@ -30,7 +30,7 @@ export class AuthService {
     /* Saving user data in localstorage when 
     logged in and setting up null when logged out */
     this.afAuth.authState.subscribe((user) => {
-      // console.log('user', user)
+      console.log('AFAUTH USER: ', user)
       if (user) {
         this.userData = user;
         localStorage.setItem('user', JSON.stringify(this.userData));
@@ -43,6 +43,7 @@ export class AuthService {
   }
   // Sign in with email/password
   SignIn(user: User, password: string) {
+    console.log('sign in,,,,', user)
     this.openLoader()
     return this.afAuth
       .signInWithEmailAndPassword(user.email, password)
@@ -109,7 +110,7 @@ export class AuthService {
   // Returns true when user is looged in and email is verified
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user')!);
-    return user !== null && user.emailVerified !== false ? true : false;
+    return user !== null // && user.emailVerified !== false ? true : false; // if emailVerified is not false -> return true else return false
   }
 
   // Sign in with Google
@@ -182,7 +183,8 @@ export class AuthService {
   SignOut() {
     return this.afAuth.signOut().then(() => {
       localStorage.removeItem('user');
-      this.router.navigate(['login']);
+      window.location.assign('/') // reload everything. resets all view cache: so data is reloaded
+      // this.router.navigateByUrl('/', {replaceUrl: true});
     });
   }
 
@@ -226,6 +228,7 @@ export class AuthService {
   }
 
   addUserService(user: User) {
+    console.log('ADD USER SERVICE', user)
     this.userService.user.email = user.email
     this.userService.user.uid = user.uid
     this.userService.user.name = user.name

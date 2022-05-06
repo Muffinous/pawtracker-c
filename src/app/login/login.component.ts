@@ -49,15 +49,13 @@ export class LoginComponent implements OnInit {
       this.database.doc(`/users/${this.username}`).ref.get().then(snapshot => {
         if (snapshot.exists) {
           const myuser = snapshot.data() as User          
-          console.log('MYUSER INFO', myuser)
           this.authService.SignIn(myuser, this.password) // this sign in goes to home || this.route.navigate(['/home']);
           .then(function(error) {
             // Handle Errors here.
             if (error) {
               var errorCode = error.code;
               var errorMessage : string = error.message;            
-              console.log('errorcode' , errorCode);
-              console.log('error' , errorMessage);
+
               if (errorCode === 'auth/wrong-password') {
                 presentAlert('Wrong password!')
               } else {

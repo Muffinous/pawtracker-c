@@ -1,3 +1,4 @@
+import { formatDate, getLocaleDateFormat } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
 import { Buddy } from 'src/app/models/buddy';
@@ -9,6 +10,7 @@ import { Buddy } from 'src/app/models/buddy';
 })
 export class BuddyPage implements OnInit {
   buddy = {} as Buddy
+  bday
 
   constructor(public modalControler: ModalController, public navParams: NavParams) { 
     console.log('buddy pass', this.navParams)
@@ -17,10 +19,12 @@ export class BuddyPage implements OnInit {
     this.buddy.buddyBreed = this.navParams.get('buddyBreed');
     this.buddy.buddyGender = this.navParams.get('buddyGender');
     this.buddy.buddyBday = this.navParams.get('buddyBday');
+    this.buddy.buddyType = this.navParams.get('buddyType');
+    this.buddy.buddyPic = this.navParams.get('buddyPic');
 
-    //this.img = this.navParams.get('img');
-
-    console.log('event', this.buddy)
+    this.bday = formatDate(this.buddy.buddyBday, 'dd-MM-yyyy', 'es-ES')
+  
+    console.log('buddypage', this.buddy, 'bday', this.bday)
   }
   
   ngOnInit() {

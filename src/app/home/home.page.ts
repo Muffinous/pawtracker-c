@@ -38,21 +38,18 @@ export class HomePage implements OnInit{
     { title: 'Buddies', url: 'buddies', icon: 'paw', index: 1},
     { title: 'Settings', url: `/settingsnew`, icon: 'settings', index: 2 },
     { title: 'Dark mode', url: '', icon: 'toggle', index: 3 },
-    // { title: 'Sign Out', url: `this.authService.SignOut()`, icon: 'log-out', index: 4 },
   ];
 
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];  
 
   setUser() {
     const us = this.authService.getAuthUser()
-    console.log('USSSSS', us)
     // this.user.email = us.email
     // this.user.username = us.displayName
     // this.user.uid = us.uid
   }
 
   goSettings() {
-    console.log('gosettings')
     this.router.navigateByUrl('/settingsnew')
   }
 

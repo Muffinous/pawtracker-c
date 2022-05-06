@@ -26,9 +26,10 @@ import { SettingsComponent } from './settings/settings.component';
 import { SwiperModule } from 'swiper/angular';
 import { Camera } from '@ionic-native/Camera/ngx';
 import { File } from '@ionic-native/file/ngx';
+import { SignupAnimalComponent } from './signup/signup-animal-comp/signup-animal.component';
 
 @NgModule({
-  declarations: [AppComponent, SignupComponent, LoginComponent, CalModalComponent, SettingsComponent],
+  declarations: [AppComponent, SignupComponent, LoginComponent, CalModalComponent, SettingsComponent, SignupAnimalComponent],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, NgCalendarModule, FormsModule, ReactiveFormsModule, CommonModule,
     // provideFirebaseApp(() => initializeApp(environment.firebase)),

@@ -1,25 +1,29 @@
 import { Component, ContentChild, OnInit } from '@angular/core';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IonInput, ModalController } from '@ionic/angular';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
-import { IonInput } from '@ionic/angular';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import { AngularFireStorage } from "@angular/fire/compat/storage";
 import { map, finalize } from "rxjs/operators";
 import { Observable } from 'rxjs';
+import { UserService } from 'src/app/services/auth/user/user.service';
+
 
 @Component({
   selector: 'app-signup-animal',
-  templateUrl: './signup-animal.page.html',
-  styleUrls: ['./signup-animal.page.scss'],
+  templateUrl: './signup-animal.component.html',
+  styleUrls: ['./signup-animal.component.scss'],
 })
-export class SignupAnimalPage implements OnInit {
-
+export class SignupAnimalComponent implements OnInit {
+  
   @ContentChild(IonInput) input: IonInput;
   public ionicForm: FormGroup;
   breeds: string[]
+  hasBreed = false
+
   dogBreeds: string[] = [
     "Affenpinscher",
     "Afghan Hound",
@@ -556,14 +560,6 @@ export class SignupAnimalPage implements OnInit {
     'Yellow-Bellied Slider'
   ]
 
-  hasBreed = false
-  user = {} as User
-  pass: string
-  downloadURL: Observable<string>;
-  images = []
-  imageUrl = []
-  percentage
-
   validation_messages = {
     'buddyName': [
       { type: 'required', message: 'Name is required.' }
@@ -585,18 +581,31 @@ export class SignupAnimalPage implements OnInit {
     ]
   }
 
-  constructor(public afs: AngularFirestore, private router:Router, private formBuilder: FormBuilder,  private authService: AuthService, private storage: AngularFireStorage) {
-    if (router.getCurrentNavigation().extras.state != null) {
+  user = {} as User
+  pass: string
+  images = []
+  imageUrl = []
+  percentage
+  downloadURL: Observable<string>;
+  popup
+
+  constructor(private afs: AngularFirestore, private router:Router, private modalCtrl: ModalController, private userService: UserService, private formBuilder: FormBuilder, public authService: AuthService, private storage: AngularFireStorage) { 
+    console.log('nav', router.getCurrentNavigation())
+    if (router.getCurrentNavigation() !== null) { // sign up animal 4 the first time
       // this.user.name = 'test'
       this.user.name = this.router.getCurrentNavigation().extras.state.name;
       this.user.surname = this.router.getCurrentNavigation().extras.state.surname;
       this.user.username = this.router.getCurrentNavigation().extras.state.username;
       this.user.email = this.router.getCurrentNavigation().extras.state.email;
+      this.user.nAnimals = this.router.getCurrentNavigation().extras.state.nAnimals;
       this.pass = this.router.getCurrentNavigation().extras.state.password;
-      console.log('sign up animal ', this.user)
-    } else {
-      
+      console.log('extras sign up animal', this.user, this.pass)
+      this.popup = false
+    } else { // profile popup page
+      console.log('no extras', this.user)
+      this.popup = true
     }
+
   }
 
   ngOnInit() {
@@ -604,7 +613,7 @@ export class SignupAnimalPage implements OnInit {
       personName: ['', [Validators.required, Validators.minLength(2)]],   
       attributes: this.formBuilder.array([ this.initAttributesFields()]) 
     })
-    this.ionicForm.get('personName').setValue(this.user.name)
+    this.ionicForm.get('personName').setValue(this.user.username)
   }
 
   initAttributesFields() : FormGroup {
@@ -619,17 +628,12 @@ export class SignupAnimalPage implements OnInit {
     })
   }
 
-  change(value){
-    console.log("result", value);
+  addbuddy() {
+    this.formArr.push(this.initAttributesFields());
   }
 
   get formArr() {
     return this.ionicForm.get('attributes') as FormArray;
-  }
-
-  addbuddy() {
-    //this.ionicForm.value.buddyBday= this.ionicForm.value.buddyBday.split('T')[0];
-    this.formArr.push(this.initAttributesFields());
   }
 
   deleteBuddy(index: number) {
@@ -637,90 +641,41 @@ export class SignupAnimalPage implements OnInit {
   }
 
   async registerBuddies() {
-    console.log(this.ionicForm.value)
-    let userAnimals = this.ionicForm.value.attributes.length
-
-    for (let i=0; i<userAnimals; i++) {
-      let imagen = this.ionicForm.value.attributes[i].buddyPic
-      console.log('animal:', i, 'pic:', imagen)
-    }
     if (!this.ionicForm.valid) {
       console.log('Please provide all the required values!')
       return false;
     } else {
-      let userAnimals = this.ionicForm.value.attributes.length
-      console.log(userAnimals)
-      for (let i=0; i<userAnimals; i++) {
+      let newBuddies = this.ionicForm.value.attributes.length
+      console.log(newBuddies)
+      for (let i=0; i<newBuddies; i++) {
         const userBuddiesRef: AngularFirestoreDocument<any> = this.afs.doc(
           `users/${this.user.username}/buddies/${this.ionicForm.value.attributes[i].buddyName}`
           );      
           userBuddiesRef.set(this.ionicForm.value.attributes[i], {
-          merge: true,
-      });
+            merge: true,
+          });
       }
 
       const userRef: AngularFirestoreDocument<any> = this.afs.doc(
         `users/${this.user.username}/`
-      );      
-      userRef.update({nAnimals: userAnimals}), {
+      );            
+      
+      this.user.nAnimals += newBuddies // UPDATE USER ANIMALS NUMBER TO WHATEVER IT IS
+
+      console.log('animals', this.user.nAnimals, '-', this.userService.user)
+      
+      userRef.update({nAnimals: newBuddies}), {
         merge: true,
       }
-      this.user.nAnimals = userAnimals // UPDATE USER ANIMALS NUMBER TO WHATEVER IT IS
-      this.authService.SignIn(this.user, this.pass)
+
+      if (this.popup === false){ // is not a popup, -> sign up 4 the first time
+        console.log('IM NOT IN PROFILE PAGE', this.popup)
+        this.authService.SignIn(this.user, this.pass)
+      } else {
+        console.log('IM IN PROFILE PAGE', this.popup)
+        this.modalCtrl.dismiss({animals: this.ionicForm.value})
+      }
     }
-  }
-
-  async takePicture() {
-    const image = await Camera.getPhoto({
-      quality: 90,
-      allowEditing: true,
-      resultType: CameraResultType.Uri
-    });
-  }
-
-
-  onFileSelected(event, id) {
-    const file = event.target.files[0]; // info de la imagen
-    let reader = new FileReader();
-
-    reader.onload = (e: any) => {
-        this.images[id] = e.target.result
-    }
-    reader.readAsDataURL(file) // para que aparezca la imagen en la pantalla
-
-    this.uploadImage(event, id)
-  }
-
-  uploadImage(event, id) { // esta funcion es para subir la imagen a la base de datos
-    var n = Date.now();
-    const file = event.target.files[0];
-    const filePath = `BuddyImages/${this.user.username}/${n}`;
-    const fileRef = this.storage.ref(filePath);
-    
-    const task = this.storage.upload(filePath, file);
-    this.percentage = task.percentageChanges()
-    console.log('percentage', this.percentage)
-    task
-      .snapshotChanges()
-      .pipe(
-        finalize(() => {
-          this.downloadURL = fileRef.getDownloadURL();
-          // this.ionicForm.value.attributes[id].buddyPic = this.downloadURL
-          this.downloadURL.subscribe(url => {
-            if (url) {
-              this.imageUrl[id] = url;
-              console.log('imageURL:', this.imageUrl[id], 'downloadURL:', this.downloadURL)
-              // this.ionicForm.value.attributes[id].buddyPic = filePath IMAGE PATH IN DATABASE
-              this.ionicForm.value.attributes[id].buddyPic = this.imageUrl[id] // URL IMAGE IN DATABASE
-            }
-          });
-        })
-      )
-      .subscribe(url => {
-        if (url) {
-          // console.log('url', url);
-        }
-      });
   }
 
   changeBreed(value) {
@@ -759,4 +714,57 @@ export class SignupAnimalPage implements OnInit {
         break;
     }
   }
+  
+  change(value){
+    console.log("result", value);
+  }
+
+  onFileSelected(event, id) {
+    const file = event.target.files[0]; // info de la imagen
+    let reader = new FileReader();
+
+    reader.onload = (e: any) => {
+        this.images[id] = e.target.result
+    }
+    reader.readAsDataURL(file) // para que aparezca la imagen en la pantalla
+
+    this.uploadImage(event, id)
+  }
+
+  uploadImage(event, id) { // esta funcion es para subir la imagen a la base de datos
+    var n = Date.now();
+    const file = event.target.files[0];
+    const filePath = `BuddyImages/${this.user.username}/${n}`; // path donde se va a guardar la imagen en firebase
+    const fileRef = this.storage.ref(filePath);
+    
+    const task = this.storage.upload(filePath, file);
+    this.percentage = task.percentageChanges()
+    console.log('percentage', this.percentage)
+    task
+      .snapshotChanges()
+      .pipe(
+        finalize(() => {
+          this.downloadURL = fileRef.getDownloadURL();
+          // this.ionicForm.value.attributes[id].buddyPic = this.downloadURL
+          this.downloadURL.subscribe(url => {
+            if (url) {
+              this.imageUrl[id] = url;
+              console.log('imageURL:', this.imageUrl[id], 'downloadURL:', this.downloadURL)
+              // this.ionicForm.value.attributes[id].buddyPic = filePath IMAGE PATH IN DATABASE
+              this.ionicForm.value.attributes[id].buddyPic = this.imageUrl[id] // URL IMAGE IN DATABASE
+            }
+          });
+        })
+      )
+      .subscribe(url => {
+        if (url) {
+          // console.log('url', url);
+        }
+      });
+  }
+
+  close() {
+    this.modalCtrl.dismiss();
+  }
+  
 }

@@ -12,24 +12,19 @@
 
 <ion-content>
   <ion-card>
-    <ion-item>
-      <ion-label>Age : {{buddy.buddyAge}}</ion-label>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>Bday : {{buddy.buddyBday}}</ion-label>
-    </ion-item>
-
-    <ion-item *ngIf="buddy.buddyBreed">
-      <ion-label>Breed : {{buddy.buddyBreed}}</ion-label>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>Gender : {{buddy.buddyGender}}</ion-label>
-    </ion-item>
-
-    <ion-item *ngIf="buddy.buddyPic">
-      <ion-label>Pic : {{buddy.buddyPic}}</ion-label>
-    </ion-item>
+    <img src="{{buddy.buddyPic}}" />
+    <ion-card-header>
+      <ion-card-subtitle>{{buddy.buddyType}} - {{buddy.buddyBreed}}</ion-card-subtitle>
+      <ion-card-title>{{buddy.buddyName}}</ion-card-title>
+      <ion-card-subtitle>{{buddy.buddyAge}} years old</ion-card-subtitle>
+      <ion-item>
+        <ion-icon src="../../../assets/icon/cake.svg"></ion-icon> 
+        <ion-card-subtitle>{{this.bday}}</ion-card-subtitle>
+      </ion-item>
+    </ion-card-header>
+    <ion-card-content>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.   
+    </ion-card-content>
   </ion-card>
 </ion-content>
