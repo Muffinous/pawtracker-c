@@ -8,7 +8,6 @@ import { IonLoaderService } from 'src/app/services/ion-loader.service';
 import { BuddyPage } from '../buddy/buddy.page';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import { CameraService } from 'src/app/services/camera/camera.service';
-import { SignupAnimalPage } from 'src/app/signup/signup-animal/signup-animal.page';
 import { SignupAnimalComponent } from 'src/app/signup/signup-animal-comp/signup-animal.component';
 
 @Component({
