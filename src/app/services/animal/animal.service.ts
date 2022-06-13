@@ -2,6 +2,7 @@ import { SlicePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ProfilePage } from 'src/app/home/profile/profile.page';
+import { Buddy } from 'src/app/models/buddy';
 
 @Injectable({
   providedIn: 'root'
@@ -24,9 +25,14 @@ export class AnimalService {
     .forEach(snapshot => { // get all buddies 4 that user
       //console.log('snapshot', snapshot.docs.map(snapshot => snapshot.data()))
       snapshot.forEach(doc => {
-          const animal = doc.data()  
-          console.log('animal', animal)      
-          this.userAnimals.push(animal)
+          const animal = doc.data() as Buddy
+          console.log('animal', animal) 
+          var index = this.userAnimals.findIndex(x => x.buddyName == animal.buddyName); 
+          console.log('index ', index, 'for animal', animal.buddyName)
+          if(index === -1) {
+            console.log('New buddy', animal)          
+            this.userAnimals.push(animal)
+          }
       })
       console.log('ARRAY ANIMALS', this.userAnimals)
     })
