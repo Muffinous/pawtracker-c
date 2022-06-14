@@ -30,7 +30,6 @@ export class HomePage implements OnInit{
   ngOnInit() {
     this.selectedIndex = -1
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
-    // this.loadMap();      
   }
 
   public appPages = [
@@ -44,9 +43,6 @@ export class HomePage implements OnInit{
 
   setUser() {
     const us = this.authService.getAuthUser()
-    // this.user.email = us.email
-    // this.user.username = us.displayName
-    // this.user.uid = us.uid
   }
 
   goSettings() {
@@ -56,17 +52,4 @@ export class HomePage implements OnInit{
   public getUser() {
     return this.user
   }
-  // loadMap() {
-  //   const mapEle: HTMLElement = document.getElementById('map');
-  //   console.log(mapEle);
-  //   const myLatLng = { lat: -34.397, lng: 150.644};
-  //   this.map = new google.maps.Map(mapEle, {
-  //     center: myLatLng,
-  //     zoom: 12
-  //   });
-
-  //   google.maps.event.addListenerOnce(this.map, 'idle', () => {
-  //     mapEle.classList.add('show-map');
-  //   });
-  // }
 }

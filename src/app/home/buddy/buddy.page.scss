@@ -4,4 +4,8 @@ ion-card{
     width: 100% !important;
     margin: 0 !important;
     margin-bottom: 10% !important;
+
+    img {
+      object-fit: cover;
+    }
   }

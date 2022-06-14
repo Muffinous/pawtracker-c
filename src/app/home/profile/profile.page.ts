@@ -138,6 +138,7 @@ export class ProfilePage implements OnInit {
     await modal.present();
    
     modal.onDidDismiss().then((result) => {
+      this.animalService.loadUserBuddies(this.userService.user.username);
       console.log('result', result)
     }).catch((error) => {
       console.log('Error getting addNewBuddy() result', error)
