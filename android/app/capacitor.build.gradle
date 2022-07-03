@@ -17,13 +17,9 @@ dependencies {
     implementation project(':capacitor-status-bar')
     implementation project(':robingenz-capacitor-firebase-authentication')
     implementation project(':capacitor-firebase-auth')
-    implementation "com.google.android.gms:play-services-tagmanager:+"
-    implementation "com.google.firebase:firebase-core:+"
-    implementation "com.google.firebase:firebase-messaging:+"
-    implementation "com.google.firebase:firebase-config:+"
-    implementation "com.google.firebase:firebase-perf:+"
+
 }
-apply from: "../../node_modules/cordova-plugin-firebase/src/android/build.gradle"
+
 
 if (hasProperty('postBuildExtras')) {
   postBuildExtras()

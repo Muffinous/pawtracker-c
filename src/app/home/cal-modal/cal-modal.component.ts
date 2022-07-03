@@ -3,12 +3,10 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ModalController, NavController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Event } from 'src/app/models/event';
-import { User } from 'src/app/models/user';
 import { DataService } from '../../services/data.service';
 import { UserService } from 'src/app/services/auth/user/user.service';
 import { AnimalService } from 'src/app/services/animal/animal.service';
 import { AngularFireStorage } from "@angular/fire/compat/storage";
-import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cal-modal',
@@ -21,10 +19,11 @@ export class CalModalComponent implements OnInit {
   images: any[] = [];
   // user = {} as User
   event = {} as Event
-
+  selectedBuddy
   monthNames = [ 'January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December' ];
   modalReady = false;
+  animalsArray
 
   constructor(private userService: UserService, private animalService: AnimalService, public db: AngularFirestore, private modalCtrl: ModalController, public navCtrl: NavController, private dataService: DataService, private authService: AuthService, private storage: AngularFireStorage) { 
     this.event.startTime = this.dataService.selectedDate.toISOString()
@@ -53,15 +52,12 @@ export class CalModalComponent implements OnInit {
   getBuddiesImages() {
     let animals = this.userService.user.nAnimals
     let i
-    let animalsArray = this.animalService.userAnimals
+    this.animalsArray = this.animalService.userAnimals
 
     for(i=0; i<animals; i++) {
-      console.log('animals array ', animalsArray[i])
-      const imageRef = this.storage.ref(animalsArray[i].buddyPic)
-      
-      imageRef.child(animalsArray[i].buddyPic).getDownloadURL()
 
-      this.images[i] = animalsArray[i].buddyPic; // this.userService.
+      this.images[i] = this.animalsArray[i].buddyPic;
+      console.log('animals array ', this.animalsArray[i], 'foto', this.images[i])
     }
   }
 
@@ -83,5 +79,10 @@ export class CalModalComponent implements OnInit {
     this.modalCtrl.dismiss();
   }
 
+  onBuddyClicked(buddy) {
+    console.log('buddy selected for date ', buddy)
+    this.selectedBuddy = buddy.buddyName
+    console.log(this.selectedBuddy)
+  }
 }
 

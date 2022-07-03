@@ -664,8 +664,8 @@ export class SignupAnimalComponent implements OnInit {
 
       console.log('animals', this.user.nAnimals, '-', this.userService.user)
       
-      userRef.update({nAnimals: newBuddies}), {
-        merge: true,
+      userRef.update({nAnimals: this.user.nAnimals}), {
+        merge: true, 
       }
 
       if (this.popup === false){ // is not a popup, -> sign up 4 the first time

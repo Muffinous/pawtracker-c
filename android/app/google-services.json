@@ -10,7 +10,36 @@
       "client_info": {
         "mobilesdk_app_id": "1:800473162003:android:b2b7a5e87a6af509573ae6",
         "android_client_info": {
-          "package_name": "com.android.application"
+          "package_name": "io.ionic.starter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "800473162003-59rlq4lomn8477o7bbff04i0svucjtbj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCeyKs7T9PrppDzm31js1aJYDWfy1kyz9Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "800473162003-59rlq4lomn8477o7bbff04i0svucjtbj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:800473162003:android:2533301b34efc028573ae6",
+        "android_client_info": {
+          "package_name": "io.ionic.starter"
         }
       },
       "oauth_client": [

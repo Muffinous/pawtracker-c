@@ -48,12 +48,13 @@
 
     <ion-item>
       <ion-label>Buddy</ion-label>
+      <ion-label style="text-align-last: right;">{{selectedBuddy}}</ion-label>
     </ion-item>      
     <br>
       <div class="thumnails">
         <div class="list-thumbnail">
           <div class="img-thumb">
-            <img  *ngFor="let x of images" class="buddy-img" [src]="x">
+            <img  *ngFor="let x of animalsArray" class="buddy-img" [src]="x.buddyPic" (click)="onBuddyClicked(x);" alt="buddyImage">
           </div>
         </div> 
       </div>

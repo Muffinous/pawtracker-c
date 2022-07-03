@@ -39,7 +39,6 @@
     "@robingenz/capacitor-firebase-authentication": "^0.4.1",
     "angularfire2": "^5.4.2",
     "capacitor-firebase-auth": "^3.0.0",
-    "cordova-plugin-firebase": "^2.0.5",
     "dog-breeds": "^1.0.0",
     "firebase": "^9.6.7",
     "ionic2-calendar": "^0.6.9",
