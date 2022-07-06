@@ -25,7 +25,7 @@ export class CalModalComponent implements OnInit {
   modalReady = false;
   animalsArray
 
-  constructor(private userService: UserService, private animalService: AnimalService, public db: AngularFirestore, private modalCtrl: ModalController, public navCtrl: NavController, private dataService: DataService, private authService: AuthService, private storage: AngularFireStorage) { 
+  constructor(private userService: UserService, private animalService: AnimalService, public db: AngularFirestore, private modalCtrl: ModalController, public navCtrl: NavController, private dataService: DataService) { 
     this.event.startTime = this.dataService.selectedDate.toISOString()
     this.event.endTime = this.dataService.selectedDate.toISOString()
 
@@ -55,7 +55,6 @@ export class CalModalComponent implements OnInit {
     this.animalsArray = this.animalService.userAnimals
 
     for(i=0; i<animals; i++) {
-
       this.images[i] = this.animalsArray[i].buddyPic;
       console.log('animals array ', this.animalsArray[i], 'foto', this.images[i])
     }
@@ -82,6 +81,7 @@ export class CalModalComponent implements OnInit {
   onBuddyClicked(buddy) {
     console.log('buddy selected for date ', buddy)
     this.selectedBuddy = buddy.buddyName
+    this.event.buddyName = this.selectedBuddy
     console.log(this.selectedBuddy)
   }
 }

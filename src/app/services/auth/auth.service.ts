@@ -252,7 +252,6 @@ export class AuthService {
     const alert = document.createElement('ion-alert');
     alert.cssClass = 'my-custom-class';
     alert.header = 'Error';
-    // alert.subHeader = 'Subtitle';
     alert.message = message;
     alert.buttons = ['OK'];
   

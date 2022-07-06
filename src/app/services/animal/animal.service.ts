@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ProfilePage } from 'src/app/home/profile/profile.page';
 import { Buddy } from 'src/app/models/buddy';
+import { AuthService } from '../auth/auth.service';
+import { UserService } from '../auth/user/user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +18,7 @@ export class AnimalService {
   buddyBday: string
   userAnimals = [];
 
-  constructor(public database: AngularFirestore) { }
+  constructor(public database: AngularFirestore, private userService: UserService) { }
 
   async loadUserBuddies(username: string) {
     console.log('searching buddies 4', username)
@@ -36,5 +38,30 @@ export class AnimalService {
       })
       console.log('ARRAY ANIMALS', this.userAnimals)
     })
-    }
+  }
+
+  getBuddyImage(buddyName: string):  Promise<any>{
+    let buddypic
+    return this.database.doc(`/users/${this.userService.user.username}/buddies/${buddyName}`).ref.get().then(snapshot => {
+      if (snapshot.exists) {
+        const buddy = snapshot.data() as Buddy       
+        console.log('getBuddyImage()', buddy.buddyPic)   
+        buddypic = buddy.buddyPic
+        return buddypic
+      } else {
+        return 'Error loading image. Please restart.'
+      }
+      })
+  }
+}
+
+async function presentAlert(message: string) {
+  const alert = document.createElement('ion-alert');
+  alert.cssClass = 'my-custom-class';
+  alert.header = 'Error';
+  alert.message = message;
+  alert.buttons = ['OK'];
+
+  document.body.appendChild(alert);
+  await alert.present();
 }

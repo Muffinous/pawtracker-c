@@ -12,10 +12,11 @@
 
 <ion-content>
   <ion-card>
-    <img src="https://media.wired.co.uk/photos/60c8730fa81eb7f50b44037e/3:2/w_3329,h_2219,c_limit/1521-WIRED-Cat.jpeg" />
+    <div class="loading">
+    <div ng-if="img"> <img alt="loading" src={{img}}> </div>
+    </div>
     <ion-card-header>
-      <ion-card-subtitle>Destination</ion-card-subtitle>
-      <ion-card-title>Madison, WI</ion-card-title>
+      <ion-card-title>{{event.title}} - {{event.buddyName}}</ion-card-title>
       <ion-card-subtitle *ngIf="this.event.allDay">{{this.start.getHours()}}:{{this.minutesStart}} - {{this.end.getHours()}}:{{this.minutesEnd}} </ion-card-subtitle>
       <ion-card-subtitle *ngIf="!this.event.allDay">All Day </ion-card-subtitle>
     </ion-card-header>
@@ -24,3 +25,6 @@
     </ion-card-content>
   </ion-card>
 </ion-content>
+
+
+<script src="../../../assets/js/eventDetails.js"></script>

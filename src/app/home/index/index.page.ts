@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/auth/user/user.service';
 import { EventDetailsPage } from '../event-details/event-details.page';
+import { AnimalService } from 'src/app/services/animal/animal.service';
 
 declare var google;
 
@@ -45,7 +46,7 @@ export class IndexPage implements OnInit {
   @ViewChild(CalendarComponent) myCal: CalendarComponent;
 
   constructor(private userService: UserService , public db: AngularFirestore, private alertCtrl: AlertController, private modalCtrl: ModalController, 
-    @Inject(LOCALE_ID) private locale: string, private dataService: DataService, private authService: AuthService, ) {
+     private dataService: DataService, private authService: AuthService, private animalService: AnimalService ) {
 
       this.db.collection(`/users/testuser/events/`).get().subscribe(snapshot => { // load all events from user DB
         snapshot.forEach(snap => {
@@ -90,15 +91,25 @@ export class IndexPage implements OnInit {
   }
 
   async onEventSelected(ev) {
-    this.newEvent = ev
-    console.log('event', ev)
+    this.newEvent = ev as Event
+    let img
+    this.animalService.getBuddyImage(this.newEvent.buddyName).then(function(buddypic) {      
+      img = buddypic
+    }).then(res => {
+      this.showModalEvent(ev, img)
+    })
+  }
+
+  async showModalEvent(ev, img) {
+    console.log('se envia img: ', img)
+    console.log('se envia ev: ', ev)
     const modal = await this.modalCtrl.create({
       component: EventDetailsPage,
-      componentProps: ev
+      componentProps: {ev, img}
     })
     return await modal.present()
   }
-
+  
   onTimeSelected(ev) {    
     this.selectedDate = ev.selectedTime;
     this.currentDate = this.selectedDate.toDateString()
@@ -128,8 +139,6 @@ export class IndexPage implements OnInit {
     modal.onDidDismiss().then((result) => {
       if (result.data.event) {
         let eventData = result.data.event;    
-        console.log('event', eventData)
-        console.log('ALL DAY', eventData.allDay)
         if (eventData.allDay) { // manage if event is allday or not
           eventData.startTime = new Date(this.selectedDate)
           eventData.endTime = new Date(this.selectedDate)
@@ -138,7 +147,6 @@ export class IndexPage implements OnInit {
           eventData.startTime = new Date(eventData.startTime)
           eventData.endTime = new Date(eventData.endTime)    
         }
-        console.log('ALL DAY 2', eventData.allDay)
         this.saveEventDB(eventData) // save new event to firebase db
 
         this.dataService.addEvent(eventData) // makes the push to array

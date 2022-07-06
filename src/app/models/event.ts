@@ -7,5 +7,6 @@ export interface Event {
     year: number,
     startTime: string,
     endTime: string,
-    allDay: boolean
+    allDay: boolean,
+    buddyName: string
 }

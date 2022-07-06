@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
 import { Event } from 'src/app/models/event';
+import { AnimalService } from 'src/app/services/animal/animal.service';
 
 @Component({
   selector: 'app-event-details',
@@ -9,28 +10,25 @@ import { Event } from 'src/app/models/event';
 })
 export class EventDetailsPage implements OnInit {
 
-  event = {} as Event;
-  img: String
+  event : Event;
+  img = "../../../assets/img/gifblue.gif"
 
   start
   end
   minutesStart
   minutesEnd
 
-  constructor(public modalControler: ModalController, public navParams: NavParams) { 
-    this.event.title = this.navParams.get('title');
-    this.event.description = this.navParams.get('description');
-    //this.img = this.navParams.get('img');
-    this.event.startTime = this.navParams.get('startTime');
-    this.event.endTime = this.navParams.get('endTime');   
-
+  constructor(public modalControler: ModalController, public navParams: NavParams, private animalService: AnimalService) { 
+    this.event = this.navParams.get('ev');
+    console.log('ev', this.event)
+    this.img = this.navParams.get("img");
     this.start = new Date(this.event.startTime) // save full start hour
     this.end = new Date(this.event.endTime)    // save full end hour
-
     this.minutesConverter()
   }
 
   ngOnInit() {
+    console.log('IMG', this.img)
   }
 
   close() {
@@ -43,9 +41,7 @@ export class EventDetailsPage implements OnInit {
     this.minutesEnd = this.end.getMinutes()
   
     // (this.start.getMinutes()<10?'0':'') + this.start.getMinutes()  // if getMinutes() is less than 10, return a 0, if greater, return an empty string
-    
-    console.log(this.minutesStart)
-    if (this.minutesStart < 10) {
+        if (this.minutesStart < 10) {
       this.minutesStart = '0' + this.minutesStart
     } 
     if (this.minutesEnd < 10) {
@@ -53,5 +49,4 @@ export class EventDetailsPage implements OnInit {
     } 
     // MINUTES CONVERSION. IF THERE IS ONLY 1 DIGIT --> CONVERT TO TWO DIGITS. 0 MINUTES -> 00 MINUTES
   }
-
 }
