@@ -16,6 +16,12 @@
             </ion-item>
           </ion-menu-toggle>  
           <ion-menu-toggle auto-hide="false" side=end>
+            <ion-item routerDirection="root" lines="none" detail="false"  [class.selected]="selectedIndex === 3" >
+              <ion-toggle (ionChange)="darkMode($event)" id="themeToggle" slot="start"></ion-toggle>
+              <ion-label>Dark mode</ion-label>
+            </ion-item>            
+          </ion-menu-toggle>  
+          <ion-menu-toggle auto-hide="false" side=end>
             <ion-item routerDirection="root" (click)="this.authService.SignOut()" lines="none" detail="false"  [class.selected]="selectedIndex === 4" >
               <ion-icon slot="start" ios="log-out-outline" md="log-out-sharp"></ion-icon>
               <ion-label>Sign Out</ion-label>
@@ -51,7 +57,6 @@
         <ion-tab-button tab="home" >
           <ion-icon name="home"  (click)="selectedIndex = -1"></ion-icon>
           <ion-label>Home</ion-label>
-          <!-- <ion-badge>6</ion-badge> -->
         </ion-tab-button>
     
         <ion-tab-button tab="map">
@@ -65,6 +70,8 @@
         </ion-tab-button>
       </ion-tab-bar>
     </ion-tabs>
-    
+  
   </div>
+
+  <script src="../../assets/js/eventDetails.js"> </script>
 </ion-app>

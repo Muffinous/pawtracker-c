@@ -24,7 +24,17 @@
       {{event.description}}
     </ion-card-content>
   </ion-card>
+  
+  <div style="display: flex; justify-content: center;">
+    <ion-button (click)="deleteEvent()">
+      <ion-label>Delete Event  </ion-label> 
+      <ion-icon name="trash"></ion-icon>
+    </ion-button>
+  </div>
+
 </ion-content>
+
+
 
 
 <script src="../../../assets/js/eventDetails.js"></script>

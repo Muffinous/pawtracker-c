@@ -35,7 +35,7 @@
     <ion-card-content class="transparent-card">
       <calendar
               [calendarMode]="calendar.mode"
-              [eventSource]="eventSource"
+              [eventSource]="this.userService.eventSource"
               [currentDate]="calendar.currentDate"
               (onCurrentDateChanged)="onCurrentDateChanged($event)"
               (onRangeChanged)="reloadSource(startTime, endTime)"

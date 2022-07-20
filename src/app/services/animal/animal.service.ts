@@ -1,9 +1,6 @@
-import { SlicePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { ProfilePage } from 'src/app/home/profile/profile.page';
 import { Buddy } from 'src/app/models/buddy';
-import { AuthService } from '../auth/auth.service';
 import { UserService } from '../auth/user/user.service';
 
 @Injectable({
@@ -21,18 +18,15 @@ export class AnimalService {
   constructor(public database: AngularFirestore, private userService: UserService) { }
 
   async loadUserBuddies(username: string) {
-    console.log('searching buddies 4', username)
 
     await this.database.collection(`/users/${username}/buddies/`).get()
     .forEach(snapshot => { // get all buddies 4 that user
       //console.log('snapshot', snapshot.docs.map(snapshot => snapshot.data()))
       snapshot.forEach(doc => {
           const animal = doc.data() as Buddy
-          console.log('animal', animal) 
           var index = this.userAnimals.findIndex(x => x.buddyName == animal.buddyName); 
-          console.log('index ', index, 'for animal', animal.buddyName)
+          // console.log('index ', index, 'for animal', animal.buddyName)
           if(index === -1) {
-            console.log('New buddy', animal)          
             this.userAnimals.push(animal)
           }
       })
@@ -45,7 +39,6 @@ export class AnimalService {
     return this.database.doc(`/users/${this.userService.user.username}/buddies/${buddyName}`).ref.get().then(snapshot => {
       if (snapshot.exists) {
         const buddy = snapshot.data() as Buddy       
-        console.log('getBuddyImage()', buddy.buddyPic)   
         buddypic = buddy.buddyPic
         return buddypic
       } else {

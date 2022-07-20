@@ -60,7 +60,10 @@ export class CalModalComponent implements OnInit {
     }
   }
 
-  async save() {    
+  async save() {   
+    let idEv = this.db.createId()
+    console.log("idEv ", idEv)
+    this.event.id = idEv
     this.modalCtrl.dismiss({event: this.event})
     console.log('event to save', this.event)
   }

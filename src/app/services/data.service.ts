@@ -21,7 +21,15 @@ export class DataService {
   
   addEvent(event){
     this.events.push(event);
-      }
+  }
+
+  deleteEvent(event){
+    this.events.forEach((value,index)=>{
+      if(value.id===event) {
+        this.events.splice(index,1); // removes element from array this.events
+      } 
+    });
+  }
 
   getAllEvents():Event[]{  
     return this.events;

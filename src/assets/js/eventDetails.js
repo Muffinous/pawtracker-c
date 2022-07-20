@@ -1,20 +1,22 @@
-// no need to specify document ready
-$(function() {
+// Query for the toggle that is used to change between themes
+const toggle = document.querySelector('#themeToggle');
 
-    // optional: don't cache ajax to force the content to be fresh
-    $.ajaxSetup({
-      cache: false
-    });
-  
-    // specify loading spinner
-    var spinner = "<img src='http://i.imgur.com/pKopwXp.gif' alt='loading...' />";
-  
-    // specify the server/url you want to load data from
-    var url = "http://fiddle.jshell.net/dvb0wpLs/show/";
-  
-    // on click, load the data dynamically into the #result div
-    $("#loadbasic").click(function() {
-      $("#result").html(spinner).load(url);
-    });
-  
-  });
+// Listen for the toggle check/uncheck to toggle the dark class on the <body>
+toggle.addEventListener('ionChange', (ev) => {
+  document.body.classList.toggle('dark', ev.detail.checked);
+});
+
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+// Listen for changes to the prefers-color-scheme media query
+prefersDark.addListener((e) => checkToggle(e.matches));
+
+// Called when the app loads
+function loadApp() {
+  checkToggle(prefersDark.matches);
+}
+
+// Called by the media query to check/uncheck the toggle
+function checkToggle(shouldCheck) {
+  toggle.checked = shouldCheck;
+}

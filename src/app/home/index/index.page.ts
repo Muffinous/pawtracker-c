@@ -1,8 +1,8 @@
-import { Component, Inject, LOCALE_ID, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CalendarComponent } from 'ionic2-calendar';
 import locale from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
-import { AlertController, ModalController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { DataService } from '../../services/data.service';
 import { CalModalComponent } from '../cal-modal/cal-modal.component';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
@@ -28,7 +28,6 @@ export class IndexPage implements OnInit {
   rootPage:any = 'TabsPage';
   
   // calendar shit
-  eventSource: Event[] = []
   viewTitle: string
   user = {} as User
 
@@ -45,43 +44,14 @@ export class IndexPage implements OnInit {
 
   @ViewChild(CalendarComponent) myCal: CalendarComponent;
 
-  constructor(private userService: UserService , public db: AngularFirestore, private alertCtrl: AlertController, private modalCtrl: ModalController, 
+  constructor(private userService: UserService , public db: AngularFirestore, private modalCtrl: ModalController, 
      private dataService: DataService, private authService: AuthService, private animalService: AnimalService ) {
 
-      this.db.collection(`/users/testuser/events/`).get().subscribe(snapshot => { // load all events from user DB
-        snapshot.forEach(snap => {
-          let event:any = snap.data()         
-          // console.log('constructor event ', event)
-          event.id = snap.id
-          event.startTime = event.startTime.toDate()
-          event.endTime = event.endTime.toDate()
-          this.dataService.addEvent(event)
-        })
-        this.eventSource = this.dataService.getAllEvents(); // loadd events in calendar
-        let events = this.eventSource;
-        this.eventSource = [];
-        setTimeout(() => {
-          this.eventSource = events;
-        });  
-      })
+      this.userService.loadEvents();
   }
 
   ngOnInit() {    
     registerLocaleData(locale);
-    //this.loadMap();
-  }
-
-  loadMap() {
-    const mapEle: HTMLElement = document.getElementById('map');
-    const myLatLng = { lat: -34.397, lng: 150.644};
-    this.map = new google.maps.Map(mapEle, {
-      center: myLatLng,
-      zoom: 12
-    });
-
-    google.maps.event.addListenerOnce(this.map, 'idle', () => {
-      mapEle.classList.add('show-map');
-    });
   }
 
   // calendar events
@@ -107,7 +77,42 @@ export class IndexPage implements OnInit {
       component: EventDetailsPage,
       componentProps: {ev, img}
     })
-    return await modal.present()
+
+    await modal.present();
+   
+    modal.onDidDismiss().then((result) => {
+      console.log("after delete outside data block.");
+
+      this.userService.eventSource = this.dataService.getAllEvents(); // return array with all of the events
+      this.myCal.loadEvents()
+
+      if (result) {
+        let eventData = result.data.event;    
+        if (eventData.allDay) { // manage if event is allday or not
+          eventData.startTime = new Date(this.selectedDate)
+          eventData.endTime = new Date(this.selectedDate)
+        } else {
+          eventData.allDay = false
+          eventData.startTime = new Date(eventData.startTime)
+          eventData.endTime = new Date(eventData.endTime)    
+        }
+        this.saveEventDB(eventData) // save new event to firebase db
+
+        this.dataService.addEvent(eventData) // makes the push to array
+        this.userService.eventSource = this.dataService.getAllEvents(); // return array with all of the events
+
+        let events = this.userService.eventSource;
+        this.userService.eventSource = [];
+        setTimeout(() => {
+          this.userService.eventSource = events;
+        });      
+      }
+      this.myCal.update()
+      this.myCal.loadEvents()
+    }).catch((error) => {
+      console.log('Error getting openCalModal() result', error)
+      return error
+    });
   }
   
   onTimeSelected(ev) {    
@@ -150,12 +155,12 @@ export class IndexPage implements OnInit {
         this.saveEventDB(eventData) // save new event to firebase db
 
         this.dataService.addEvent(eventData) // makes the push to array
-        this.eventSource = this.dataService.getAllEvents(); // return array with all of the events
+        this.userService.eventSource = this.dataService.getAllEvents(); // return array with all of the events
 
-        let events = this.eventSource;
-        this.eventSource = [];
+        let events = this.userService.eventSource;
+        this.userService.eventSource = [];
         setTimeout(() => {
-          this.eventSource = events;
+          this.userService.eventSource = events;
         });      
       }
       this.myCal.update()
@@ -177,6 +182,7 @@ export class IndexPage implements OnInit {
     }).catch((error) => {
       this.presentAlert(error)
     })
+
   }
 
   prevMonth() {
@@ -200,7 +206,6 @@ export class IndexPage implements OnInit {
       const alert = document.createElement('ion-alert');
       alert.cssClass = 'my-custom-class';
       alert.header = 'Error';
-      // alert.subHeader = 'Subtitle';
       alert.message = message;
       alert.buttons = ['OK'];
     

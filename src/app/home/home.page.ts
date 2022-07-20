@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../models/user';
 import { AuthService } from '../services/auth/auth.service';
@@ -18,8 +18,9 @@ export class HomePage implements OnInit{
   rootPage:any = 'TabsPage'
   user = {} as User
   selectedIndex
+  selectedTheme: String;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private authService: AuthService, private userService: UserService) { 
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private authService: AuthService, private userService: UserService, private renderer: Renderer2) { 
     this.activatedRoute.params.subscribe(params => {
       if (params) {
         this.user.username = params.username
@@ -36,7 +37,7 @@ export class HomePage implements OnInit{
     { title: 'My profile', url: 'profile', icon: 'person', index: 0},
     { title: 'Buddies', url: 'buddies', icon: 'paw', index: 1},
     { title: 'Settings', url: `/settingsnew`, icon: 'settings', index: 2 },
-    { title: 'Dark mode', url: '', icon: 'toggle', index: 3 },
+    // { title: 'Dark mode', icon: 'toggle', fn: () => this.darkMode($event),  index: 3 },
   ];
 
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];  
@@ -49,6 +50,24 @@ export class HomePage implements OnInit{
     this.router.navigateByUrl('/settingsnew')
   }
 
+  darkMode(event) {
+    console.log("DARK MODE ", event)
+    let systemDark = window.matchMedia("(prefers-color-scheme: dark)");
+    // systemDark.addEventListener(e, this.colorTest(systemDark))
+    if(event.detail.checked){
+      this.renderer.setAttribute(document.body, 'color-theme', 'dark')
+    } else {
+      this.renderer.setAttribute(document.body, 'color-theme', 'light')
+    }
+  }
+
+   colorTest(systemInitiatedDark) {
+    if (systemInitiatedDark.matches) {
+      document.body.setAttribute('color-theme', 'dark');		
+    } else {
+      document.body.setAttribute('color-theme', 'light');
+    }
+  }
   public getUser() {
     return this.user
   }
