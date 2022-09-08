@@ -20,7 +20,7 @@ export class HomePage implements OnInit{
   selectedIndex
   selectedTheme: String;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private authService: AuthService, private userService: UserService, private renderer: Renderer2) { 
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private authService: AuthService, private userService: UserService, private renderer: Renderer2) {
     this.activatedRoute.params.subscribe(params => {
       if (params) {
         this.user.username = params.username
@@ -34,9 +34,10 @@ export class HomePage implements OnInit{
   }
 
   public appPages = [
-    { title: 'My profile', url: 'profile', icon: 'person', index: 0},
-    { title: 'Buddies', url: 'buddies', icon: 'paw', index: 1},
-    { title: 'Settings', url: `/settingsnew`, icon: 'settings', index: 2 },
+    { title: 'My profile', url: 'profile', icon: 'person', selectedIndex: 0},
+    { title: 'Buddies', url: 'buddies', icon: 'paw', selectedIndex: 1},
+    { title: 'Settings', url: `/settingsnew`, icon: 'settings', selectedIndex: 2 },
+    { title: 'Adopt', url: `adopt`, icon: 'heart', selectedIndex: 3 },
     // { title: 'Dark mode', icon: 'toggle', fn: () => this.darkMode($event),  index: 3 },
   ];
 
@@ -51,9 +52,6 @@ export class HomePage implements OnInit{
   }
 
   darkMode(event) {
-    console.log("DARK MODE ", event)
-    let systemDark = window.matchMedia("(prefers-color-scheme: dark)");
-    // systemDark.addEventListener(e, this.colorTest(systemDark))
     if(event.detail.checked){
       this.renderer.setAttribute(document.body, 'color-theme', 'dark')
     } else {

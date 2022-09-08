@@ -1,6 +1,5 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import { Component, OnInit, ViewEncapsulation} from '@angular/core';
 import SwiperCore, { Autoplay } from 'swiper';
-import { IonInfiniteScroll, IonList } from '@ionic/angular';
 import { UserService } from '../services/auth/user/user.service';
 
 SwiperCore.use([Autoplay]);

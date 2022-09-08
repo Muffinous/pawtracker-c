@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>adopt</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <swiper [autoplay]="false" >
+    <ng-template swiperSlide *ngFor="let item of data; let i = index">
+      <h2 class="slidertitle">{{item.title}}</h2>     
+      <img class="sliderimg" src="../../assets/img/{{item.img}}" alt="img adopt">   
+      <p class="sliderp" [innerHTML]="item.description"></p>    
+    </ng-template>
+  </swiper>
+
+    <ion-row style="place-content: center">
+        <ion-button class="btn-primary" color="primary" shape="round" (click)="newAdoption()">
+          New adoption
+        </ion-button>    
+    </ion-row>  
+
+  <ion-grid>
+    <ion-row>
+      <ion-col sizeLg="4" sizeXs="6" sizeMd="4" *ngFor="let buddy of buddies; let i = index">
+        <ion-card class="welcome-card">
+          <h1>{{buddy.name}}</h1>
+          <img src='../../../assets/img/{{buddy.img}}'>
+        </ion-card>
+      </ion-col>
+    </ion-row>    
+  </ion-grid>
+
+</ion-content>

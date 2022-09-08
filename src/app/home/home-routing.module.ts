@@ -17,6 +17,10 @@ const routes: Routes = [
         loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
       },
       {
+        path: 'adopt',
+        loadChildren: () => import('./adopt/adopt.module').then( m => m.AdoptPageModule)
+      },
+      {
         path: '',
         redirectTo: 'index',
         pathMatch: 'full'
@@ -34,7 +38,8 @@ const routes: Routes = [
     redirectTo: 'index',
     pathMatch: 'full'
   },     
-  { path: 'settingsnew', component: SettingsComponent },  {
+  { path: 'settingsnew', component: SettingsComponent },
+  {
     path: 'event-details',
     loadChildren: () => import('./event-details/event-details.module').then( m => m.EventDetailsPageModule)
   },
@@ -42,7 +47,6 @@ const routes: Routes = [
     path: 'buddy',
     loadChildren: () => import('./buddy/buddy.module').then( m => m.BuddyPageModule)
   },
-
 
   // {
   //   path: 'settings',

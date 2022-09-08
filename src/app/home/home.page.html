@@ -10,19 +10,19 @@
           <ion-list-header>{{this.userService.user.username}}</ion-list-header>
           <ion-note>{{this.userService.user.email}}</ion-note>
           <ion-menu-toggle auto-hide="false" side=end *ngFor="let p of appPages; let i = index">
-            <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false"  [class.selected]="selectedIndex === i" >
+            <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false"  [class.selected]=" this.selectedIndex === i" >
               <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>
-          </ion-menu-toggle>  
+          </ion-menu-toggle>
           <ion-menu-toggle auto-hide="false" side=end>
-            <ion-item routerDirection="root" lines="none" detail="false"  [class.selected]="selectedIndex === 3" >
+            <ion-item routerDirection="root" lines="none" detail="false"  [class.selected]=" this.selectedIndex === 4" >
               <ion-toggle (ionChange)="darkMode($event)" id="themeToggle" slot="start"></ion-toggle>
               <ion-label>Dark mode</ion-label>
             </ion-item>            
           </ion-menu-toggle>  
           <ion-menu-toggle auto-hide="false" side=end>
-            <ion-item routerDirection="root" (click)="this.authService.SignOut()" lines="none" detail="false"  [class.selected]="selectedIndex === 4" >
+            <ion-item routerDirection="root" (click)="this.authService.SignOut()" lines="none" detail="false"  [class.selected]=" this.selectedIndex === 5" >
               <ion-icon slot="start" ios="log-out-outline" md="log-out-sharp"></ion-icon>
               <ion-label>Sign Out</ion-label>
             </ion-item>            
@@ -55,17 +55,17 @@
     <ion-tabs>
       <ion-tab-bar slot="bottom">
         <ion-tab-button tab="home" >
-          <ion-icon name="home"  (click)="selectedIndex = -1"></ion-icon>
+          <ion-icon name="home"  (click)=" this.selectedIndex === -1"></ion-icon>
           <ion-label>Home</ion-label>
         </ion-tab-button>
     
-        <ion-tab-button tab="map">
-          <ion-icon name="heart"></ion-icon>
+        <ion-tab-button tab="adopt">
+          <ion-icon name="heart" (click)=" this.selectedIndex === 3"></ion-icon>
           <ion-label>Adopt</ion-label>
         </ion-tab-button>
     
         <ion-tab-button tab="profile" >
-          <ion-icon name="person-circle"  (click)="selectedIndex = 0"></ion-icon>
+          <ion-icon name="person-circle"  (click)=" this.selectedIndex === 0"></ion-icon>
           <ion-label>Profile</ion-label>
         </ion-tab-button>
       </ion-tab-bar>
