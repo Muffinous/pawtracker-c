@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { AdoptModalComponent } from './adopt-modal/adopt-modal.component';
 
@@ -8,26 +9,8 @@ import { AdoptModalComponent } from './adopt-modal/adopt-modal.component';
   styleUrls: ['./adopt.page.scss'],
 })
 export class AdoptPage implements OnInit {
+  public ionicForm: FormGroup;
 
-  data = [
-    {
-      img: "slide-1.jpg", 
-      title: "know always where your buddy is!", 
-      description: "Don't worry about your buddy, <b>always</b> be aware of where he is."
-    }, 
-    {
-      img: "slide-2.jpg", 
-      title: "know always where your buddy is!", 
-      description: "Track every step. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-    }, 
-    {
-      img: "slide-1.jpg", 
-      title: "know always where your buddy is!", 
-      description: "Donec eget est ultrices, tincidunt orci in, venenatis magna. Suspendisse mattis congue tempor."
-    }
-  ]
-
-  
   buddies = [
     {
       img: "slide-1.jpg", 
@@ -59,7 +42,7 @@ export class AdoptPage implements OnInit {
     }
   ]
 
-  constructor(private modalCtrl: ModalController,) { }
+  constructor(private modalCtrl: ModalController, private formBuilder: FormBuilder,) { }
 
   ngOnInit() {
   }
@@ -102,6 +85,5 @@ export class AdoptPage implements OnInit {
       return error
     });
   }
-  
 
 }
