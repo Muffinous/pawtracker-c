@@ -14,6 +14,7 @@ export class AnimalService {
   buddyBreed: []
   buddyBday: string
   userAnimals = [];
+  userAnimalsAdoption = [];
 
   constructor(public database: AngularFirestore, private userService: UserService) { }
 
@@ -45,6 +46,23 @@ export class AnimalService {
         return 'Error loading image. Please restart.'
       }
       })
+  }
+
+  async loadUserBuddiesAdoption(username: string) {
+
+    await this.database.collection(`/users/${username}/inAdoption/`).get()
+    .forEach(snapshot => { // get all buddies 4 that user
+      //console.log('snapshot', snapshot.docs.map(snapshot => snapshot.data()))
+      snapshot.forEach(doc => {
+          const animal = doc.data() as Buddy
+          var index = this.userAnimalsAdoption.findIndex(x => x.buddyName == animal.buddyName); 
+          // console.log('index ', index, 'for animal', animal.buddyName)
+          if(index === -1) {
+            this.userAnimalsAdoption.push(animal)
+          }
+      })
+      console.log('ARRAY ANIMALS IN ADOPTION', this.userAnimalsAdoption)
+    })
   }
 }
 

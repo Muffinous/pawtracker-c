@@ -54,6 +54,7 @@ export class AuthService {
           user.uid = result.user.uid
           this.addUserService(user) // save the user's info 
           this.loadUserAnimals(user.username)
+          this.loadUserAnimalsAdoption(user.username)
           this.router.navigate(['home/' + user.username]);
         });
       //  this.SetUserData(result.user);
@@ -241,6 +242,10 @@ export class AuthService {
 
   loadUserAnimals(username: string) {
     this.animalService.loadUserBuddies(username)
+  }
+
+  loadUserAnimalsAdoption(username: string) {
+    this.animalService.loadUserBuddiesAdoption(username)
   }
 
   async openLoader() {

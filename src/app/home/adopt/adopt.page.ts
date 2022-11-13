@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
+import { AnimalService } from 'src/app/services/animal/animal.service';
 import { AdoptModalComponent } from './adopt-modal/adopt-modal.component';
 
 @Component({
@@ -41,8 +42,12 @@ export class AdoptPage implements OnInit {
       name: "buddy7", 
     }
   ]
+  mybuddiesAdopt = [];
 
-  constructor(private modalCtrl: ModalController, private formBuilder: FormBuilder,) { }
+  constructor(private modalCtrl: ModalController, private formBuilder: FormBuilder, private animalService: AnimalService) {
+    this.mybuddiesAdopt = this.animalService.userAnimalsAdoption
+    console.log("mybuddiesAdoption ", this.mybuddiesAdopt)
+   }
 
   ngOnInit() {
   }
@@ -57,31 +62,13 @@ export class AdoptPage implements OnInit {
     await modal.present();
    
     modal.onDidDismiss().then((result) => {
-      // if (result.data.event) {
-      //   let eventData = result.data.event;    
-      //   if (eventData.allDay) { // manage if event is allday or not
-      //     eventData.startTime = new Date(this.selectedDate)
-      //     eventData.endTime = new Date(this.selectedDate)
-      //   } else {
-      //     eventData.allDay = false
-      //     eventData.startTime = new Date(eventData.startTime)
-      //     eventData.endTime = new Date(eventData.endTime)    
-      //   }
-      //   this.saveEventDB(eventData) // save new event to firebase db
-
-      //   this.dataService.addEvent(eventData) // makes the push to array
-      //   this.userService.eventSource = this.dataService.getAllEvents(); // return array with all of the events
-
-      //   let events = this.userService.eventSource;
-      //   this.userService.eventSource = [];
-      //   setTimeout(() => {
-      //     this.userService.eventSource = events;
-      //   });      
-      // }
-      // this.myCal.update()
-      // this.myCal.loadEvents()
+      console.log("After new adoption modal", result);
+      if (result) {
+        let eventData = result.data.animals;  
+        this.mybuddiesAdopt = eventData;  
+      }
     }).catch((error) => {
-      console.log('Error getting openAnimalModal() result', error)
+      console.log('Error getting newAdoption() result', error)
       return error
     });
   }

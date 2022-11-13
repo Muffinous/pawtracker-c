@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
+import { User } from 'src/app/models/user';
+import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+import { UserService } from 'src/app/services/auth/user/user.service';
 
 @Component({
   selector: 'app-adopt-modal',
@@ -586,8 +592,13 @@ export class AdoptModalComponent implements OnInit {
     }
   ]
 
-  
-  constructor(private modalCtrl: ModalController, private formBuilder: FormBuilder, ) { }
+  images = []
+  imageUrl = []
+  percentage
+  downloadURL: Observable<string>;
+  user = {} as User;
+
+  constructor(    private userService: UserService, private modalCtrl: ModalController, private formBuilder: FormBuilder, private afs: AngularFirestore, private storage: AngularFireStorage) { }
 
   ngOnInit() {
     this.ionicForm = this.formBuilder.group({
@@ -609,5 +620,114 @@ export class AdoptModalComponent implements OnInit {
       buddyBday: ['', [Validators.required]],   
       buddyPic: ['', [Validators.required]]
     })
+  }
+
+  submitAdoption() {
+    if (!this.ionicForm.valid) {
+      console.log('Please provide all the required values!')
+      return false;
+    } else {
+      let newAdoptionBuddies = this.ionicForm.value.attributes.length
+      console.log(newAdoptionBuddies)
+      for (let i=0; i<newAdoptionBuddies; i++) {
+        const adoptionBuddyRef: AngularFirestoreDocument<any> = this.afs.doc(
+          `adoption/${this.ionicForm.value.attributes[i].buddyName}`
+          );      
+          adoptionBuddyRef.set(this.ionicForm.value.attributes[i], {
+            merge: true,
+          });
+
+          const userRef: AngularFirestoreDocument<any> = this.afs.doc(
+            `users/${this.userService.user.username}/inAdoption/${this.ionicForm.value.attributes[i].buddyName}`
+            ); 
+            userRef.set(this.ionicForm.value.attributes[i], {
+            merge: true,
+          });
+      }
+    }
+    this.modalCtrl.dismiss({animals: this.ionicForm.value})
+  }
+
+
+  onFileSelected(event, id) {
+    const file = event.target.files[0]; // info de la imagen
+    let reader = new FileReader();
+
+    reader.onload = (e: any) => {
+        this.images[id] = e.target.result
+    }
+    reader.readAsDataURL(file) // para que aparezca la imagen en la pantalla
+
+    this.uploadImage(event, id)
+  }
+
+  uploadImage(event, id) { // esta funcion es para subir la imagen a la base de datos
+    var n = Date.now();
+    const file = event.target.files[0];
+    const filePath = `BuddyImages/Adoption/${this.userService.user.username}/${n}`; // path donde se va a guardar la imagen en firebase
+    const fileRef = this.storage.ref(filePath);
+    
+    const task = this.storage.upload(filePath, file);
+    this.percentage = task.percentageChanges()
+    console.log('percentage', this.percentage)
+    task
+      .snapshotChanges()
+      .pipe(
+        finalize(() => {
+          this.downloadURL = fileRef.getDownloadURL();
+          // this.ionicForm.value.attributes[id].buddyPic = this.downloadURL
+          this.downloadURL.subscribe(url => {
+            if (url) {
+              this.imageUrl[id] = url;
+              console.log('imageURL:', this.imageUrl[id], 'downloadURL:', this.downloadURL)
+              // this.ionicForm.value.attributes[id].buddyPic = filePath IMAGE PATH IN DATABASE
+              this.ionicForm.value.attributes[id].buddyPic = this.imageUrl[id] // URL IMAGE IN DATABASE
+            }
+          });
+        })
+      )
+      .subscribe(url => {
+        if (url) {
+          // console.log('url', url);
+        }
+      });
+  }
+
+  
+  changeBreed(value) {
+    console.log('val ', value)
+    switch (value) {
+      case 'Cat':
+        this.hasBreed = true
+        this.breeds = this.catBreeds
+      break;
+      case 'Dog':
+        console.log(this.dogBreeds)
+        this.hasBreed = true
+        this.breeds = this.dogBreeds
+      break;
+      case 'Pig':
+        this.hasBreed = true
+        this.breeds = this.pigBreeds
+      break;
+      case 'Bird':
+        this.hasBreed = true
+        this.breeds = this.birdBreeds
+      break;   
+      case 'Rabbit':
+        this.hasBreed = true
+        this.breeds = this.rabbitBreeds
+      break;   
+      case 'Mice':
+        this.hasBreed = false
+      break;
+      case 'Turtle':
+        this.hasBreed = true
+        this.breeds = this.turtleBreeds
+      break;
+
+      default:
+        break;
+    }
   }
 }

@@ -33,8 +33,6 @@ import { AdoptModalComponent } from './home/adopt/adopt-modal/adopt-modal.compon
   declarations: [AppComponent, SignupComponent, LoginComponent, CalModalComponent, SettingsComponent, SignupAnimalComponent, AdoptModalComponent],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, NgCalendarModule, FormsModule, ReactiveFormsModule, CommonModule,
-    // provideFirebaseApp(() => initializeApp(environment.firebase)),
-    // provideFirestore(() => getFirestore()),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule,
