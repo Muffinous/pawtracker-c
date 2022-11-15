@@ -15,6 +15,7 @@ export class AnimalService {
   buddyBday: string
   userAnimals = [];
   userAnimalsAdoption = [];
+  buddiesInAdoption = []
 
   constructor(public database: AngularFirestore, private userService: UserService) { }
 
@@ -31,7 +32,6 @@ export class AnimalService {
             this.userAnimals.push(animal)
           }
       })
-      console.log('ARRAY ANIMALS', this.userAnimals)
     })
   }
 
@@ -61,9 +61,23 @@ export class AnimalService {
             this.userAnimalsAdoption.push(animal)
           }
       })
-      console.log('ARRAY ANIMALS IN ADOPTION', this.userAnimalsAdoption)
     })
   }
+
+  async loadBuddiesinAdoption() {
+
+    await this.database.collection(`/adoption/`).get()
+    .forEach(snapshot => { // get all buddies in adoption
+      snapshot.forEach(doc => {
+          const animal = doc.data() as Buddy
+          var index = this.buddiesInAdoption.findIndex(x => x.buddyName == animal.buddyName); 
+          if(index === -1) {
+            this.buddiesInAdoption.push(animal)
+          }
+      })
+    })
+  }
+
 }
 
 async function presentAlert(message: string) {

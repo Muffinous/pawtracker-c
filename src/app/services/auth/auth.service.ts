@@ -55,6 +55,7 @@ export class AuthService {
           this.addUserService(user) // save the user's info 
           this.loadUserAnimals(user.username)
           this.loadUserAnimalsAdoption(user.username)
+          this.loadAnimalsAdoption()
           this.router.navigate(['home/' + user.username]);
         });
       //  this.SetUserData(result.user);
@@ -246,6 +247,10 @@ export class AuthService {
 
   loadUserAnimalsAdoption(username: string) {
     this.animalService.loadUserBuddiesAdoption(username)
+  }
+
+  loadAnimalsAdoption(){
+    this.animalService.loadBuddiesinAdoption()
   }
 
   async openLoader() {

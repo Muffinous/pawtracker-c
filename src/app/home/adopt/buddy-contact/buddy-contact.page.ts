@@ -1,17 +1,17 @@
-import { formatDate, getLocaleDateFormat } from '@angular/common';
+import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
 import { Buddy } from 'src/app/models/buddy';
 
 @Component({
-  selector: 'app-buddy',
-  templateUrl: './buddy.page.html',
-  styleUrls: ['./buddy.page.scss'],
+  selector: 'app-buddy-contact',
+  templateUrl: './buddy-contact.page.html',
+  styleUrls: ['./buddy-contact.page.scss'],
 })
-export class BuddyPage implements OnInit {
+export class BuddyContactPage implements OnInit {
   buddy = {} as Buddy
   bday
-
+  
   constructor(public modalControler: ModalController, public navParams: NavParams) { 
     this.buddy.buddyName = this.navParams.get('buddyName');
     this.buddy.buddyAge = this.navParams.get('buddyAge');
@@ -25,7 +25,6 @@ export class BuddyPage implements OnInit {
   
     console.log('buddypage', this.buddy, 'bday', this.bday)
   }
-  
   ngOnInit() {
   }
 

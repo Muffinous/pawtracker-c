@@ -28,10 +28,10 @@
 
   <ion-grid>
     <ion-row>
-      <ion-col sizeLg="4" sizeXs="6" sizeMd="4" *ngFor="let buddy of buddies; let i = index">
+      <ion-col sizeLg="4" sizeXs="6" sizeMd="4" *ngFor="let buddy of buddiesInAdoption" (click)="onAnimalSelected(buddy)">
         <ion-card class="welcome-card">
-          <h1>{{buddy.name}}</h1>
-          <img src='../../../assets/img/{{buddy.img}}'>
+          <h1>{{buddy.buddyName}}</h1>
+          <img src='{{buddy.buddyPic}}'>
         </ion-card>
       </ion-col>
     </ion-row>    

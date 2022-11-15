@@ -24,6 +24,11 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'settingsnew', component: SettingsComponent },
   { path: 'signupanimal', component: SignupAnimalComponent },
+  {
+    path: 'buddy-contact',
+    loadChildren: () => import('./home/adopt/buddy-contact/buddy-contact.module').then( m => m.BuddyContactPageModule)
+  },
+
 
 ];
 @NgModule({

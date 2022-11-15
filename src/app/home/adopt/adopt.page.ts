@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { AnimalService } from 'src/app/services/animal/animal.service';
 import { AdoptModalComponent } from './adopt-modal/adopt-modal.component';
+import { BuddyContactPage } from './buddy-contact/buddy-contact.page';
 
 @Component({
   selector: 'app-adopt',
@@ -12,41 +13,13 @@ import { AdoptModalComponent } from './adopt-modal/adopt-modal.component';
 export class AdoptPage implements OnInit {
   public ionicForm: FormGroup;
 
-  buddies = [
-    {
-      img: "slide-1.jpg", 
-      name: "buddy1", 
-    }, 
-    {
-      img: "slide-2.jpg", 
-      name: "buddy2", 
-    }, 
-    {
-      img: "slide-1.jpg", 
-      name: "buddy3", 
-    },
-    {
-      img: "slide-1.jpg", 
-      name: "buddy4", 
-    },
-    {
-      img: "slide-1.jpg", 
-      name: "buddy5", 
-    },
-    {
-      img: "slide-1.jpg", 
-      name: "buddy6", 
-    },
-    {
-      img: "slide-1.jpg", 
-      name: "buddy7", 
-    }
-  ]
   mybuddiesAdopt = [];
+  buddiesInAdoption = [];
+  buddy = {};
 
-  constructor(private modalCtrl: ModalController, private formBuilder: FormBuilder, private animalService: AnimalService) {
+  constructor(private modalCtrl: ModalController, private formBuilder: FormBuilder, private animalService: AnimalService, public modalController: ModalController,) {
     this.mybuddiesAdopt = this.animalService.userAnimalsAdoption
-    console.log("mybuddiesAdoption ", this.mybuddiesAdopt)
+    this.buddiesInAdoption = this.animalService.buddiesInAdoption
    }
 
   ngOnInit() {
@@ -72,5 +45,15 @@ export class AdoptPage implements OnInit {
       return error
     });
   }
+
+  async onAnimalSelected(buddy) {
+      this.buddy = buddy
+      console.log('buddy', buddy)
+      const modal = await this.modalController.create({
+        component: BuddyContactPage,
+        componentProps: buddy
+      })
+      return await modal.present()
+    }
 
 }

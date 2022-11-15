@@ -692,7 +692,6 @@ export class AdoptModalComponent implements OnInit {
         }
       });
   }
-
   
   changeBreed(value) {
     console.log('val ', value)
@@ -730,4 +729,5 @@ export class AdoptModalComponent implements OnInit {
         break;
     }
   }
+  
 }

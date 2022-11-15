@@ -23,7 +23,7 @@
     <ion-row>              
         <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
           <div class="ion-text-center">
-            <h3>Sign Up Buddy</h3>
+            <h3>New adoption</h3>
           </div>
 
           <form [formGroup]="ionicForm" (ngSubmit)="submitAdoption()" novalidate>
@@ -121,6 +121,13 @@
                         </div>
                       </ng-container>
                     </div> -->
+                    <div linespace></div>
+                    <ion-item [hidden]="buddyLocation">
+                      <ion-icon name="location-outline"></ion-icon>
+                      <ion-label>Buddy Location</ion-label>
+                      <ion-input formControlName="buddyLocation" name="buddyLocation"> </ion-datetime>
+                    </ion-item>
+
                     <div linespace></div>
                     <div style="text-align:center;">
                       <img src="{{imageUrl[i]}}" width="100"/>
