@@ -7,6 +7,8 @@ import { User } from 'src/app/models/user';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { UserService } from 'src/app/services/auth/user/user.service';
+import { Geolocation } from '@capacitor/geolocation'
+import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@awesome-cordova-plugins/native-geocoder/ngx';
 
 @Component({
   selector: 'app-adopt-modal',
@@ -597,8 +599,15 @@ export class AdoptModalComponent implements OnInit {
   percentage
   downloadURL: Observable<string>;
   user = {} as User;
+  geoAddress;
 
-  constructor(    private userService: UserService, private modalCtrl: ModalController, private formBuilder: FormBuilder, private afs: AngularFirestore, private storage: AngularFireStorage) { }
+  constructor(private userService: UserService, private modalCtrl: ModalController, private formBuilder: FormBuilder, private afs: AngularFirestore, 
+    private storage: AngularFireStorage, private nativeGeocoder: NativeGeocoder) { }
+
+    options: NativeGeocoderOptions = {
+      useLocale : true,
+      maxResults : 5
+    }
 
   ngOnInit() {
     this.ionicForm = this.formBuilder.group({
@@ -618,6 +627,8 @@ export class AdoptModalComponent implements OnInit {
       buddyAge: ['', [Validators.required]],
       buddyBreed: ['', [Validators.required]],
       buddyBday: ['', [Validators.required]],   
+      buddyLocation: [''],   
+      buddyDescription: [''],
       buddyPic: ['', [Validators.required]]
     })
   }
@@ -730,4 +741,48 @@ export class AdoptModalComponent implements OnInit {
     }
   }
   
+  async getmylocation() {
+      const coordinates = await Geolocation.getCurrentPosition();
+      console.log('Current position:', coordinates);
+      this.nativeGeocoder.reverseGeocode(coordinates.coords.latitude, coordinates.coords.longitude, this.options).then((
+        result: NativeGeocoderResult[])=> {
+          console.log("Result position = ", result)
+          this.geoAddress = this.generateAddress(result[0])
+          console.log('location address = ', this.geoAddress)
+        }
+      )
+  }
+
+    //Return Comma saperated address
+    generateAddress(addressObj){
+      let obj = [];
+      let uniqueNames = [];
+      let address = "";
+      for (let key in addressObj) {
+
+        // console.log(addressObj[key]);
+        if( key!='areasOfInterest' ){
+          obj.push(addressObj[key]);
+        }
+  
+      }
+  
+      var i = 0;
+      obj.forEach(value=>{
+  
+        // console.log('new foreach value:', obj[i]);
+        if( uniqueNames.indexOf(obj[i]) === -1 ){
+          uniqueNames.push(obj[i]);
+        }
+        i++;
+      });
+  
+      uniqueNames.reverse();
+      for (let val in uniqueNames) {
+        if(uniqueNames[val].length)
+        address += uniqueNames[val]+', ';
+      }
+
+      return address.slice(0, -2);
+    }
 }

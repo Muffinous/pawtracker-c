@@ -5,7 +5,7 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat
 import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { Camera, CameraResultType } from '@capacitor/camera';
+// import { Camera, CameraResultType } from '@capacitor/camera';
 import { AngularFireStorage } from "@angular/fire/compat/storage";
 import { map, finalize } from "rxjs/operators";
 import { Observable } from 'rxjs';
@@ -618,6 +618,7 @@ export class SignupAnimalComponent implements OnInit {
 
   initAttributesFields() : FormGroup {
     return this.formBuilder.group({
+      id: [''],
       buddyName: ['', [Validators.required, Validators.minLength(2)]], 
       buddyGender: ['', [Validators.required]],
       buddyType: ['', [Validators.required]],
@@ -645,6 +646,10 @@ export class SignupAnimalComponent implements OnInit {
       console.log('Please provide all the required values!')
       return false;
     } else {
+
+      let idBuddy = this.afs.createId()
+      console.log("idBuddy ", idBuddy)
+
       let newBuddies = this.ionicForm.value.attributes.length
       console.log(newBuddies)
       for (let i=0; i<newBuddies; i++) {
@@ -654,6 +659,9 @@ export class SignupAnimalComponent implements OnInit {
           userBuddiesRef.set(this.ionicForm.value.attributes[i], {
             merge: true,
           });
+          userBuddiesRef.update({id: idBuddy}), {
+            merge: true
+          }
       }
 
       const userRef: AngularFirestoreDocument<any> = this.afs.doc(

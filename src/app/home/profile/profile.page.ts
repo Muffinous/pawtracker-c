@@ -6,7 +6,6 @@ import { AnimalService } from 'src/app/services/animal/animal.service';
 import { UserService } from 'src/app/services/auth/user/user.service';
 import { IonLoaderService } from 'src/app/services/ion-loader.service';
 import { BuddyPage } from '../buddy/buddy.page';
-import { Camera, CameraResultType } from '@capacitor/camera';
 import { CameraService } from 'src/app/services/camera/camera.service';
 import { SignupAnimalComponent } from 'src/app/signup/signup-animal-comp/signup-animal.component';
 
@@ -68,12 +67,21 @@ export class ProfilePage implements OnInit {
 
   async onAnimalSelected(buddy) {
     this.buddy = buddy
-    console.log('buddy', buddy)
     const modal = await this.modalController.create({
       component: BuddyPage,
       componentProps: buddy
     })
-    return await modal.present()
+    await modal.present()
+
+    modal.onDidDismiss().then((result) => { // refresh the array 
+      this.animals = this.animalService.userAnimals
+      this.showedAnimals=this.animals.slice(0,1)     // add the first animal  
+
+      this.loadData()
+    }).catch((error) => {
+      console.log('Error getting onAnimalSelected() result', error)
+      return error
+    });
   }
 
 
@@ -84,14 +92,14 @@ export class ProfilePage implements OnInit {
           text: 'Select Photo',
           role: 'selected',
           handler: () => {
-            this.cameraService.pickImage(0)
+            //this.cameraService.pickImage(0)
             console.log('Select Photo clicked');
           }
         }, {
           text: 'Take Photo',
           role: 'selected',
           handler: () => {
-            this.cameraService.pickImage(1)
+          //  this.cameraService.pickImage(1)
             console.log('Take Photo clicked');        
           }
         },{
@@ -137,9 +145,13 @@ export class ProfilePage implements OnInit {
 
     await modal.present();
    
-    modal.onDidDismiss().then((result) => {
-      this.animalService.loadUserBuddies(this.userService.user.username);
-      console.log('result', result)
+    modal.onDidDismiss().then((result) => { // refresh the array 
+      this.animalService.loadUserBuddies(this.userService.user.username).then( result => {
+        this.animals = this.animalService.userAnimals
+        this.showedAnimals=this.animals.slice(0,1)     // add the first animal  
+
+        this.loadData()
+      })
     }).catch((error) => {
       console.log('Error getting addNewBuddy() result', error)
       return error

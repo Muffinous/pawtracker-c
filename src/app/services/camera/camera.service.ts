@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { AngularFireStorage } from "@angular/fire/compat/storage";
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { Camera, CameraOptions } from '@ionic-native/Camera/ngx';
 import { File } from '@ionic-native/file/ngx';
 
 @Injectable({
@@ -10,7 +9,7 @@ import { File } from '@ionic-native/file/ngx';
 })
 export class CameraService {
 
-  constructor(private storage: AngularFireStorage, private camera: Camera) { }
+  constructor(private storage: AngularFireStorage, ) { }
   downloadURL: Observable<string>;
   private file: File
   fb
@@ -44,27 +43,27 @@ export class CameraService {
   //     });
   // }
 
-  pickImage(option) {
-    console.log('cameraservice', option)
-    let sourceType
-    if (option == 0) {
-      sourceType = this.camera.PictureSourceType.PHOTOLIBRARY
-    } else {
-      sourceType = this.camera.PictureSourceType.CAMERA
-    }
-    const options: CameraOptions = {
-      quality: 100,
-      sourceType: sourceType,
-      destinationType: this.camera.DestinationType.DATA_URL,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE
-    }
-    this.camera.getPicture(options).then((imageData) => {
-      // imageData is either a base64 encoded string or a file URI
-      this.croppedImagepath = 'data:image/jpeg;base64,' + imageData;
-    }, (err) => {
-      // Handle error
-    });
-  }
+  // pickImage(option) {
+  //   console.log('cameraservice', option)
+  //   let sourceType
+  //   if (option == 0) {
+  //     sourceType = this.camera.PictureSourceType.PHOTOLIBRARY
+  //   } else {
+  //     sourceType = this.camera.PictureSourceType.CAMERA
+  //   }
+  //   const options: CameraOptions = {
+  //     quality: 100,
+  //     sourceType: sourceType,
+  //     destinationType: this.camera.DestinationType.DATA_URL,
+  //     encodingType: this.camera.EncodingType.JPEG,
+  //     mediaType: this.camera.MediaType.PICTURE
+  //   }
+  //   this.camera.getPicture(options).then((imageData) => {
+  //     // imageData is either a base64 encoded string or a file URI
+  //     this.croppedImagepath = 'data:image/jpeg;base64,' + imageData;
+  //   }, (err) => {
+  //     // Handle error
+  //   });
+  // }
 
 }

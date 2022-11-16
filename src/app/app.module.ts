@@ -28,6 +28,9 @@ import { Camera } from '@ionic-native/Camera/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { SignupAnimalComponent } from './signup/signup-animal-comp/signup-animal.component';
 import { AdoptModalComponent } from './home/adopt/adopt-modal/adopt-modal.component';
+import { NativeGeocoder } from '@awesome-cordova-plugins/native-geocoder/ngx';
+import { CallNumber } from '@awesome-cordova-plugins/call-number/ngx';
+import { EmailComposer } from '@awesome-cordova-plugins/email-composer/ngx';
 
 @NgModule({
   declarations: [AppComponent, SignupComponent, LoginComponent, CalModalComponent, SettingsComponent, SignupAnimalComponent, AdoptModalComponent],
@@ -42,7 +45,8 @@ import { AdoptModalComponent } from './home/adopt/adopt-modal/adopt-modal.compon
     SwiperModule,
   ],
     
-  providers: [AuthService, Camera, File, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [AuthService, Camera, File, NativeGeocoder, CallNumber, EmailComposer,
+{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

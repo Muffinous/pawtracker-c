@@ -1,4 +1,4 @@
-ion-card{
+ion-card {
     display: flex;
     flex-direction: column;
     width: 100% !important;
@@ -8,4 +8,42 @@ ion-card{
     img {
       object-fit: cover;
     }
+  }
+
+#edit_BuddyName {
+    color: var(--ion-text-color, #000);
+    margin: 0px;
+    padding: 0px;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  #edit_buddyBirthday {
+    color: var(--ion-color-step-600, #666666);
+    margin: 0px 0px 4px;
+    padding: 0px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+  }
+
+  #edit_BuddyDescription {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  #edit_BuddyBreed, #edit_BuddyType {
+    color: var(--ion-color-step-600, #666666);
+    margin: 0px 0px 4px;
+    padding: 0px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
   }

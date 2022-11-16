@@ -124,8 +124,13 @@
                     <div linespace></div>
                     <ion-item [hidden]="buddyLocation">
                       <ion-icon name="location-outline"></ion-icon>
-                      <ion-label>Buddy Location</ion-label>
-                      <ion-input formControlName="buddyLocation" name="buddyLocation"> </ion-datetime>
+                      <ion-input formControlName="buddyLocation" name="buddyLocation" placeholder="Location"> </ion-input>
+                      <ion-button (click)="getmylocation()" >Get my location</ion-button>
+                    </ion-item>
+
+                    <div linespace></div>
+                    <ion-item [hidden]="buddyDescription">
+                      <ion-textarea formControlName="buddyDescription" name="buddyDescription" placeholder="Write something about this buddy here"> </ion-textarea>
                     </ion-item>
 
                     <div linespace></div>

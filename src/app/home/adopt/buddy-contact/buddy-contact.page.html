@@ -22,10 +22,10 @@
       <ion-list>
         <ion-item>
           <div class='center-button'>
-             <ion-button size="large" fill="clear">
+             <ion-button size="large" fill="clear" (click)="callOwner()">
               <ion-icon name="call-outline"></ion-icon>        
              </ion-button>
-             <ion-button size="large" fill="clear">
+             <ion-button size="large" fill="clear" (click)="sendEmail()">
               <ion-icon name="mail-outline"></ion-icon>        
              </ion-button>
           </div>
@@ -34,16 +34,15 @@
 
       <ion-item>
         <ion-card-subtitle>Birthday: {{this.bday}}</ion-card-subtitle>        
-        <ion-icon src="../../../assets/icon/cake.svg"></ion-icon> 
+        <ion-icon size="small" style="  margin-left: 5%; margin-bottom: 2%;"src="../../../assets/icon/cake.svg"></ion-icon> 
       </ion-item>
       <ion-item>
         <ion-card-subtitle>Location: </ion-card-subtitle>  
-        <ion-card-subtitle>{{buddy.location}}</ion-card-subtitle>      
+        <ion-card-subtitle>{{buddy.buddyLocation}}</ion-card-subtitle>      
       </ion-item>
     </ion-card-header>
     <ion-card-content>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.   
+      {{buddy.buddyDescription}}
     </ion-card-content>
   </ion-card>
 </ion-content>

@@ -25,9 +25,9 @@ export class IonLoaderService {
       });
     }
     // Auto hide show loader
-    autoLoader() {
+    autoLoader(message) {
       this.loadingController.create({
-        message: 'Loader hides after 4 seconds',
+        message: message,
         duration: 500
       }).then((response) => {
         response.present();

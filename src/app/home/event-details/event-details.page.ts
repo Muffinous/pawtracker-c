@@ -21,7 +21,8 @@ export class EventDetailsPage implements OnInit {
   minutesStart
   minutesEnd
 
-  constructor(public modalControler: ModalController, private alertCtrl: AlertController, public navParams: NavParams, private dataService: DataService, public database: AngularFirestore, private userService: UserService ) { 
+  constructor(public modalControler: ModalController, private alertCtrl: AlertController, public navParams: NavParams, private dataService: DataService, 
+    public database: AngularFirestore, private userService: UserService ) { 
     this.event = this.navParams.get('ev');
     console.log('ev', this.event)
     this.img = this.navParams.get("img");
