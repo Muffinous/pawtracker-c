@@ -49,8 +49,8 @@
                           <ion-item>
                             <ion-icon name="heart-half"></ion-icon>
                             <ion-select formControlName="buddyGender" name="buddyGender" placeholder="Gender" interface="action-sheet" required>
-                              <ion-select-option value="F">Female</ion-select-option>
-                              <ion-select-option value="M">Male</ion-select-option>
+                              <ion-select-option value="Female">Female</ion-select-option>
+                              <ion-select-option value="Male">Male</ion-select-option>
                             </ion-select>
                           </ion-item>
                           <!-- ERROR MESSAGES BUDDYGENDER -->
@@ -138,6 +138,11 @@
                           </ion-item>
                           <div linespace></div>
 
+                          <ion-item [hidden]="buddyDescription">
+                            <ion-icon name="book"></ion-icon>
+                            <!-- <ion-label>Upload Image</ion-label> -->
+                            <ion-textarea formControlName="buddyDescription" id="buddyDescription" placeholder="Optional description"></ion-textarea>
+                          </ion-item>
                           <ion-row style="height: 20px"></ion-row>
                         </ion-item-group>
                       </section>

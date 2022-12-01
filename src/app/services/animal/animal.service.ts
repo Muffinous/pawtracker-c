@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { Buddy } from 'src/app/models/buddy';
 import { User } from 'src/app/models/user';
 import { UserService } from '../auth/user/user.service';
@@ -19,6 +19,9 @@ export class AnimalService {
   userAnimals = [];
   userAnimalsAdoption = [];
   buddiesInAdoption = []
+
+  actualBreeds: string[]
+  hasBreed = false;
 
   dogBreeds: string[] = [
     "Affenpinscher",
@@ -585,6 +588,9 @@ export class AnimalService {
       name: 'turtle',
       breeds: this.turtleBreeds
     },   
+    {
+      name: 'Mice'
+    }
   ]
 
   constructor(public database: AngularFirestore, private userService: UserService, private ionloaderService: IonLoaderService) { }
@@ -606,14 +612,19 @@ export class AnimalService {
 
   getBuddyImage(buddyName: string):  Promise<any>{
     let buddypic
-    return this.database.doc(`/users/${this.userService.user.username}/buddies/${buddyName}`).ref.get().then(snapshot => {
-      if (snapshot.exists) {
-        const buddy = snapshot.data() as Buddy       
-        buddypic = buddy.buddyPic
+    
+    let buddiesRef = this.database.collection(`/users/${this.userService.user.username}/buddies/`, ref => ref.where('buddyName', '==', buddyName))
+    return buddiesRef.ref.get().then(snapshot => {
+      if (!snapshot.empty) {
+        snapshot.docs.map(doc => {
+          let buddy = doc.data() as Buddy
+          buddypic = buddy.buddyPic
+        })
         return buddypic
       } else {
         return 'Error loading image. Please restart.'
       }
+      
       })
   }
 
@@ -647,7 +658,7 @@ export class AnimalService {
   }
 
   deleteBuddy(user: User, buddy: Buddy) {
-    return this.database.doc(`/users/${user.username}/buddies/${buddy.buddyName}`).delete().then(() => {
+    return this.database.doc(`/users/${user.username}/buddies/${buddy.id}`).delete().then(() => {
       this.database.doc(`users/${user.username}`).update({nAnimals: user.nAnimals - 1}).then(() => {
         this.userService.user.nAnimals = user.nAnimals - 1 // update value for the ()
       })      
@@ -663,6 +674,33 @@ export class AnimalService {
       } 
     });
   }
+
+  setActualBreed(animalType : string) {
+    console.log('Set breed ', animalType)
+    this.animalsTypes.forEach(x => {
+        if (x.name === animalType && x.breeds ) {
+          this.actualBreeds = x.breeds
+          this.hasBreed = true
+        } 
+    });
+    console.log('Set breed 2', this.actualBreeds)
+  }
+
+  updateBuddy(user: User, oldBuddy : Buddy, newBuddy : Buddy) {
+    return this.database.doc(`/users/${user.username}/buddies/${oldBuddy.id}`).update(newBuddy). then(() => {
+
+      this.userAnimals.forEach((item, index, array) => { 
+        if(array[index].id === oldBuddy.id ) {
+          console.log("son iguales ")
+          array[index] = JSON.parse(JSON.stringify(newBuddy))
+
+        };
+        console.log('array ', this.userAnimals)
+        this.ionloaderService.autoLoader('Buddy updated');
+      })
+
+  })
+}
 
 }
 

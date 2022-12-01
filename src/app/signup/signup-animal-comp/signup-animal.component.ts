@@ -625,7 +625,8 @@ export class SignupAnimalComponent implements OnInit {
       buddyAge: ['', [Validators.required]],
       buddyBreed: ['', [Validators.required]],
       buddyBday: ['', [Validators.required]],   
-      buddyPic: ['', [Validators.required]]
+      buddyPic: ['', [Validators.required]],
+      buddyDescription: ['']
     })
   }
 
@@ -654,7 +655,7 @@ export class SignupAnimalComponent implements OnInit {
       console.log(newBuddies)
       for (let i=0; i<newBuddies; i++) {
         const userBuddiesRef: AngularFirestoreDocument<any> = this.afs.doc(
-          `users/${this.user.username}/buddies/${this.ionicForm.value.attributes[i].buddyName}`
+          `users/${this.user.username}/buddies/${idBuddy}`
           );      
           userBuddiesRef.set(this.ionicForm.value.attributes[i], {
             merge: true,

@@ -46,5 +46,17 @@ export class IonLoaderService {
       }).then((res) => {
         res.present();
       });
-    }   
+    }  
+    
+    async presentAlert(message: string, header: string, subheader: string) {
+      const alert = document.createElement('ion-alert');
+      alert.cssClass = 'my-custom-class';
+      alert.header = header;
+      alert.subHeader = subheader;
+      alert.message = message;
+      alert.buttons = ['Cancel', 'OK'];
+    
+      document.body.appendChild(alert);
+      await alert.present();
+    }
 }

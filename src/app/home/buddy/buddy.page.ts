@@ -37,9 +37,7 @@ export class BuddyPage implements OnInit {
     this.breedString = this.buddy.buddyBreed.toString();
     
     this.bday = formatDate(this.buddy.buddyBday, 'dd-MM-yyyy', 'es-ES')
-  
-    console.log('buddypage', this.buddy, 'bday', this.bday)
-  }
+    }
   
   validation_messages = {
     'edit_BuddyName': [
@@ -109,22 +107,16 @@ export class BuddyPage implements OnInit {
       edit_buddyAge: [''],
       edit_buddyBreed: [''],
       edit_buddyBday: [''],   
-      edit_buddyPic: ['']
+      edit_buddyPic: [''],
+      edit_BuddyDescription: ['']
     })
   }
 
   saveEdit() {
-    let buddyPreview = {} as Buddy
-    buddyPreview = this.buddy;
+    let buddyPreview = JSON.parse(JSON.stringify(this.buddy)) as Buddy // copy buddy image to buddypreview to keep all the values
 
-    const userBuddiesRef: AngularFirestoreDocument<any> = this.afs.doc(
-      `users/${this.userService.user.username}/buddies/${this.buddy.buddyName}`
-      ); 
-      console.log('userBuddiesRef values ', userBuddiesRef)
-
-      console.log('Ionic form values ', this.ionicForm.value)
       if (this.ionicForm.value.edit_buddyName) {
-        console.log("update buddy name ", this.buddy.buddyName ," to ", this.ionicForm.value.edit_buddyName)
+        console.log("update buddy name ", buddyPreview.buddyName ," to ", this.ionicForm.value.edit_buddyName)
         buddyPreview.buddyName = this.ionicForm.value.edit_buddyName
       }
 
@@ -151,14 +143,13 @@ export class BuddyPage implements OnInit {
         buddyPreview.buddyBday = this.ionicForm.value.edit_buddyBday
 
       }
+
       if (this.ionicForm.value.edit_BuddyDescription) {
         console.log("update buddy description  ", this.buddy.buddyDescription ," to ", this.ionicForm.value.edit_BuddyDescription)
         buddyPreview.buddyDescription = this.ionicForm.value.edit_BuddyDescription
 
       }
-      // userBuddiesRef.update({buddyName: this.ionicForm.value.attributes.edit_buddyName}), {
-      //   merge: true
-      // }
+
       let subheader : string = "You're gonna update your buddy's info. Is everything correct?"
       let message : string = `<ul><li>  Buddy name : ${buddyPreview.buddyName}</li>
                               <li>Buddy gender : ${buddyPreview.buddyGender}</li>
@@ -167,7 +158,7 @@ export class BuddyPage implements OnInit {
                               <li>Buddy birthday : ${formatDate(buddyPreview.buddyBday, 'dd-MM-yyyy', 'es-ES')}</li>
                               <li>Buddy description : ${buddyPreview.buddyDescription}</li></ul>`
 
-      this.ionLoaderService.presentAlert(message, "Update Buddy Info", subheader)
+      this.presentAlert(message, "Update Buddy Info", subheader, buddyPreview)
   }
 
   cancelEdit() {
@@ -191,5 +182,31 @@ export class BuddyPage implements OnInit {
     reader.readAsDataURL(file) // para que aparezca la imagen en la pantalla
 
     //this.uploadImage(event, id)
+  }
+
+  async presentAlert(message: string, header: string, subheader: string, buddyNewInfo) {
+    const alert = document.createElement('ion-alert');
+    alert.cssClass = 'my-custom-class';
+    alert.header = header;
+    alert.subHeader = subheader;
+    alert.message = message;
+    alert.buttons = [
+    {
+      text: 'Cancel',
+      handler: () => {
+      }
+    },
+    {
+      text: 'Save',
+      handler: () => {
+        console.log('Save option clicked ', this.buddy, ' buddynewinfo ', buddyNewInfo)
+        this.animalService.updateBuddy(this.userService.user, this.buddy, buddyNewInfo).then(result => {
+          this.modalControler.dismiss(null)           
+        })
+      }
+    }
+   ];
+    document.body.appendChild(alert);
+    await alert.present();
   }
 }

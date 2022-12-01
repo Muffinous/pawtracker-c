@@ -71,8 +71,6 @@ export class IndexPage implements OnInit {
   }
 
   async showModalEvent(ev, img) {
-    console.log('se envia img: ', img)
-    console.log('se envia ev: ', ev)
     const modal = await this.modalCtrl.create({
       component: EventDetailsPage,
       componentProps: {ev, img}
@@ -81,12 +79,12 @@ export class IndexPage implements OnInit {
     await modal.present();
    
     modal.onDidDismiss().then((result) => {
-      console.log("after delete outside data block.");
 
       this.userService.eventSource = this.dataService.getAllEvents(); // return array with all of the events
       this.myCal.loadEvents()
 
       if (result) {
+        console.log('result', result)
         let eventData = result.data.event;    
         if (eventData.allDay) { // manage if event is allday or not
           eventData.startTime = new Date(this.selectedDate)
