@@ -32,8 +32,8 @@
     </ion-card>
 
     <ion-grid  *ngIf="!editMode" class="ion-text-center">
+      
       <ion-row class="ion-align-items-center">
-
         <ion-col class="ion-align-items-center">
           <ion-button (click)="deleteBuddy()">
             Delete this buddy 
@@ -41,6 +41,7 @@
           </ion-button>        
         </ion-col>
       </ion-row>
+
       <ion-row class="ion-align-items-center">
         <ion-col *ngIf="!editMode" class="ion-align-items-center">
           <ion-button (click)="editBuddy()">
@@ -48,8 +49,8 @@
             <ion-icon name="pencil-outline" slot="end"></ion-icon>
           </ion-button>      
         </ion-col>
-
       </ion-row>
+
     </ion-grid>
 
   <form *ngIf="editMode" [formGroup]="ionicForm" (ngSubmit)="saveEdit()" novalidate>
@@ -87,13 +88,14 @@
         <!-- Edit Buddy Breed -->
 
         <ion-card-subtitle *ngIf="!editMode">{{buddy.buddyAge}} years old</ion-card-subtitle>
+        
         <ion-item>
           <ion-icon src="../../../assets/icon/cake.svg"></ion-icon> 
           <!-- Edit Buddy Bday -->
           <ion-datetime *ngIf="editMode" formControlName="edit_buddyBday" placeholder="{{this.bday}}" name="edit_buddyBday" displayFormat="MMM-DD-YYYY" pickerFormat="MMM DD YYYY"></ion-datetime>
           <!-- Edit Buddy Bday -->
-
         </ion-item>
+
       </ion-card-header>
       <ion-card-content *ngIf="!editMode">
         {{buddy.buddyDescription}}
@@ -128,8 +130,9 @@
             <ion-icon name="trash-bin-outline" slot="end"></ion-icon>
           </ion-button>        
         </ion-col>
-      </ion-row>
 
+      </ion-row>
     </ion-grid>
+    
   </form>
 </ion-content>

@@ -687,7 +687,7 @@ export class AnimalService {
   }
 
   updateBuddy(user: User, oldBuddy : Buddy, newBuddy : Buddy) {
-    return this.database.doc(`/users/${user.username}/buddies/${oldBuddy.id}`).update(newBuddy). then(() => {
+    return this.database.doc(`/users/${user.username}/buddies/${oldBuddy.id}`).update(newBuddy).then(() => {
 
       this.userAnimals.forEach((item, index, array) => { 
         if(array[index].id === oldBuddy.id ) {
@@ -702,15 +702,20 @@ export class AnimalService {
   })
 }
 
+updateBuddyAdoption(user: User, oldBuddy : Buddy, newBuddy : Buddy) {
+  return this.database.doc(`/adoption/${oldBuddy.id}/`).update(newBuddy).then(() => {
+
+    this.userAnimalsAdoption.forEach((item, index, array) => { 
+      if(array[index].id === oldBuddy.id ) {
+        console.log("son iguales ")
+        array[index] = JSON.parse(JSON.stringify(newBuddy))
+
+      };
+      console.log('array ', this.userAnimals)
+      this.ionloaderService.autoLoader('Buddy updated');
+    })
+    this.database.doc(`/users/${user.username}/inAdoption/${oldBuddy.id}`).update(newBuddy)
+  })
 }
 
-async function presentAlert(message: string) {
-  const alert = document.createElement('ion-alert');
-  alert.cssClass = 'my-custom-class';
-  alert.header = 'Error';
-  alert.message = message;
-  alert.buttons = ['OK'];
-
-  document.body.appendChild(alert);
-  await alert.present();
 }

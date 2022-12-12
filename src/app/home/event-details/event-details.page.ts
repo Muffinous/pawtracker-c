@@ -24,7 +24,7 @@ export class EventDetailsPage implements OnInit {
   constructor(public modalControler: ModalController, private alertCtrl: AlertController, public navParams: NavParams, private dataService: DataService, 
     public database: AngularFirestore, private userService: UserService ) { 
     this.event = this.navParams.get('ev');
-    console.log('ev', this.event)
+    //console.log('ev', this.event)
     this.img = this.navParams.get("img");
     this.start = new Date(this.event.startTime) 
     // save full start hour
@@ -33,7 +33,7 @@ export class EventDetailsPage implements OnInit {
   }
 
   ngOnInit() {
-    console.log('IMG', this.img)
+    //console.log('IMG', this.img)
   }
 
   close() {

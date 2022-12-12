@@ -122,12 +122,11 @@ export class SignupComponent implements OnInit {
     if (this.passwordToggleIconC === 'eye') {
           this.passwordToggleIconC = 'eye-off';
     } else {
-      console.log('not eye');
       this.passwordToggleIconC = 'eye';
     }
   }
 
-  signUp() {
+  async signUp() {
     if (!this.ionicForm.valid) {
       console.log(this.ionicForm)
       console.log(this.ionicForm.value)
@@ -141,9 +140,10 @@ export class SignupComponent implements OnInit {
       this.user.nAnimals = 0
       
       console.log("USER INTERFACE ", this.user)
-      this.authService.SignUp(this.user, this.ionicForm.get("password").value)
-     // await setDoc(doc(this.db, "user", this.ionicForm.value.username), this.user.User)
-     this.router.navigateByUrl('/signupanimal', {state: this.ionicForm.value, replaceUrl:true})
+      await this.authService.SignUp(this.user, this.ionicForm.get("password").value).then((result) => {
+        console.log('result ', result)
+        this.router.navigateByUrl('/signupanimal', {state: this.ionicForm.value, replaceUrl:true})
+      })
     }
   }
 }

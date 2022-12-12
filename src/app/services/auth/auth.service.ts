@@ -68,22 +68,24 @@ export class AuthService {
 
   // Sign up with email/password
   SignUp(user: User, password: string) {
-    this.afs.doc(`/users/${user.username}`).ref.get().then(snapshot => {
+     return this.afs.doc(`/users/${user.username}`).ref.get().then(snapshot => {
       if (!snapshot.exists) {
-        return this.afAuth
+          this.afAuth
           .createUserWithEmailAndPassword(user.email, password)
           .then((result) => {
             /* Call the SendVerificaitonMail() function when new user sign 
             up and returns promise */
           // this.SendVerificationMail();
-            console.log('result.user', result.user)
-            this.SetProfileData(result.user, user);
+            this.SetProfileData(result.user, user);            
+            return true
           })
           .catch((error) => {
-            window.alert(error.message);
+            presentAlert(error.message);
+            return error.message
           });
       } else {
         presentAlert('Username already exists!')
+        return false
       }
     })
   }

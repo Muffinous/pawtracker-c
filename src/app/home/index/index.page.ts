@@ -78,33 +78,11 @@ export class IndexPage implements OnInit {
 
     await modal.present();
    
-    modal.onDidDismiss().then((result) => {
+    modal.onDidDismiss().then(() => {
 
       this.userService.eventSource = this.dataService.getAllEvents(); // return array with all of the events
       this.myCal.loadEvents()
 
-      if (result) {
-        console.log('result', result)
-        let eventData = result.data.event;    
-        if (eventData.allDay) { // manage if event is allday or not
-          eventData.startTime = new Date(this.selectedDate)
-          eventData.endTime = new Date(this.selectedDate)
-        } else {
-          eventData.allDay = false
-          eventData.startTime = new Date(eventData.startTime)
-          eventData.endTime = new Date(eventData.endTime)    
-        }
-        this.saveEventDB(eventData) // save new event to firebase db
-
-        this.dataService.addEvent(eventData) // makes the push to array
-        this.userService.eventSource = this.dataService.getAllEvents(); // return array with all of the events
-
-        let events = this.userService.eventSource;
-        this.userService.eventSource = [];
-        setTimeout(() => {
-          this.userService.eventSource = events;
-        });      
-      }
       this.myCal.update()
       this.myCal.loadEvents()
     }).catch((error) => {
@@ -116,17 +94,13 @@ export class IndexPage implements OnInit {
   onTimeSelected(ev) {    
     this.selectedDate = ev.selectedTime;
     this.currentDate = this.selectedDate.toDateString()
-    // console.log('Selected time INDEX : ' + ev.selectedTime + ', hasEvents: ' +
-    //   (ev.events !== undefined && ev.events.length !== 0) + ', disabled: ' + ev.disabled);
   }
 
   onCurrentDateChanged(event) {
     this.selectedDate = event.selectedTime
-   // console.log('current date change: ' + event);
   }
 
   onRangeChanged(ev) {
-    // console.log('range changed: startTime: ' + ev.startTime + ', endTime: ' + ev.endTime);
   }
 
   async openCalModal() {
@@ -211,7 +185,4 @@ export class IndexPage implements OnInit {
       await alert.present();
   }
 
-  monthString(month) {
-    // months = ['January', 'February', '']
-  }
   }

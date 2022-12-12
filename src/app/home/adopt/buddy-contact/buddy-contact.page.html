@@ -11,7 +11,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-card>
+  <ion-card *ngIf="!editMode">
     <img src="{{buddy.buddyPic}}" />
     <ion-card-header>
       <ion-card-subtitle>{{buddy.buddyType}} - {{buddy.buddyBreed}}</ion-card-subtitle>
@@ -44,5 +44,110 @@
     <ion-card-content>
       {{buddy.buddyDescription}}
     </ion-card-content>
+
+    <ion-grid  *ngIf="!editMode && owner" class="ion-text-center">
+      <ion-row class="ion-align-items-center">
+        <ion-col class="ion-align-items-center">
+          <ion-button (click)="deleteBuddy()">
+            Delete this buddy 
+            <ion-icon name="trash-bin-outline" slot="end"></ion-icon>
+          </ion-button>        
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="ion-align-items-center">
+        <ion-col *ngIf="!editMode" class="ion-align-items-center">
+          <ion-button (click)="editBuddy()">
+            Edit this buddy 
+            <ion-icon name="pencil-outline" slot="end"></ion-icon>
+          </ion-button>      
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
   </ion-card>
+
+  <form *ngIf="editMode" [formGroup]="ionicForm" (ngSubmit)="saveEdit()" novalidate>
+    <ion-card>
+      <img src="{{buddy.buddyPic}}" />
+        <ion-item [hidden]="edit_buddyPic">
+          <ion-icon name="camera"></ion-icon>
+          <ion-input formControlName="edit_buddyPic" type="file" name="buddyPic" (change)="onFileSelected($event, i)" accept="image/png, image/jpeg" required ></ion-input>
+        </ion-item>
+      <ion-card-header>
+
+        <!-- Edit Buddy Name -->
+        <ion-input *ngIf="editMode" formControlName="edit_buddyName" id="edit_buddyName" placeholder="{{buddy.buddyName}}"></ion-input>
+        <!-- Edit Buddy Name -->
+
+        <ion-select formControlName="edit_buddyGender" #edit_buddyGender id="edit_buddyGender" name="edit_buddyGender" placeholder="{{buddy.buddyGender}}" interface="action-sheet" required>
+          <ion-select-option value="Female">Female</ion-select-option>
+          <ion-select-option value="Male">Male</ion-select-option>
+        </ion-select>
+
+        <!-- Edit Buddy Type -->
+        <ion-select *ngIf="editMode" formControlName="edit_buddyType" #edit_buddyType id="edit_buddyType" (ionChange)="changeBreed(edit_buddyType.value)" name="edit_buddyType" placeholder="{{buddy.buddyType}}" interface="action-sheet">
+          <ng-container *ngFor="let type of animalService.animalsTypes">
+            <ion-select-option [value]="type.name">{{type.name}}</ion-select-option>
+          </ng-container>
+        </ion-select>
+        <!-- Edit Buddy Type -->
+
+        <!-- Edit Buddy Breed -->
+        <ion-select *ngIf="editMode && animalService.hasBreed" formControlName="edit_buddyBreed" #edit_buddyBreed id="edit_buddyBreed" name="edit_buddyBreed" placeholder="{{breedString}}"  multiple="true"> <!-- interface="action-sheet" -->
+          <ng-container *ngFor="let breed of animalService.actualBreeds" >
+              <ion-select-option [value]="breed">{{breed}}</ion-select-option>
+          </ng-container>
+        </ion-select>
+        <!-- Edit Buddy Breed -->
+
+        <ion-card-subtitle *ngIf="!editMode">{{buddy.buddyAge}} years old</ion-card-subtitle>
+        
+        <ion-item>
+          <ion-icon src="../../../assets/icon/cake.svg"></ion-icon> 
+          <!-- Edit Buddy Bday -->
+          <ion-datetime *ngIf="editMode" formControlName="edit_buddyBday" placeholder="{{this.bday}}" name="edit_buddyBday" displayFormat="MMM-DD-YYYY" pickerFormat="MMM DD YYYY"></ion-datetime>
+          <!-- Edit Buddy Bday -->
+        </ion-item>
+
+      </ion-card-header>
+      <ion-card-content *ngIf="!editMode">
+        {{buddy.buddyDescription}}
+      </ion-card-content>
+
+      <!-- Edit Buddy Description -->
+      <ion-textarea *ngIf="editMode" formControlName="edit_BuddyDescription" id="edit_BuddyDescription" placeholder="{{buddy.buddyDescription}}"></ion-textarea>
+      <!-- Edit Buddy Description -->
+    </ion-card>
+
+    <ion-grid class="ion-text-center">
+      <ion-row class="ion-align-items-center">
+
+        <!-- Buttons for edit mode: CANCEL AND SAVE -->
+        <ion-col *ngIf="editMode" class="ion-align-items-center">
+          <ion-button *ngIf="editMode" (click)="cancelEdit()">
+            Cancel
+          <ion-icon name="close" slot="end"></ion-icon>
+          </ion-button>         
+        </ion-col>
+        <ion-col *ngIf="editMode">
+          <ion-button *ngIf="editMode" type="submit">
+            Save
+            <ion-icon name="save-outline" slot="end"></ion-icon>
+          </ion-button>         
+        </ion-col>
+        <!-- Buttons for edit mode: CANCEL AND SAVE -->
+
+        <ion-col class="ion-align-items-center">
+          <ion-button (click)="deleteBuddy()">
+            Delete this buddy 
+            <ion-icon name="trash-bin-outline" slot="end"></ion-icon>
+          </ion-button>        
+        </ion-col>
+
+      </ion-row>
+    </ion-grid>
+    
+  </form>
+
 </ion-content>

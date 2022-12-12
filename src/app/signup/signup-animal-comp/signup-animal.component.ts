@@ -590,7 +590,7 @@ export class SignupAnimalComponent implements OnInit {
   popup
 
   constructor(private afs: AngularFirestore, private router:Router, private modalCtrl: ModalController, private userService: UserService, private formBuilder: FormBuilder, public authService: AuthService, private storage: AngularFireStorage) { 
-    console.log('nav', router.getCurrentNavigation())
+   // console.log('nav', router.getCurrentNavigation())
     if (router.getCurrentNavigation() !== null) { // sign up animal 4 the first time
       // this.user.name = 'test'
       this.user.name = this.router.getCurrentNavigation().extras.state.name;
@@ -599,10 +599,8 @@ export class SignupAnimalComponent implements OnInit {
       this.user.email = this.router.getCurrentNavigation().extras.state.email;
       this.user.nAnimals = 0; // inicializo xq es la primera vez que se registra el user. Tiene CERO ANIMALES. Aquí los añade.
       this.pass = this.router.getCurrentNavigation().extras.state.password;
-      console.log('extras sign up animal', this.user, this.pass)
       this.popup = false
     } else { // profile popup page
-      console.log('no extras', this.user)
       this.popup = true
     }
 
@@ -648,12 +646,14 @@ export class SignupAnimalComponent implements OnInit {
       return false;
     } else {
 
-      let idBuddy = this.afs.createId()
-      console.log("idBuddy ", idBuddy)
-
       let newBuddies = this.ionicForm.value.attributes.length
       console.log(newBuddies)
-      for (let i=0; i<newBuddies; i++) {
+
+      for (let i=0; i<newBuddies; i++) { // sign up every buddy
+
+        let idBuddy = this.afs.createId() // create id 4 each buddy
+        console.log("idBuddy ", idBuddy)
+
         const userBuddiesRef: AngularFirestoreDocument<any> = this.afs.doc(
           `users/${this.user.username}/buddies/${idBuddy}`
           );      
@@ -688,7 +688,6 @@ export class SignupAnimalComponent implements OnInit {
   }
 
   changeBreed(value) {
-    console.log('val ', value)
     switch (value) {
       case 'Cat':
         this.hasBreed = true
@@ -725,7 +724,6 @@ export class SignupAnimalComponent implements OnInit {
   }
   
   change(value){
-    console.log("result", value);
   }
 
   onFileSelected(event, id) {

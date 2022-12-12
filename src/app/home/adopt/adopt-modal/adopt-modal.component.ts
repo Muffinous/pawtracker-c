@@ -641,19 +641,25 @@ export class AdoptModalComponent implements OnInit {
       let newAdoptionBuddies = this.ionicForm.value.attributes.length
       console.log(newAdoptionBuddies)
       for (let i=0; i<newAdoptionBuddies; i++) {
+        let idBuddy = this.afs.createId()
         const adoptionBuddyRef: AngularFirestoreDocument<any> = this.afs.doc(
-          `adoption/${this.ionicForm.value.attributes[i].buddyName}`
+          `adoption/${idBuddy}`
           );      
           adoptionBuddyRef.set(this.ionicForm.value.attributes[i], {
             merge: true,
           });
-
+          adoptionBuddyRef.update({id: idBuddy}), { // add buddy id too
+            merge: true
+          }
           const userRef: AngularFirestoreDocument<any> = this.afs.doc(
-            `users/${this.userService.user.username}/inAdoption/${this.ionicForm.value.attributes[i].buddyName}`
+            `users/${this.userService.user.username}/inAdoption/${idBuddy}`
             ); 
-            userRef.set(this.ionicForm.value.attributes[i], {
+          userRef.set(this.ionicForm.value.attributes[i], {
             merge: true,
           });
+          userRef.update({id: idBuddy}), { // add buddy id too
+            merge: true
+          }
       }
     }
     this.modalCtrl.dismiss({animals: this.ionicForm.value})

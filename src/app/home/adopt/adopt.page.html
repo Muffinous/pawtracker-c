@@ -10,7 +10,7 @@
     <div class="list-thumbnail">
       
         <ng-container *ngFor="let animal of mybuddiesAdopt">
-          <div class="img-thumb">
+          <div class="img-thumb" (click)="onAnimalSelected(animal)">
           <h1>{{animal.buddyName}}</h1>
           <img class="buddy-img" alt="buddyImage" src="{{animal.buddyPic}}">  
           </div>
