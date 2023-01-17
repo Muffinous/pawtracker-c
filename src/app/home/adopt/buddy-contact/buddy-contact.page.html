@@ -110,6 +110,13 @@
           <!-- Edit Buddy Bday -->
         </ion-item>
 
+        <ion-item>
+          <ion-icon src="../../../assets/icon/cake.svg"></ion-icon> 
+          <!-- Edit Buddy Location -->
+          <ion-datetime *ngIf="editMode" formControlName="edit_buddyLocation" placeholder="{{this.bday}}" name="edit_buddyLocation" displayFormat="MMM-DD-YYYY" pickerFormat="MMM DD YYYY"></ion-datetime>
+          <!-- Edit Buddy Location -->
+        </ion-item>
+
       </ion-card-header>
       <ion-card-content *ngIf="!editMode">
         {{buddy.buddyDescription}}

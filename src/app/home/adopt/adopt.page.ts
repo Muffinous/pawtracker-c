@@ -36,7 +36,7 @@ export class AdoptPage implements OnInit {
     await modal.present();
    
     modal.onDidDismiss().then((result) => {
-      this.animalService.loadUserBuddiesAdoption(this.userService.user.username);
+      this.animalService.loadUserBuddiesAdoption(this.userService.user);
       this.animalService.loadBuddiesinAdoption();
       console.log("After new adoption modal", result);
       if (result) {

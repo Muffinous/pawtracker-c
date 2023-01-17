@@ -613,8 +613,8 @@ export class AdoptModalComponent implements OnInit {
     this.ionicForm = this.formBuilder.group({
       attributes: this.formBuilder.array([ this.initAttributesFields()]) 
     })
-  //  this.ionicForm.get('personName').setValue(this.user.username)
   }
+  
   close() {
     this.modalCtrl.dismiss();
   }
@@ -652,7 +652,7 @@ export class AdoptModalComponent implements OnInit {
             merge: true
           }
           const userRef: AngularFirestoreDocument<any> = this.afs.doc(
-            `users/${this.userService.user.username}/inAdoption/${idBuddy}`
+            `users/${this.userService.user.id}/inAdoption/${idBuddy}`
             ); 
           userRef.set(this.ionicForm.value.attributes[i], {
             merge: true,
@@ -681,7 +681,7 @@ export class AdoptModalComponent implements OnInit {
   uploadImage(event, id) { // esta funcion es para subir la imagen a la base de datos
     var n = Date.now();
     const file = event.target.files[0];
-    const filePath = `BuddyImages/Adoption/${this.userService.user.username}/${n}`; // path donde se va a guardar la imagen en firebase
+    const filePath = `BuddyImages/Adoption/${this.userService.user.id}/${n}`; // path donde se va a guardar la imagen en firebase
     const fileRef = this.storage.ref(filePath);
     
     const task = this.storage.upload(filePath, file);

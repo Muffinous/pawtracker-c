@@ -14,8 +14,8 @@ export class UserService {
   constructor(public database: AngularFirestore, private dataService: DataService) { }
  
   loadEvents() {
-    console.log("Loading user events ", this.user.username)
-    this.database.collection(`/users/${this.user.username}/events/`).get().subscribe(snapshot => { // load all events from user DB
+    console.log("Loading user events ", this.user)
+    this.database.collection(`/users/${this.user.id}/events/`).get().subscribe(snapshot => { // load all events from user DB
       snapshot.forEach(snap => {
         let event:any = snap.data()         
         // console.log('constructor event ', event)

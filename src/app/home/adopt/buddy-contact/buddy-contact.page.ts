@@ -119,7 +119,8 @@ export class BuddyContactPage implements OnInit {
       edit_buddyBreed: [''],
       edit_buddyBday: [''],   
       edit_buddyPic: [''],
-      edit_BuddyDescription: ['']
+      edit_BuddyDescription: [''],
+      edit_BuddyLocation: ['']
     })
   }
 
@@ -164,30 +165,31 @@ export class BuddyContactPage implements OnInit {
       if (this.ionicForm.value.edit_buddyGender) {
         console.log("update buddy gender  ", this.buddy.buddyGender ," to ", this.ionicForm.value.edit_buddyGender)
         buddyPreview.buddyGender = this.ionicForm.value.edit_buddyGender
-
       }
 
       if (this.ionicForm.value.edit_buddyType) {
         console.log("update buddy type  ", this.buddy.buddyType ," to ", this.ionicForm.value.edit_buddyType)
         buddyPreview.buddyType = this.ionicForm.value.edit_buddyType
-
       }
 
       if (this.ionicForm.value.edit_buddyBreed) {
         console.log("update buddy breed  ", this.buddy.buddyBreed ," to ", this.ionicForm.value.edit_buddyBreed)
         buddyPreview.buddyBreed = this.ionicForm.value.edit_buddyBreed
-
       }
 
       if (this.ionicForm.value.edit_buddyBday) {
         console.log("update buddy bday  ", this.buddy.buddyBday ," to ", this.ionicForm.value.edit_buddyBday)
         buddyPreview.buddyBday = this.ionicForm.value.edit_buddyBday
-
       }
 
       if (this.ionicForm.value.edit_BuddyDescription) {
         console.log("update buddy description  ", this.buddy.buddyDescription ," to ", this.ionicForm.value.edit_BuddyDescription)
         buddyPreview.buddyDescription = this.ionicForm.value.edit_BuddyDescription
+      }
+
+      if (this.ionicForm.value.edit_BuddyLocation) {
+        console.log("update buddy location", this.buddy.buddyLocation ," to ", this.ionicForm.value.edit_BuddyLocation)
+        buddyPreview.buddyLocation = this.ionicForm.value.edit_BuddyLocation
 
       }
 
@@ -196,6 +198,7 @@ export class BuddyContactPage implements OnInit {
                               <li>Buddy gender : ${buddyPreview.buddyGender}</li>
                               <li>Buddy type : ${buddyPreview.buddyType}</li>
                               <li>Buddy breed : ${buddyPreview.buddyBreed}</li>
+                              <li>Buddy location : ${buddyPreview.buddyLocation}</li>
                               <li>Buddy birthday : ${formatDate(buddyPreview.buddyBday, 'dd-MM-yyyy', 'es-ES')}</li>
                               <li>Buddy description : ${buddyPreview.buddyDescription}</li></ul>`
 

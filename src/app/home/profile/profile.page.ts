@@ -146,7 +146,7 @@ export class ProfilePage implements OnInit {
     await modal.present();
    
     modal.onDidDismiss().then((result) => { // refresh the array 
-      this.animalService.loadUserBuddies(this.userService.user.username).then( result => {
+      this.animalService.loadUserBuddies(this.userService.user).then( result => {
         this.animals = this.animalService.userAnimals
         this.showedAnimals=this.animals.slice(0,1)     // add the first animal  
 

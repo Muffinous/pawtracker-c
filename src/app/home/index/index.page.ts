@@ -144,9 +144,9 @@ export class IndexPage implements OnInit {
   }
 
   saveEventDB(event) { // save the event in the database
-    this.db.doc(`/users/${this.userService.user.username}`).ref.get().then(snapshot => {
+    this.db.doc(`/users/${this.userService.user.id}`).ref.get().then(snapshot => {
       if (snapshot.exists) {
-        this.db.doc(`/users/${this.userService.user.username}/events/${event.title}`).set(event).then(res => {
+        this.db.doc(`/users/${this.userService.user.id}/events/${event.id}`).set(event).then(res => {
         }).catch(err => {
             console.log(err);
           });

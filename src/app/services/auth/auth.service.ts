@@ -53,8 +53,8 @@ export class AuthService {
           user.emailVerified = result.user.emailVerified
           user.uid = result.user.uid
           this.addUserService(user) // save the user's info 
-          this.loadUserAnimals(user.username)
-          this.loadUserAnimalsAdoption(user.username)
+          this.loadUserAnimals(user)
+          this.loadUserAnimalsAdoption(user)
           this.loadAnimalsAdoption()
           this.router.navigate(['home/' + user.username]);
         });
@@ -68,15 +68,19 @@ export class AuthService {
 
   // Sign up with email/password
   SignUp(user: User, password: string) {
-     return this.afs.doc(`/users/${user.username}`).ref.get().then(snapshot => {
+    let idUser = this.afs.createId() // create id 4 each buddy
+    user.id = idUser
+    console.log("idUser ", idUser)
+
+     return this.afs.doc(`/usernames/${user.username}`).ref.get().then(snapshot => { // checks if username exists
       if (!snapshot.exists) {
-          this.afAuth
+         return this.afAuth
           .createUserWithEmailAndPassword(user.email, password)
           .then((result) => {
             /* Call the SendVerificaitonMail() function when new user sign 
             up and returns promise */
           // this.SendVerificationMail();
-            this.SetProfileData(result.user, user);            
+            this.SetProfileData(result.user, user);          // if username doesnt exists, we save profile and user data in db  
             return true
           })
           .catch((error) => {
@@ -88,7 +92,7 @@ export class AuthService {
         return false
       }
     })
-  }
+ }
 
   // Send email verfificaiton when new user sign up
   SendVerificationMail() {
@@ -160,13 +164,14 @@ export class AuthService {
 
   /* Setting user data + profile data (name, surname, username) */
   async SetProfileData(user: any, profile: any) {
-    console.log('PROFILE', user)
-    console.log('PROFILE', profile)
+    console.log("USER ", user)
+    console.log("PROFILE ", profile)
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(
-      `users/${profile.username}`
+      `users/${profile.id}`
     );
     const userData: User = {
-      uid: user.uid,
+      id: profile.id,
+      uid: user.uid, // original UID FIREBASE, vinc with email - auth
       email: user.email,
       name: profile.name,
       surname: profile.surname,
@@ -175,12 +180,28 @@ export class AuthService {
       nAnimals: profile.nAnimals
     };
     await updateProfile(auth.getAuth().currentUser, { displayName: profile.username }).catch( // save the username in displayname 4 future access
-      (err) => console.log(err)
-    );
-    console.log('userdata ', userData)
+       (err) => console.log(err)
+     );
+
+    this.saveUsername(userData, profile.id)
+    
+    this.addUserService(userData)
+
+    console.log("USERDATA ", userData)
+
     return userRef.set(userData, {
       merge: true,
     });
+
+  }
+
+  saveUsername(user: User, id) {
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(
+      `usernames/${user.username}`
+    );
+
+    userRef.set({id: id}, {merge: true})
+    
   }
 
   // Sign out
@@ -233,6 +254,7 @@ export class AuthService {
 
   addUserService(user: User) {
     console.log('ADD USER SERVICE', user)
+    this.userService.user.id = user.id
     this.userService.user.email = user.email
     this.userService.user.uid = user.uid
     this.userService.user.name = user.name
@@ -243,12 +265,12 @@ export class AuthService {
 
   }
 
-  loadUserAnimals(username: string) {
-    this.animalService.loadUserBuddies(username)
+  loadUserAnimals(user: User) {
+    this.animalService.loadUserBuddies(user)
   }
 
-  loadUserAnimalsAdoption(username: string) {
-    this.animalService.loadUserBuddiesAdoption(username)
+  loadUserAnimalsAdoption(user: User) {
+    this.animalService.loadUserBuddiesAdoption(user)
   }
 
   loadAnimalsAdoption(){

@@ -592,13 +592,14 @@ export class SignupAnimalComponent implements OnInit {
   constructor(private afs: AngularFirestore, private router:Router, private modalCtrl: ModalController, private userService: UserService, private formBuilder: FormBuilder, public authService: AuthService, private storage: AngularFireStorage) { 
    // console.log('nav', router.getCurrentNavigation())
     if (router.getCurrentNavigation() !== null) { // sign up animal 4 the first time
-      // this.user.name = 'test'
-      this.user.name = this.router.getCurrentNavigation().extras.state.name;
-      this.user.surname = this.router.getCurrentNavigation().extras.state.surname;
-      this.user.username = this.router.getCurrentNavigation().extras.state.username;
-      this.user.email = this.router.getCurrentNavigation().extras.state.email;
+      this.user.name = this.router.getCurrentNavigation().extras.state.extras.name;
+      this.user.surname = this.router.getCurrentNavigation().extras.state.extras.surname;
+      this.user.username = this.router.getCurrentNavigation().extras.state.extras.username;
+      this.user.email = this.router.getCurrentNavigation().extras.state.extras.email;
+      this.user.id = this.router.getCurrentNavigation().extras.state.user.id;
+      this.pass = this.router.getCurrentNavigation().extras.state.extras.password;
+
       this.user.nAnimals = 0; // inicializo xq es la primera vez que se registra el user. Tiene CERO ANIMALES. Aquí los añade.
-      this.pass = this.router.getCurrentNavigation().extras.state.password;
       this.popup = false
     } else { // profile popup page
       this.popup = true
@@ -606,7 +607,7 @@ export class SignupAnimalComponent implements OnInit {
 
   }
 
-  ngOnInit() {
+  ngOnInit() {    
     this.ionicForm = this.formBuilder.group({
       personName: ['', [Validators.required, Validators.minLength(2)]],   
       attributes: this.formBuilder.array([ this.initAttributesFields()]) 
@@ -652,10 +653,9 @@ export class SignupAnimalComponent implements OnInit {
       for (let i=0; i<newBuddies; i++) { // sign up every buddy
 
         let idBuddy = this.afs.createId() // create id 4 each buddy
-        console.log("idBuddy ", idBuddy)
 
         const userBuddiesRef: AngularFirestoreDocument<any> = this.afs.doc(
-          `users/${this.user.username}/buddies/${idBuddy}`
+          `users/${this.user.id}/buddies/${idBuddy}`
           );      
           userBuddiesRef.set(this.ionicForm.value.attributes[i], {
             merge: true,
@@ -666,12 +666,12 @@ export class SignupAnimalComponent implements OnInit {
       }
 
       const userRef: AngularFirestoreDocument<any> = this.afs.doc(
-        `users/${this.user.username}/`
+        `users/${this.user.id}/`
       );            
       
       this.user.nAnimals += newBuddies // UPDATE USER ANIMALS NUMBER TO WHATEVER IT IS
 
-      console.log('animals', this.user.nAnimals, '-', this.userService.user)
+     // console.log('animals', this.user.nAnimals, '-', this.userService.user)
       
       userRef.update({nAnimals: this.user.nAnimals}), {
         merge: true, 
@@ -746,18 +746,14 @@ export class SignupAnimalComponent implements OnInit {
     
     const task = this.storage.upload(filePath, file);
     this.percentage = task.percentageChanges()
-    console.log('percentage', this.percentage)
     task
       .snapshotChanges()
       .pipe(
         finalize(() => {
           this.downloadURL = fileRef.getDownloadURL();
-          // this.ionicForm.value.attributes[id].buddyPic = this.downloadURL
           this.downloadURL.subscribe(url => {
             if (url) {
               this.imageUrl[id] = url;
-              console.log('imageURL:', this.imageUrl[id], 'downloadURL:', this.downloadURL)
-              // this.ionicForm.value.attributes[id].buddyPic = filePath IMAGE PATH IN DATABASE
               this.ionicForm.value.attributes[id].buddyPic = this.imageUrl[id] // URL IMAGE IN DATABASE
             }
           });

@@ -595,9 +595,9 @@ export class AnimalService {
 
   constructor(public database: AngularFirestore, private userService: UserService, private ionloaderService: IonLoaderService) { }
 
-  async loadUserBuddies(username: string) {
+  async loadUserBuddies(user: User) {
 
-    await this.database.collection(`/users/${username}/buddies/`).get()
+    await this.database.collection(`/users/${user.id}/buddies/`).get()
     .forEach(snapshot => { // get all buddies 4 that user
       snapshot.forEach(doc => {
           const animal = doc.data() as Buddy
@@ -607,13 +607,13 @@ export class AnimalService {
           }
       })
     })
-    console.log('Buddies ', this.userAnimals ,' loaded for user ', username)
+    console.log('Buddies ', this.userAnimals ,' loaded for user ', user.username)
   }
 
   getBuddyImage(buddyName: string):  Promise<any>{
     let buddypic
     
-    let buddiesRef = this.database.collection(`/users/${this.userService.user.username}/buddies/`, ref => ref.where('buddyName', '==', buddyName))
+    let buddiesRef = this.database.collection(`/users/${this.userService.user.id}/buddies/`, ref => ref.where('buddyName', '==', buddyName))
     return buddiesRef.ref.get().then(snapshot => {
       if (!snapshot.empty) {
         snapshot.docs.map(doc => {
@@ -628,9 +628,9 @@ export class AnimalService {
       })
   }
 
-  async loadUserBuddiesAdoption(username: string) {
+  async loadUserBuddiesAdoption(user: User) {
 
-    await this.database.collection(`/users/${username}/inAdoption/`).get()
+    await this.database.collection(`/users/${user.id}/inAdoption/`).get()
     .forEach(snapshot => { // get all buddies 4 that user
       snapshot.forEach(doc => {
           const animal = doc.data() as Buddy
@@ -658,8 +658,8 @@ export class AnimalService {
   }
 
   deleteBuddy(user: User, buddy: Buddy) {
-    return this.database.doc(`/users/${user.username}/buddies/${buddy.id}`).delete().then(() => {
-      this.database.doc(`users/${user.username}`).update({nAnimals: user.nAnimals - 1}).then(() => {
+    return this.database.doc(`/users/${user.id}/buddies/${buddy.id}`).delete().then(() => {
+      this.database.doc(`users/${user.id}`).update({nAnimals: user.nAnimals - 1}).then(() => {
         this.userService.user.nAnimals = user.nAnimals - 1 // update value for the ()
       })      
       this.deleteBuddyinArray(buddy);
@@ -687,7 +687,7 @@ export class AnimalService {
   }
 
   updateBuddy(user: User, oldBuddy : Buddy, newBuddy : Buddy) {
-    return this.database.doc(`/users/${user.username}/buddies/${oldBuddy.id}`).update(newBuddy).then(() => {
+    return this.database.doc(`/users/${user.id}/buddies/${oldBuddy.id}`).update(newBuddy).then(() => {
 
       this.userAnimals.forEach((item, index, array) => { 
         if(array[index].id === oldBuddy.id ) {
@@ -711,10 +711,18 @@ updateBuddyAdoption(user: User, oldBuddy : Buddy, newBuddy : Buddy) {
         array[index] = JSON.parse(JSON.stringify(newBuddy))
 
       };
-      console.log('array ', this.userAnimals)
+    })
+
+      this.buddiesInAdoption.forEach((item, index, array) => { 
+        if(array[index].id === oldBuddy.id ) {
+          console.log("son iguales ")
+          array[index] = JSON.parse(JSON.stringify(newBuddy))
+  
+        };
+      console.log('array ', this.buddiesInAdoption)
       this.ionloaderService.autoLoader('Buddy updated');
     })
-    this.database.doc(`/users/${user.username}/inAdoption/${oldBuddy.id}`).update(newBuddy)
+    this.database.doc(`/users/${user.id}/inAdoption/${oldBuddy.id}`).update(newBuddy)
   })
 }
 

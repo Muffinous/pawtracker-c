@@ -32,7 +32,6 @@ export class CalModalComponent implements OnInit {
   }
  
   ngOnInit() {
-    // this.getUserEvents(this.userService.user.username)
     this.setDate(this.dataService.getSelectedDate());
     this.getBuddiesImages();
   }

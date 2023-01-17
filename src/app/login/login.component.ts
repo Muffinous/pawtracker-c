@@ -46,29 +46,35 @@ export class LoginComponent implements OnInit {
   }
   
   login(){
-      this.database.doc(`/users/${this.username}`).ref.get().then(snapshot => {
-        if (snapshot.exists) {
-          const myuser = snapshot.data() as User          
-          this.authService.SignIn(myuser, this.password) // this sign in goes to home || this.route.navigate(['/home']);
-          .then(function(error) {
-            // Handle Errors here.
-            if (error) {
-              var errorCode = error.code;
-              var errorMessage : string = error.message;            
+    this.database.doc(`/usernames/${this.username}`).ref.get().then(snapshot => {
+      const idUser = snapshot.get("id")
+      if (snapshot.exists) {
+        this.database.doc(`/users/${idUser}`).ref.get().then(snapshot => {
+          if (snapshot.exists) {
+            const myuser = snapshot.data() as User     
+            myuser.id = idUser   
+            console.log("LOGIN ???????? ", myuser)  
+            this.authService.SignIn(myuser, this.password) // this sign in goes to home || this.route.navigate(['/home']);
+            .then(function(error) {
+              // Handle Errors here.
+              if (error) {
+                var errorCode = error.code;
+                var errorMessage : string = error.message;            
 
-              if (errorCode === 'auth/wrong-password') {
-                presentAlert('Wrong password!')
-              } else {
-                presentAlert(errorMessage)
-              }              
-            }
-          });
-        } else {
-          presentAlert('Wrong username!')
-        }
-      });
+                if (errorCode === 'auth/wrong-password') {
+                  presentAlert('Wrong password!')
+                } else {
+                  presentAlert(errorMessage)
+                }              
+              }
+            });
+          } else {
+            presentAlert('Wrong username!')
+          }
+        });
+      }
+    })
   }
-
 }
 
 async function presentAlert(message: string) {
