@@ -27,6 +27,7 @@ export class CalModalComponent implements OnInit {
 
   constructor(private userService: UserService, private animalService: AnimalService, public db: AngularFirestore, private modalCtrl: ModalController, public navCtrl: NavController, private dataService: DataService) { 
     this.event.startTime = this.dataService.selectedDate.toISOString()
+    console.log("start time cal modal ", this.dataService.selectedDate, "TOISO =", this.event.startTime)
     this.event.endTime = this.dataService.selectedDate.toISOString()
 
   }

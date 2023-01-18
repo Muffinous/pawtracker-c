@@ -47,8 +47,8 @@
 
 
 
-<form *ngIf="editMode" [formGroup]="ionicForm" (ngSubmit)="saveEdit()" novalidate>
-  <ion-card>
+<!-- <form *ngIf="editMode" [formGroup]="ionicForm" (ngSubmit)="saveEdit()" novalidate> -->
+  <ion-card  *ngIf="editMode">
     <img src="{{img}}" />
       <!-- <ion-item [hidden]="edit_buddyPic">
         <ion-icon name="camera"></ion-icon>
@@ -57,28 +57,28 @@
     <ion-card-header>
 
       <!-- Edit Event Title -->
-      <ion-input *ngIf="editMode" formControlName="edit_eventTitle" id="edit_eventTitle" placeholder="{{event.title}}"></ion-input>
+      <ion-input *ngIf="editMode"  [(ngModel)]="event.title" id="edit_eventTitle" placeholder="{{event.title}}"></ion-input>
       <!-- Edit Event Title -->
       
       <!-- Edit Event Description -->
-      <ion-input formControlName="edit_eventDescription" #edit_eventDescription id="edit_eventDescription" name="edit_eventDescription" placeholder="{{event.description}}" interface="action-sheet" required></ion-input>
+      <ion-input  [(ngModel)]="event.description" #edit_eventDescription id="edit_eventDescription" name="edit_eventDescription" placeholder="{{event.description}}" interface="action-sheet" required></ion-input>
       <!-- Edit Event Description -->
 
       <!-- Edit Event All day -->
       <ion-item>
         <ion-label>All day</ion-label>
-        <ion-toggle slot="end" name="edit_eventAllDay" #edit_eventAllDay color="dark" formControlName="edit_eventAllDay" (onchange)="onToogleChange()" [checked]="edit_eventAllDay" checked></ion-toggle>
+        <ion-toggle  [(ngModel)]="event.allDay" slot="end" name="edit_eventAllDay" #edit_eventAllDay color="dark" (onchange)="onToogleChange()" [checked]="edit_allDay" checked></ion-toggle>
       </ion-item>
       <!-- Edit Event All day -->
 
-      <ion-item [disabled]="edit_allDay">
+      <ion-item [disabled]="event.allDay">
         <ion-label>Start Time</ion-label>
-        <ion-datetime display-format="DD/MM/YYYY HH:mm" name="edit_eventStartTime" #edit_eventStartTime picker-format="MMM DHH:mm" formControlName="edit_eventStartTime" [min]="minDate"></ion-datetime>
+        <ion-datetime  [(ngModel)]="pickerStart" display-format="DD/MM/YYYY HH:mm" name="edit_eventStartTime" picker-format="MMM DHH:mm"[min]="minDate"></ion-datetime>
       </ion-item>
   
-      <ion-item [disabled]="edit_allDay">
+      <ion-item [disabled]="event.allDay">
         <ion-label>End Time</ion-label>
-        <ion-datetime display-format="DD/MM/YYYY HH:mm" picker-format="MMM DHH:mm" formControlName="edit_eventEndTime" [min]="minDate"></ion-datetime>
+        <ion-datetime [(ngModel)]="pickerEnd" display-format="DD/MM/YYYY HH:mm"  name="edit_eventEndTime" picker-format="MMM DHH:mm" [min]="minDate"></ion-datetime>
       </ion-item>
 
     </ion-card-header>
@@ -95,7 +95,7 @@
         </ion-button>         
       </ion-col>
       <ion-col *ngIf="editMode">
-        <ion-button *ngIf="editMode" type="submit">
+        <ion-button *ngIf="editMode" type="submit" (click)="saveEdit()">
           Save
           <ion-icon name="save-outline" slot="end"></ion-icon>
         </ion-button>         
@@ -112,7 +112,7 @@
     </ion-row>
   </ion-grid>
   
-</form>
+<!-- </form> -->
 
 </ion-content>
 
