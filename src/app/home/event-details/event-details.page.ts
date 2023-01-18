@@ -24,16 +24,24 @@ export class EventDetailsPage implements OnInit {
   editMode = false;
   public ionicForm: FormGroup;
   edit_allDay
+  
+  pickerStart: string 
+  pickerEnd: string
 
   constructor(public modalControler: ModalController, private alertCtrl: AlertController, public navParams: NavParams, private dataService: DataService, 
     public database: AngularFirestore, private userService: UserService, private formBuilder: FormBuilder ) { 
     this.event = this.navParams.get('ev');
     this.edit_allDay = this.event.allDay
-    //console.log('ev', this.event)
+
+    console.log('event edit ', this.edit_allDay)
+
     this.img = this.navParams.get("img");
-    this.start = new Date(this.event.startTime) 
+    this.start = new Date(this.event.startTime)
+    this.pickerStart = this.start.toISOString()
     // save full start hour
     this.end = new Date(this.event.endTime)    // save full end hour
+    this.pickerEnd = this.end.toISOString()
+
     this.minutesConverter()
   }
 
@@ -61,7 +69,6 @@ export class EventDetailsPage implements OnInit {
   }
 
   deleteEvent(){
-    console.log("delete event")
     this.showConfirm();
   }
 
@@ -98,12 +105,12 @@ export class EventDetailsPage implements OnInit {
       id: [this.event.id],
       edit_eventTitle: ['', [Validators.minLength(2)]], 
       edit_eventDescription: [''],
-      edit_eventEndTime: [''],
-      edit_eventStartTime: [''],      
+      edit_eventEndTime: [this.pickerEnd],
+      edit_eventStartTime: [this.pickerStart],      
       edit_eventDay: [''],
       edit_eventMonth: [''],   
       edit_eventYear: [''],
-      edit_eventAllDay: ['']
+      edit_eventAllDay: [this.edit_allDay]
     })
   }
 
