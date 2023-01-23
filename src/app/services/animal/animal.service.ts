@@ -610,16 +610,13 @@ export class AnimalService {
     console.log('Buddies ', this.userAnimals ,' loaded for user ', user.username)
   }
 
-  getBuddyImage(buddyName: string):  Promise<any>{
+  getBuddyImage(buddyId: string):  Promise<any>{
     let buddypic
     
-    let buddiesRef = this.database.collection(`/users/${this.userService.user.id}/buddies/`, ref => ref.where('buddyName', '==', buddyName))
-    return buddiesRef.ref.get().then(snapshot => {
-      if (!snapshot.empty) {
-        snapshot.docs.map(doc => {
-          let buddy = doc.data() as Buddy
-          buddypic = buddy.buddyPic
-        })
+    return this.database.doc(`/users/${this.userService.user.id}/buddies/${buddyId}`).ref.get().then(snapshot => {
+      if (snapshot.exists) {
+        let buddy = snapshot.data() as Buddy
+        buddypic = buddy.buddyPic
         return buddypic
       } else {
         return 'Error loading image. Please restart.'
