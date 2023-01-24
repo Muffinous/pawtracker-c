@@ -120,6 +120,11 @@ export class BuddyPage implements OnInit {
         buddyPreview.buddyName = this.ionicForm.value.edit_buddyName
       }
 
+      if (this.ionicForm.value.edit_buddyAge) {
+        console.log("update buddy age ", buddyPreview.buddyAge ," to ", this.ionicForm.value.edit_buddyAge)
+        buddyPreview.buddyAge = this.ionicForm.value.edit_buddyAge
+      }
+
       if (this.ionicForm.value.edit_buddyGender) {
         console.log("update buddy gender  ", this.buddy.buddyGender ," to ", this.ionicForm.value.edit_buddyGender)
         buddyPreview.buddyGender = this.ionicForm.value.edit_buddyGender
@@ -151,12 +156,13 @@ export class BuddyPage implements OnInit {
       }
 
       let subheader : string = "You're gonna update your buddy's info. Is everything correct?"
-      let message : string = `<ul><li>  Buddy name : ${buddyPreview.buddyName}</li>
-                              <li>Buddy gender : ${buddyPreview.buddyGender}</li>
-                              <li>Buddy type : ${buddyPreview.buddyType}</li>
-                              <li>Buddy breed : ${buddyPreview.buddyBreed}</li>
-                              <li>Buddy birthday : ${formatDate(buddyPreview.buddyBday, 'dd-MM-yyyy', 'es-ES')}</li>
-                              <li>Buddy description : ${buddyPreview.buddyDescription}</li></ul>`
+      let message : string = `<ul><li>Buddy name : ${buddyPreview.buddyName}</li>
+                                  <li>Buddy age : ${buddyPreview.buddyAge}</li>
+                                  <li>Buddy gender : ${buddyPreview.buddyGender}</li>
+                                  <li>Buddy type : ${buddyPreview.buddyType}</li>
+                                  <li>Buddy breed : ${buddyPreview.buddyBreed}</li>
+                                  <li>Buddy birthday : ${formatDate(buddyPreview.buddyBday, 'dd-MM-yyyy', 'es-ES')}</li>
+                                  <li>Buddy description : ${buddyPreview.buddyDescription}</li></ul>`
 
       this.presentAlert(message, "Update Buddy Info", subheader, buddyPreview)
   }
@@ -186,7 +192,7 @@ export class BuddyPage implements OnInit {
 
   async presentAlert(message: string, header: string, subheader: string, buddyNewInfo) {
     const alert = document.createElement('ion-alert');
-    alert.cssClass = 'my-custom-class';
+    alert.cssClass = 'my-alert';
     alert.header = header;
     alert.subHeader = subheader;
     alert.message = message;

@@ -37,10 +37,10 @@ export class BuddyContactPage implements OnInit {
     this.bday = formatDate(this.buddy.buddyBday, 'dd-MM-yyyy', 'es-ES')
 
 
-    console.log('userAnimalsAdoption', animalService.userAnimalsAdoption)
-    console.log('buddy', this.buddy)
+    // console.log('userAnimalsAdoption', animalService.userAnimalsAdoption)
+    // console.log('buddy', this.buddy)
     this.userOwner()
-    console.log('findIndex', animalService.userAnimalsAdoption.findIndex(buddy => buddy.id === this.buddy.id))
+    // console.log('findIndex', animalService.userAnimalsAdoption.findIndex(buddy => buddy.id === this.buddy.id))
 
   }
 
@@ -77,35 +77,79 @@ export class BuddyContactPage implements OnInit {
   }
   
   ngOnInit() {
+    this.animalService.getBuddyContactPhone(this.buddy.id).then(res => {
+      this.buddy.contactPhone = res
+    })
+
+    this.animalService.getBuddyContactMail(this.buddy.id).then(res => {
+      this.buddy.contactMail = res
+    })
+
+    console.log('Buddy after gettin contact phone and mail ', this.buddy)
   }
 
   close() {
     this.modalControler.dismiss();
   }
-
+  
   callOwner() {
-    this.callNumber.callNumber("+34644562994", true)
-    .then(res => console.log('Launched dialer!', res))
-    .catch(err => console.log('Error launching dialer', err));
+    this.alertCtrl.create({
+      header: 'Call Owner',
+      message: `If you want to know more about this buddy, please contact: ${this.buddy.contactPhone}`, 
+      buttons : [
+        {
+          text: 'Cancel',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Call',
+          handler: () => {
+              this.callNumber.callNumber(this.buddy.contactPhone, true)
+              .then(res => console.log('Launched dialer!', res))
+              .catch(err => console.log('Error launching dialer', err));
+          }
+        }
+       ]    
+      }).then(res => {
+      res.present();
+    });
   }
 
   sendEmail() {
-    let email = {
-      to: 'max@mustermann.de',
-      cc: 'erika@mustermann.de',
-      bcc: ['john@doe.com', 'jane@doe.com'],
-      attachments: [
-        'file://img/logo.png',
-        'res://icon.png',
-        'base64:icon.png//iVBORw0KGgoAAAANSUhEUg...',
-        'file://README.pdf'
-      ],
-      subject: 'Cordova Icons',
-      body: 'How are you? Nice greetings from Leipzig',
-      isHtml: true
-    }
-
-    this.emailComposer.open(email);
+    this.alertCtrl.create({
+      header: 'Send mail',
+      message: `If you want to know more about this buddy, please contact: ${this.buddy.contactMail}`, 
+      buttons : [
+        {
+          text: 'Cancel',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Send mail',
+          handler: () => {
+            let email = {
+              to: 'max@mustermann.de',
+              cc: 'erika@mustermann.de',
+              bcc: ['john@doe.com', 'jane@doe.com'],
+              attachments: [
+                'file://img/logo.png',
+                'res://icon.png',
+                'base64:icon.png//iVBORw0KGgoAAAANSUhEUg...',
+                'file://README.pdf'
+              ],
+              subject: 'Cordova Icons',
+              body: 'How are you? Nice greetings from Leipzig',
+              isHtml: true
+            }
+            this.emailComposer.open(email);
+          }
+        }
+       ]    
+      }).then(res => {
+      res.present();
+    });
   }
 
   editBuddy() {
@@ -120,7 +164,9 @@ export class BuddyContactPage implements OnInit {
       edit_buddyBday: [''],   
       edit_buddyPic: [''],
       edit_buddyDescription: [''],
-      edit_buddyLocation: ['']
+      edit_buddyLocation: [''],
+      edit_contactPhone: [''],
+      edit_contactMail: ['']
     })
   }
 
@@ -162,6 +208,11 @@ export class BuddyContactPage implements OnInit {
         buddyPreview.buddyName = this.ionicForm.value.edit_buddyName
       }
 
+      if (this.ionicForm.value.edit_buddyAge) {
+        console.log("update buddy name ", buddyPreview.buddyAge ," to ", this.ionicForm.value.edit_buddyAge)
+        buddyPreview.buddyAge = this.ionicForm.value.edit_buddyAge
+      }
+
       if (this.ionicForm.value.edit_buddyGender) {
         console.log("update buddy gender  ", this.buddy.buddyGender ," to ", this.ionicForm.value.edit_buddyGender)
         buddyPreview.buddyGender = this.ionicForm.value.edit_buddyGender
@@ -190,24 +241,37 @@ export class BuddyContactPage implements OnInit {
       if (this.ionicForm.value.edit_buddyLocation) {
         console.log("update buddy location", this.buddy.buddyLocation ," to ", this.ionicForm.value.edit_buddyLocation)
         buddyPreview.buddyLocation = this.ionicForm.value.edit_BuddyLocation
+      }
 
+      if (this.ionicForm.value.edit_contactMail) {
+        console.log("update buddy contact mail", this.buddy.contactMail ," to ", this.ionicForm.value.edit_contactMail)
+        buddyPreview.contactMail = this.ionicForm.value.edit_contactMail
+      }
+
+      if (this.ionicForm.value.edit_contactPhone) {
+        console.log("update buddy contact phone", this.buddy.contactPhone ," to ", this.ionicForm.value.edit_contactPhone)
+        buddyPreview.contactPhone = this.ionicForm.value.edit_contactPhone
       }
 
       let subheader : string = "You're gonna update your buddy's info. Is everything correct?"
       let message : string = `<ul><li>  Buddy name : ${buddyPreview.buddyName}</li>
-                              <li>Buddy gender : ${buddyPreview.buddyGender}</li>
-                              <li>Buddy type : ${buddyPreview.buddyType}</li>
-                              <li>Buddy breed : ${buddyPreview.buddyBreed}</li>
-                              <li>Buddy location : ${buddyPreview.buddyLocation}</li>
-                              <li>Buddy birthday : ${formatDate(buddyPreview.buddyBday, 'dd-MM-yyyy', 'es-ES')}</li>
-                              <li>Buddy description : ${buddyPreview.buddyDescription}</li></ul>`
+                                  <li>Buddy age : ${buddyPreview.buddyAge}</li>
+                                  <li>Buddy gender : ${buddyPreview.buddyGender}</li>
+                                  <li>Buddy type : ${buddyPreview.buddyType}</li>
+                                  <li>Buddy breed : ${buddyPreview.buddyBreed}</li>
+                                  <li>Buddy location : ${buddyPreview.buddyLocation}</li>
+                                  <li>Buddy birthday : ${formatDate(buddyPreview.buddyBday, 'dd-MM-yyyy', 'es-ES')}</li>                                  
+                                  <li>Buddy description : ${buddyPreview.buddyDescription}</li>
+                                  <br/>
+                                  <li>Phone contact : ${buddyPreview.contactPhone}</li>
+                                  <li>Mail contact : ${buddyPreview.contactMail}</li></ul>`
 
       this.presentAlert(message, "Update Buddy Info", subheader, buddyPreview)
   }
 
   async presentAlert(message: string, header: string, subheader: string, buddyNewInfo) {
     const alert = document.createElement('ion-alert');
-    alert.cssClass = 'my-custom-class';
+    alert.cssClass = 'my-alert';
     alert.header = header;
     alert.subHeader = subheader;
     alert.message = message;

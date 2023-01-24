@@ -8,5 +8,7 @@ export interface Buddy {
     buddyType: string,
     buddyLocation: string,
     buddyDescription: string,
-    buddyPic: string
+    buddyPic: string,
+    contactPhone: string,
+    contactMail: string,
 }

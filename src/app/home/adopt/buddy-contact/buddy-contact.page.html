@@ -67,64 +67,94 @@
   </ion-card>
 
   <form *ngIf="editMode" [formGroup]="ionicForm" (ngSubmit)="saveEdit()" novalidate>
-    <ion-card>
-      <img src="{{buddy.buddyPic}}" />
+    <ion-card>      
+      <ion-card-header>
+      <!-- Edit Buddy Pic -->
+        <img src="{{buddy.buddyPic}}" />
         <ion-item [hidden]="edit_buddyPic">
           <ion-icon name="camera"></ion-icon>
           <ion-input formControlName="edit_buddyPic" type="file" name="buddyPic" (change)="onFileSelected($event, i)" accept="image/png, image/jpeg" required ></ion-input>
         </ion-item>
-      <ion-card-header>
-
+      <!-- Edit Buddy Pic -->
+      </ion-card-header>
+      <ion-card-content>
         <!-- Edit Buddy Name -->
-        <ion-input *ngIf="editMode" formControlName="edit_buddyName" id="edit_buddyName" placeholder="{{buddy.buddyName}}"></ion-input>
-        <!-- Edit Buddy Name -->
+        <ion-item>
+          <ion-input *ngIf="editMode" formControlName="edit_buddyName" id="edit_buddyName" placeholder="{{buddy.buddyName}}"></ion-input>
+        </ion-item>
+        <!-- Edit Buddy Name -->          
 
-        <ion-select formControlName="edit_buddyGender" #edit_buddyGender id="edit_buddyGender" name="edit_buddyGender" placeholder="{{buddy.buddyGender}}" interface="action-sheet" required>
-          <ion-select-option value="Female">Female</ion-select-option>
-          <ion-select-option value="Male">Male</ion-select-option>
-        </ion-select>
+        <!-- Edit Buddy Age -->
+        <ion-item>
+          <ion-input *ngIf="editMode" formControlName="edit_buddyAge" id="edit_buddyAge" placeholder="{{buddy.buddyAge}} years old"></ion-input>
+        </ion-item>
+        <!-- Edit Buddy Age -->
+
+        <!-- Edit Buddy Gender -->
+        <ion-item>
+          <ion-select formControlName="edit_buddyGender" #edit_buddyGender id="edit_buddyGender" name="edit_buddyGender" placeholder="{{buddy.buddyGender}}" interface="action-sheet" required>
+            <ion-select-option value="Female">Female</ion-select-option>
+            <ion-select-option value="Male">Male</ion-select-option>
+          </ion-select>          
+        </ion-item>
+        <!-- Edit Buddy Gender -->
 
         <!-- Edit Buddy Type -->
-        <ion-select *ngIf="editMode" formControlName="edit_buddyType" #edit_buddyType id="edit_buddyType" (ionChange)="changeBreed(edit_buddyType.value)" name="edit_buddyType" placeholder="{{buddy.buddyType}}" interface="action-sheet">
-          <ng-container *ngFor="let type of animalService.animalsTypes">
-            <ion-select-option [value]="type.name">{{type.name}}</ion-select-option>
-          </ng-container>
-        </ion-select>
+        <ion-item>
+          <ion-select *ngIf="editMode" formControlName="edit_buddyType" #edit_buddyType id="edit_buddyType" (ionChange)="changeBreed(edit_buddyType.value)" name="edit_buddyType" placeholder="{{buddy.buddyType}}" interface="action-sheet">
+            <ng-container *ngFor="let type of animalService.animalsTypes">
+              <ion-select-option [value]="type.name">{{type.name}}</ion-select-option>
+            </ng-container>
+          </ion-select>          
+        </ion-item>
         <!-- Edit Buddy Type -->
 
         <!-- Edit Buddy Breed -->
-        <ion-select *ngIf="editMode && animalService.hasBreed" formControlName="edit_buddyBreed" #edit_buddyBreed id="edit_buddyBreed" name="edit_buddyBreed" placeholder="{{breedString}}"  multiple="true"> <!-- interface="action-sheet" -->
-          <ng-container *ngFor="let breed of animalService.actualBreeds" >
-              <ion-select-option [value]="breed">{{breed}}</ion-select-option>
-          </ng-container>
-        </ion-select>
+        <ion-item>
+          <ion-select *ngIf="editMode && animalService.hasBreed" formControlName="edit_buddyBreed" #edit_buddyBreed id="edit_buddyBreed" name="edit_buddyBreed" placeholder="{{breedString}}"  multiple="true"> <!-- interface="action-sheet" -->
+            <ng-container *ngFor="let breed of animalService.actualBreeds" >
+                <ion-select-option [value]="breed">{{breed}}</ion-select-option>
+            </ng-container>
+          </ion-select>          
+        </ion-item>
         <!-- Edit Buddy Breed -->
-
-        <ion-card-subtitle *ngIf="!editMode">{{buddy.buddyAge}} years old</ion-card-subtitle>
         
+        <!-- Edit Buddy Bday -->
         <ion-item>
           <ion-icon src="../../../assets/icon/cake.svg"></ion-icon> 
-          <!-- Edit Buddy Bday -->
           <ion-datetime *ngIf="editMode" formControlName="edit_buddyBday" placeholder="{{this.bday}}" name="edit_buddyBday" displayFormat="MMM-DD-YYYY" pickerFormat="MMM DD YYYY"></ion-datetime>
-          <!-- Edit Buddy Bday -->
         </ion-item>
+        <!-- Edit Buddy Bday -->
 
+        <!-- Edit Buddy Location -->
         <ion-item>
           <ion-icon name="location"></ion-icon> 
-          <!-- Edit Buddy Location -->
           <ion-input *ngIf="editMode" formControlName="edit_buddyLocation" placeholder="{{buddy.buddyLocation}}" name="edit_buddyLocation"></ion-input>
           <ion-button (click)="getmylocation()" >Get my location</ion-button>
-          <!-- Edit Buddy Location -->
         </ion-item>
+        <!-- Edit Buddy Location -->
 
-      </ion-card-header>
-      <ion-card-content *ngIf="!editMode">
-        {{buddy.buddyDescription}}
-      </ion-card-content>
+        <!-- Edit Buddy Description -->
+        <ion-item>
+          <ion-textarea *ngIf="editMode" formControlName="edit_buddyDescription" id="edit_buddyDescription" placeholder="{{buddy.buddyDescription}}"></ion-textarea>
+        </ion-item>
+        <!-- Edit Buddy Description -->          
 
-      <!-- Edit Buddy Description -->
-      <ion-textarea *ngIf="editMode" formControlName="edit_buddyDescription" id="edit_buddyDescription" placeholder="{{buddy.buddyDescription}}"></ion-textarea>
-      <!-- Edit Buddy Description -->
+        <!-- Edit Buddy Contact Mail-->
+        <ion-item>
+            <ion-icon name="mail"></ion-icon>
+            <ion-input *ngIf="editMode" type="email" formControlName="edit_contactMail" id="edit_contactMail" placeholder="youremail@here.es"> </ion-input>
+        </ion-item>
+        <!-- Edit Buddy Contact Mail-->
+
+        <!-- Edit Buddy Contact Mail-->
+        <ion-item>
+          <ion-icon name="call"></ion-icon>
+          <ion-input *ngIf="editMode" type="tel" formControlName="edit_contactPhone" id="edit_contactPhone" placeholder="+34658458435"> </ion-input>
+        </ion-item>
+        <!-- Edit Buddy Contact Mail-->
+
+      </ion-card-content>      
     </ion-card>
 
     <ion-grid class="ion-text-center">

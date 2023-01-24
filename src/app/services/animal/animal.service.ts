@@ -610,7 +610,7 @@ export class AnimalService {
     console.log('Buddies ', this.userAnimals ,' loaded for user ', user.username)
   }
 
-  getBuddyImage(buddyId: string):  Promise<any>{
+  getBuddyImage(buddyId: string): Promise<any>{
     let buddypic
     
     return this.database.doc(`/users/${this.userService.user.id}/buddies/${buddyId}`).ref.get().then(snapshot => {
@@ -621,8 +621,33 @@ export class AnimalService {
       } else {
         return 'Error loading image. Please restart.'
       }
-      
-      })
+    })
+  }
+
+  getBuddyContactPhone(buddyId: string) {
+    let buddyContactPhone
+    return this.database.doc(`/adoption/${buddyId}/`).ref.get().then(snapshot => {
+      if (snapshot.exists) {
+        let buddy = snapshot.data() as Buddy
+        buddyContactPhone = buddy.contactPhone
+        return buddyContactPhone
+      } else {
+        return 'Error loading phone. Please restart.'
+      }
+    })
+  }
+
+  getBuddyContactMail(buddyId: string) {
+    let buddyContactMail
+    return this.database.doc(`/adoption/${buddyId}/`).ref.get().then(snapshot => {
+      if (snapshot.exists) {
+        let buddy = snapshot.data() as Buddy
+        buddyContactMail = buddy.contactMail
+        return buddyContactMail
+      } else {
+        return 'Error loading mail. Please restart.'
+      }
+    })
   }
 
   async loadUserBuddiesAdoption(user: User) {

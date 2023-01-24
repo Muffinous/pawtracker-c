@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content>
-  <swiper [autoplay]="true" (slideChange)="onSlideChange()">
+  <swiper [autoplay]="true" style="height: 100%" (slideChange)="onSlideChange()">
     <ng-template swiperSlide *ngFor="let item of data; let i = index">
       <h2 class="slidertitle">{{item.title}}</h2>     
       <img class="sliderimg" src="../../assets/img/{{item.img}}">   
