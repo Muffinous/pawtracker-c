@@ -34,11 +34,10 @@
 
       <ion-item>
         <ion-card-subtitle>Birthday: {{this.bday}}</ion-card-subtitle>        
-        <ion-icon size="small" style="  margin-left: 5%; margin-bottom: 2%;"src="../../../assets/icon/cake.svg"></ion-icon> 
+        <ion-icon size="small" style="  margin-left: 5%;"src="../../../assets/icon/cake.svg"></ion-icon> 
       </ion-item>
       <ion-item>
-        <ion-card-subtitle>Location: </ion-card-subtitle>  
-        <ion-card-subtitle>{{buddy.buddyLocation}}</ion-card-subtitle>      
+        <ion-card-subtitle>Location: {{buddy.buddyLocation}}</ion-card-subtitle>  
       </ion-item>
     </ion-card-header>
     <ion-card-content>
@@ -111,9 +110,10 @@
         </ion-item>
 
         <ion-item>
-          <ion-icon src="../../../assets/icon/cake.svg"></ion-icon> 
+          <ion-icon name="location"></ion-icon> 
           <!-- Edit Buddy Location -->
-          <ion-datetime *ngIf="editMode" formControlName="edit_buddyLocation" placeholder="{{this.bday}}" name="edit_buddyLocation" displayFormat="MMM-DD-YYYY" pickerFormat="MMM DD YYYY"></ion-datetime>
+          <ion-input *ngIf="editMode" formControlName="edit_buddyLocation" placeholder="{{buddy.buddyLocation}}" name="edit_buddyLocation"></ion-input>
+          <ion-button (click)="getmylocation()" >Get my location</ion-button>
           <!-- Edit Buddy Location -->
         </ion-item>
 
@@ -123,7 +123,7 @@
       </ion-card-content>
 
       <!-- Edit Buddy Description -->
-      <ion-textarea *ngIf="editMode" formControlName="edit_BuddyDescription" id="edit_BuddyDescription" placeholder="{{buddy.buddyDescription}}"></ion-textarea>
+      <ion-textarea *ngIf="editMode" formControlName="edit_buddyDescription" id="edit_buddyDescription" placeholder="{{buddy.buddyDescription}}"></ion-textarea>
       <!-- Edit Buddy Description -->
     </ion-card>
 

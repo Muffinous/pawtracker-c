@@ -25,7 +25,8 @@ export class CalModalComponent implements OnInit {
   modalReady = false;
   animalsArray
 
-  constructor(private userService: UserService, private animalService: AnimalService, public db: AngularFirestore, private modalCtrl: ModalController, public navCtrl: NavController, private dataService: DataService) { 
+  constructor(private userService: UserService, private animalService: AnimalService, public db: AngularFirestore, private modalCtrl: ModalController, 
+    public navCtrl: NavController, private dataService: DataService) { 
     this.event.startTime = this.dataService.selectedDate.toISOString()
     console.log("start time cal modal ", this.dataService.selectedDate, "TOISO =", this.event.startTime)
     this.event.endTime = this.dataService.selectedDate.toISOString()
@@ -62,10 +63,8 @@ export class CalModalComponent implements OnInit {
 
   async save() {   
     let idEv = this.db.createId()
-    console.log("idEv ", idEv)
     this.event.id = idEv
     this.modalCtrl.dismiss({event: this.event})
-    console.log('event to save', this.event)
   }
  
   onViewTitleChanged(title) {
@@ -73,7 +72,6 @@ export class CalModalComponent implements OnInit {
   }
  
   onToogleChange() {
-    console.log('ALL DAY', this.event.allDay)
     this.event.allDay = !this.event.allDay
   }
 
@@ -84,6 +82,7 @@ export class CalModalComponent implements OnInit {
   onBuddyClicked(buddy) {
     console.log('buddy selected for date ', buddy)
     this.selectedBuddy = buddy.buddyName
+    this.event.buddyId = buddy.id
     this.event.buddyName = this.selectedBuddy
     console.log(this.selectedBuddy)
   }

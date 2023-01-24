@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewEncapsulation} from '@angular/core';
 import SwiperCore, { Autoplay } from 'swiper';
-import { UserService } from '../services/auth/user/user.service';
 
 SwiperCore.use([Autoplay]);
 
@@ -16,22 +15,22 @@ export class SlidesPage implements OnInit {
   data = [
     {
       img: "slide-1.jpg", 
-      title: "know always where your buddy is!", 
-      description: "Don't worry about your buddy, <b>always</b> be aware of where he is."
+      title: "Have your buddy's information at a single click",
+      description: "Don't worry about your buddy, <b>save</b> your buddy's important data in the app."
     }, 
     {
       img: "slide-2.jpg", 
-      title: "know always where your buddy is!", 
-      description: "Track every step. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+      title: "Mark important appointments on the calendar",
+      description: "Create a new event for each important <b>appointment</b> or <b>reminder</b> for your buddy!"
     }, 
     {
-      img: "slide-1.jpg", 
-      title: "know always where your buddy is!", 
-      description: "Donec eget est ultrices, tincidunt orci in, venenatis magna. Suspendisse mattis congue tempor."
+      img: "slide-3.jpg", 
+      title: "With an adopt section, now you can have all in one app!",
+      description: "Ideal for finding a <b>forever home</b> for an animal!"
     }
   ]
 
-  constructor(private userService: UserService) {}
+  constructor() {}
 
   ngOnInit() {
   }

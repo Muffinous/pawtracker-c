@@ -119,8 +119,8 @@ export class BuddyContactPage implements OnInit {
       edit_buddyBreed: [''],
       edit_buddyBday: [''],   
       edit_buddyPic: [''],
-      edit_BuddyDescription: [''],
-      edit_BuddyLocation: ['']
+      edit_buddyDescription: [''],
+      edit_buddyLocation: ['']
     })
   }
 
@@ -182,13 +182,13 @@ export class BuddyContactPage implements OnInit {
         buddyPreview.buddyBday = this.ionicForm.value.edit_buddyBday
       }
 
-      if (this.ionicForm.value.edit_BuddyDescription) {
-        console.log("update buddy description  ", this.buddy.buddyDescription ," to ", this.ionicForm.value.edit_BuddyDescription)
-        buddyPreview.buddyDescription = this.ionicForm.value.edit_BuddyDescription
+      if (this.ionicForm.value.edit_buddyDescription) {
+        console.log("update buddy description  ", this.buddy.buddyDescription ," to ", this.ionicForm.value.edit_buddyDescription)
+        buddyPreview.buddyDescription = this.ionicForm.value.edit_buddyDescription
       }
 
-      if (this.ionicForm.value.edit_BuddyLocation) {
-        console.log("update buddy location", this.buddy.buddyLocation ," to ", this.ionicForm.value.edit_BuddyLocation)
+      if (this.ionicForm.value.edit_buddyLocation) {
+        console.log("update buddy location", this.buddy.buddyLocation ," to ", this.ionicForm.value.edit_buddyLocation)
         buddyPreview.buddyLocation = this.ionicForm.value.edit_BuddyLocation
 
       }
@@ -229,6 +229,18 @@ export class BuddyContactPage implements OnInit {
    ];
     document.body.appendChild(alert);
     await alert.present();
+  }
+
+  onFileSelected(event, id) {
+    const file = event.target.files[0]; // info de la imagen
+    let reader = new FileReader();
+
+    reader.onload = (e: any) => {
+        this.buddy.buddyPic = e.target.result
+    }
+    reader.readAsDataURL(file) // para que aparezca la imagen en la pantalla
+
+    //this.uploadImage(event, id)
   }
 
 }

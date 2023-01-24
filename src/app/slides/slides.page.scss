@@ -11,10 +11,6 @@
   justify-content: center;
 }
 
-img { 
-  max-height: 400px;
-}
-
 .slidertitle {
   font-family: 'Playfair Display';
   font-weight: lighter;
@@ -23,6 +19,9 @@ img {
 
 .sliderimg {
   padding: 40px;
+  width:  100% !important;
+  height: 300px !important;
+  object-fit: cover;
 }
 
 .btn-primary {

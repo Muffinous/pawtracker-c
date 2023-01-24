@@ -58,31 +58,31 @@
 
       <!-- Edit Event Title -->
       <ion-item>
-        <ion-input [(ngModel)]="editedEvent.edit_eventTitle" #edit_eventTitle name="edit_eventTitle" id="edit_eventTitle" placeholder="{{event.title}}" interface="action-sheet"></ion-input>
+        <ion-input [(ngModel)]="editedEvent.title" name="title" placeholder="{{event.title}}" interface="action-sheet"></ion-input>
       </ion-item>
       <!-- Edit Event Title -->
       
       <!-- Edit Event Description -->
       <ion-item>
-        <ion-input  [(ngModel)]="editedEvent.edit_eventdescription" #edit_eventDescription id="edit_eventDescription" name="edit_eventDescription" placeholder="{{event.description}}" interface="action-sheet"></ion-input>
+        <ion-input  [(ngModel)]="editedEvent.description" name="description" placeholder="{{event.description}}" interface="action-sheet"></ion-input>
       </ion-item>
       <!-- Edit Event Description -->
 
       <!-- Edit Event All day -->
       <ion-item>
         <ion-label>All day</ion-label>
-        <ion-toggle  [(ngModel)]="edit_allDay" slot="end" name="edit_allDay" #edit_eventAllDay color="dark" (onchange)="onToogleChange()" [checked]="edit_allDay" checked></ion-toggle>
+        <ion-toggle  [(ngModel)]="editedEvent.allDay" slot="end" name="allDay" color="dark" (onchange)="onToogleChange()" [checked]="editedEvent.allDay" checked></ion-toggle>
       </ion-item>
       <!-- Edit Event All day -->
 
-      <ion-item [disabled]="edit_allDay">
+      <ion-item [disabled]="editedEvent.allDay">
         <ion-label>Start Time</ion-label>
-        <ion-datetime  [(ngModel)]="editedEvent.edit_eventStartTime" display-format="DD/MM/YYYY HH:mm" name="edit_eventStartTime" picker-format="MMM DHH:mm"[min]="minDate"></ion-datetime>
+        <ion-datetime  [(ngModel)]="editedEvent.startTime" name="startTime" display-format="DD/MM/YYYY HH:mm" picker-format="MMM DHH:mm" [min]="minDate"></ion-datetime>
       </ion-item>
   
-      <ion-item [disabled]="edit_allDay">
+      <ion-item [disabled]="editedEvent.allDay">
         <ion-label>End Time</ion-label>
-        <ion-datetime [(ngModel)]="editedEvent.edit_eventEndTime" display-format="DD/MM/YYYY HH:mm"  name="edit_eventEndTime" picker-format="MMM DHH:mm" [min]="minDate"></ion-datetime>
+        <ion-datetime [(ngModel)]="editedEvent.endTime" name="endTime" display-format="DD/MM/YYYY HH:mm" picker-format="MMM DHH:mm" [min]="minDate"></ion-datetime>
       </ion-item>
 
     </ion-card-header>

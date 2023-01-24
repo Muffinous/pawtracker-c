@@ -63,7 +63,7 @@ export class IndexPage implements OnInit {
   async onEventSelected(ev) {
     this.newEvent = ev as Event
     let img
-    this.animalService.getBuddyImage(this.newEvent.buddyName).then(function(buddypic) {      
+    this.animalService.getBuddyImage(this.newEvent.buddyId).then(function(buddypic) {      
       img = buddypic
     }).then(res => {
       this.showModalEvent(ev, img)
@@ -144,6 +144,7 @@ export class IndexPage implements OnInit {
   }
 
   saveEventDB(event) { // save the event in the database
+    console.log("event SAVING ", event)
     this.db.doc(`/users/${this.userService.user.id}`).ref.get().then(snapshot => {
       if (snapshot.exists) {
         this.db.doc(`/users/${this.userService.user.id}/events/${event.id}`).set(event).then(res => {
@@ -154,7 +155,6 @@ export class IndexPage implements OnInit {
     }).catch((error) => {
       this.presentAlert(error)
     })
-
   }
 
   prevMonth() {

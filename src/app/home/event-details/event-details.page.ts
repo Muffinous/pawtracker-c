@@ -15,9 +15,12 @@ import { formatDate } from '@angular/common';
 export class EventDetailsPage implements OnInit {
 
   event : Event;
-  editedEvent = {edit_eventTitle: '', edit_eventDescription: '', edit_eventStartTime : '', edit_eventEndTime: '', edit_allDay: false}
-  img = "../../../assets/img/gifblue.gif"
+  editedEvent = {} as Event
 
+  // editedEvent = {edit_eventTitle: '', edit_eventDescription: '', edit_eventStartTime : '', edit_eventEndTime: '', edit_allDay: false}
+  img = "../../../assets/img/gifblue.gif"
+  monthNames = [ 'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December' ];
   start
   end
   minutesStart
@@ -35,7 +38,7 @@ export class EventDetailsPage implements OnInit {
     this.event = this.navParams.get('ev');
     this.edit_allDay = this.event.allDay
 
-    console.log('event edit ', this.event)
+    console.log('event to edit ', this.event)
 
     this.img = this.navParams.get("img");
     this.start = new Date(this.event.startTime)
@@ -45,18 +48,21 @@ export class EventDetailsPage implements OnInit {
     this.edit_eventEndTime = this.end.toISOString()
 
     // EVENT EDITED
-    // this.editedEvent.edit_eventTitle = this.event.title
-    // this.editedEvent.edit_eventDescription = this.event.description
-     this.editedEvent.edit_eventStartTime = this.edit_eventStartTime
-     this.editedEvent.edit_eventEndTime = this.edit_eventEndTime
-     this.editedEvent.edit_allDay = this.event.allDay
+      this.editedEvent.startTime = this.edit_eventStartTime
+      this.editedEvent.endTime = this.edit_eventEndTime
+      this.editedEvent.allDay = this.event.allDay
     // EVENT EDITED
 
     this.minutesConverter()
   }
 
   ngOnInit() {
-    //console.log('IMG', this.img)
+  }
+
+  setDate(seldate: Date) {
+    this.event.day = seldate.getDate();
+    this.event.month = this.monthNames[seldate.getMonth()]; // get the name -> this.monthNames[seldate.getMonth()];
+    this.event.year = seldate.getFullYear();
   }
 
   close() {
@@ -111,62 +117,55 @@ export class EventDetailsPage implements OnInit {
 
   editEvent() {
     this.editMode = true;
-    // this.ionicForm = this.formBuilder.group({
-    //   id: [this.event.id],
-    //   edit_eventTitle: ['', [Validators.minLength(2)]], 
-    //   edit_eventDescription: [''],
-    //   edit_eventEndTime: [this.edit_eventEndTime],
-    //   edit_eventStartTime: [this.edit_eventStartTime],      
-    //   edit_eventDay: [''],
-    //   edit_eventMonth: [''],   
-    //   edit_eventYear: [''],
-    //   edit_eventAllDay: ['']
-    // })
   }
 
   onToogleChange() {
-    console.log('ALL DAY', this.editedEvent.edit_allDay)
-    this.editedEvent.edit_allDay = !this.editedEvent.edit_allDay
+    console.log('ALL DAY', this.editedEvent.allDay)
+    this.editedEvent.allDay = !this.editedEvent.allDay
   }
 
-  saveEdit() {
-  console.log("SAVE BUTTON ")
+  saveEdit() {  
      let newEvent = JSON.parse(JSON.stringify(this.event)) as Event 
-      console.log("edited event ", this.editedEvent)
-      console.log("new event ", newEvent)
 
-    if ((this.notEmpty(this.editedEvent.edit_eventTitle)) && (this.editedEvent.edit_eventTitle !== this.event.title)) {
-      newEvent.title = this.editedEvent.edit_eventTitle
-      console.log("update event title  '", this.event.title ,"' to ", this.editedEvent.edit_eventTitle)
+     newEvent.startTime = this.event.startTime
+      newEvent.endTime = this.event.endTime
+
+    if ((this.notEmpty(this.editedEvent.title)) && (this.editedEvent.title !== this.event.title)) {
+      newEvent.title = this.editedEvent.title
     }
 
-    if (this.notEmpty(this.editedEvent.edit_eventDescription) && (this.editedEvent.edit_eventDescription !== this.event.description)) {
-      newEvent.description = this.event.description
-      console.log("update event description  '", this.event.description ,"' to ", this.editedEvent.edit_eventDescription)
+    if (this.notEmpty(this.editedEvent.description) && (this.editedEvent.description !== this.event.description)) {
+      newEvent.description = this.editedEvent.description
     }
 
-    if (this.editedEvent.edit_eventStartTime !== this.event.startTime) {
-      console.log("update event startime  '", this.event.startTime ,"' to ", this.editedEvent.edit_eventStartTime)
-    }
-    // this.start = new Date(this.event.startTime)
+    let start_oldDate = new Date(this.event.startTime)
+    let start_newDate = new Date(this.editedEvent.startTime)
 
-    if (this.editedEvent.edit_eventEndTime !== this.event.startTime) {
-      console.log("update event endtime  '", this.event.startTime ,"' to ", this.editedEvent.edit_eventStartTime)
+    if (start_oldDate.getTime() !== start_newDate.getTime()) {
+      newEvent.startTime = start_newDate
     }
 
-    if (this.editedEvent.edit_allDay !== this.event.allDay) {
-      console.log("update event endtime  '", this.event.allDay ,"' to ", this.editedEvent.edit_allDay)
+    let end_oldDate = new Date(this.event.endTime)
+    let end_newDate = new Date(this.editedEvent.endTime)
+
+    if (end_oldDate.getTime() !==  end_newDate.getTime()) {
+      newEvent.endTime = end_newDate
+    }
+
+    
+    if (this.editedEvent.allDay !== this.event.allDay) {
+      newEvent.allDay = this.editedEvent.allDay
     }
 
     console.log("new event ", newEvent)
     let subheader : string = "You're gonna update your event. Is everything correct?"
-    let message : string = `<ul><li>  Title : ${this.editedEvent.edit_eventTitle}</li>
-                            <li>Description : ${this.editedEvent.edit_eventDescription}</li>
-                            <li>All day : ${this.editedEvent.edit_allDay}</li>
-                            <li>Start Time : ${formatDate(this.editedEvent.edit_eventStartTime, 'dd-MM-yyyy', 'es-ES')}</li>
-                            <li>End Time : ${formatDate(this.editedEvent.edit_eventEndTime, 'dd-MM-yyyy', 'es-ES')}</li>`
+    let message : string = `<ul><li>  Title : ${newEvent.title}</li>
+                            <li>Description : ${newEvent.description}</li>
+                            <li>All day : ${newEvent.allDay}</li>
+                            <li>Start Time : ${formatDate(newEvent.startTime, 'dd-MM-yyyy HH:mm', 'es-ES')}</li>
+                            <li>End Time : ${formatDate(newEvent.endTime, 'dd-MM-yyyy HH:mm', 'es-ES')}</li>`
 
-    this.presentAlert(message, "Update Event Info", subheader, this.editedEvent)
+    this.presentAlert(message, "Update Event Info", subheader, newEvent)
 
   }
 
@@ -174,8 +173,11 @@ export class EventDetailsPage implements OnInit {
     this.editMode = false;
   }
 
-  notEmpty(val1) {
-    return ((val1 !== "") && (val1.length > 2))
+  notEmpty(val1: String) {
+    if ((val1 !== "") && (val1 !== undefined)) {
+        return (val1.length > 2)
+    } 
+    return false
   }
 
   async presentAlert(message: string, header: string, subheader: string, eventNewInfo) {
@@ -194,13 +196,13 @@ export class EventDetailsPage implements OnInit {
       text: 'Save',
       handler: () => {
         console.log('Save option clicked ', this.event, ' eventnewinfo ', eventNewInfo)
-        // this.animalService.updateBuddy(this.userService.user, this.buddy, buddyNewInfo).then(result => {
-        //   this.modalControler.dismiss(null)           
-        // })
+         this.dataService.updateEvent(this.userService.user, this.event, eventNewInfo).then(result => {
+           this.modalControler.dismiss(null)           
+         })
       }
     }
    ];
-    //document.body.appendChild(alert);
+    document.body.appendChild(alert);
     await alert.present();
   }
 
