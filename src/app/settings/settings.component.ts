@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ScreenBrightness } from '@capacitor-community/screen-brightness';
+import { User } from 'firebase/auth';
+import { AuthService } from '../services/auth/auth.service';
+import { UserService } from '../services/auth/user/user.service';
 
 @Component({
   selector: 'app-settings',
@@ -14,37 +17,44 @@ export class SettingsComponent implements OnInit {
     icon: 'person',
     children: [{
       title: 'Change password',
-      icon: 'key'
+      icon: 'key',
+      button: 'reset'
       }, {
       title: 'Change personal information',
-      icon: 'person'
+      icon: 'person',
+      button: 'v'
     }]
     }, {
     title: 'Settings',
     icon: 'settings',
     children: [{
         title: 'Sound settings',
-        icon: 'volume-high'
+        icon: 'volume-high',
+        button: ''
     }, {
         title: 'Notification settings',
-        icon: 'options'
+        icon: 'options',
+        button: ''
     }]
     }, {
     title: 'Rate',
     icon: 'heart',
     children: [{
         title: 'Rate this application',
-        icon: 'star'
+        icon: 'star',
+        button: ''
     }]
     }, {
     title: 'Tell a friend',
     icon: 'chatbox',
     children: [{
         title: 'Share it in Email',
-        icon: 'mail'
+        icon: 'mail',
+        button: ''
     }, {
         title: 'Share it on Social Media',
-        icon: 'globe'
+        icon: 'globe',
+        button: ''
     }]
     }, {
     title: 'Term of service',
@@ -67,7 +77,7 @@ export class SettingsComponent implements OnInit {
     }]
   }]
 
-  constructor() { }
+  constructor(private authService: AuthService, private userService: UserService) { }
 
   ngOnInit() {}
 
@@ -79,5 +89,13 @@ export class SettingsComponent implements OnInit {
 
   goBack() {
     window.history.back();
+  }
+
+  click(clickName: string) {
+    console.log("click function ", clickName)
+    if (clickName.match('reset')) {
+      this.authService.ForgotPassword(this.userService.user.email)
+    }
+    
   }
 }

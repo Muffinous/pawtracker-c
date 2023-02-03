@@ -84,11 +84,11 @@ export class AuthService {
             return true
           })
           .catch((error) => {
-            presentAlert(error.message);
+            presentAlert('Error', error.message);
             return error.message
           });
       } else {
-        presentAlert('Username already exists!')
+        presentAlert('Error', 'Username already exists!')
         return false
       }
     })
@@ -103,15 +103,19 @@ export class AuthService {
       });
   }
 
+  sendResetLink() {
+    console.log("send reset link")
+  }
+
   // Reset Forggot password
   ForgotPassword(passwordResetEmail: string) {
     return this.afAuth
       .sendPasswordResetEmail(passwordResetEmail)
       .then(() => {
-        window.alert('Password reset email sent, check your inbox.');
+        presentAlert('Check your email', `Password reset email sent to <b>${passwordResetEmail}</b>, please check your inbox.`);
       })
       .catch((error) => {
-        window.alert(error);
+        presentAlert('Error', `There has been an error, please try again. Error: ${error}`);
       });
   }
 
@@ -282,10 +286,10 @@ export class AuthService {
   }
   
 }
-  async function presentAlert(message: string) {
+  async function presentAlert(header: string, message: string) {
     const alert = document.createElement('ion-alert');
     alert.cssClass = 'my-custom-class';
-    alert.header = 'Error';
+    alert.header = header;
     alert.message = message;
     alert.buttons = ['OK'];
   

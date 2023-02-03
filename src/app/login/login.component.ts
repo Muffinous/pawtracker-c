@@ -46,6 +46,7 @@ export class LoginComponent implements OnInit {
   }
   
   login(){
+    console.log('login....')
     this.database.doc(`/usernames/${this.username}`).ref.get().then(snapshot => {
       const idUser = snapshot.get("id")
       if (snapshot.exists) {
@@ -74,6 +75,7 @@ export class LoginComponent implements OnInit {
         });
       }
     })
+    // presentAlert('Wrong username!')
   }
 }
 

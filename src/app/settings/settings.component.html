@@ -26,8 +26,8 @@
             <!-- <ion-icon size="small" slot="start" name="{{item.icon}}"></ion-icon> -->
         </ion-item-divider>  
         <div *ngIf="item.children">
-            <ion-item *ngFor="let child of item.children" >
-                {{child.title}}
+            <ion-item *ngFor="let child of item.children" (click)="click(child.button)">
+                <ion-label >{{child.title}}</ion-label>
                 <ion-icon size="small" slot="start" name="{{child.icon}}"></ion-icon>
             </ion-item>
         </div>     
