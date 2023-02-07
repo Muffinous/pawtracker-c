@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+    <ion-title>Welcome</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="confirm()">Confirm</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+    <ion-item>
+      <ion-label position="stacked">Your name</ion-label>
+      <ion-input [(ngModel)]="user.name" name="name" id="name" placeholder="{{this.userService.user.name}}"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Your surname</ion-label>
+      <ion-input [(ngModel)]="user.surname" name="surname" id="surname" placeholder="{{this.userService.user.surname}}"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Your email</ion-label>
+      <ion-input [(ngModel)]="user.email" id="email" placeholder="{{this.userService.user.email}}"></ion-input>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label position="stacked">Your username</ion-label>
+      <ion-input [(ngModel)]="user.username" id="username" placeholder="{{this.userService.user.username}}"></ion-input>
+    </ion-item>    
+
+</ion-content>

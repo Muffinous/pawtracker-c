@@ -36,7 +36,7 @@ export class HomePage implements OnInit{
   public appPages = [
     { title: 'My profile', url: 'profile', icon: 'person', selectedIndex: 0},
     { title: 'Buddies', url: 'buddies', icon: 'paw', selectedIndex: 1},
-    { title: 'Settings', url: `/settingsnew`, icon: 'settings', selectedIndex: 2 },
+    { title: 'Settings', url: `/settings2`, icon: 'settings', selectedIndex: 2 },
     { title: 'Adopt', url: `adopt`, icon: 'heart', selectedIndex: 3 },
     // { title: 'Dark mode', icon: 'toggle', fn: () => this.darkMode($event),  index: 3 },
   ];

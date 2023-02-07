@@ -1,15 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { ScreenBrightness } from '@capacitor-community/screen-brightness';
+import { ActionSheetController, ModalController } from '@ionic/angular';
 import { AuthService } from '../services/auth/auth.service';
 import { UserService } from '../services/auth/user/user.service';
+import { PersonalinfoComponent } from './personalinfo/personalinfo.component';
 
 @Component({
-  selector: 'app-settings',
-  templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.scss'],
+  selector: 'app-settings2',
+  templateUrl: './settings2.page.html',
+  styleUrls: ['./settings2.page.scss'],
 })
-export class SettingsComponent implements OnInit {
+export class Settings2Page implements OnInit {
   brightnessValue;
+  isModalOpen = false;
 
   actions =[{
     title: 'Edit profile',
@@ -75,10 +78,14 @@ export class SettingsComponent implements OnInit {
         title: 'We are the Mobiscroll team.'
     }]
   }]
+  presentingElement = undefined;
 
-  constructor(private authService: AuthService, private userService: UserService) { }
+  constructor(private authService: AuthService, private userService: UserService, private modalCtrl: ModalController) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.presentingElement = document.querySelector('.ion-page');
+
+  }
 
   async controlBrightness() {
     console.log("brightness ", this.brightnessValue)
@@ -95,7 +102,17 @@ export class SettingsComponent implements OnInit {
     if (clickName.match('reset')) {
       this.authService.ForgotPassword(this.userService.user.email)
     } else if (clickName.match('personalinfo')) {
-
+      this.openModal()
     }
   }
+
+  async openModal() {
+    const modal = await this.modalCtrl.create({
+      component: PersonalinfoComponent,
+    });
+    modal.present();
+    const { data, role } = await modal.onWillDismiss();
+    console.log('data', data)
+  }
+
 }

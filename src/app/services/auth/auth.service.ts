@@ -115,7 +115,13 @@ export class AuthService {
         presentAlert('Check your email', `Password reset email sent to <b>${passwordResetEmail}</b>, please check your inbox.`);
       })
       .catch((error) => {
-        presentAlert('Error', `There has been an error, please try again. Error: ${error}`);
+        console.log('error ', error)
+        var errorCode = error.code;
+        if (errorCode === 'auth/invalid-email') {
+          presentAlert('Error', `You have entered an invalid email, please check that it's spelled correctly. Example: user@example.es`);
+        } else if (errorCode === 'auth/user-not-found') {
+          presentAlert('Error', `You have entered an incorrect email, please enter the one you used to register.`);
+        }
       });
   }
 

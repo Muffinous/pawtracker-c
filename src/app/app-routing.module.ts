@@ -27,7 +27,11 @@ const routes: Routes = [
   {
     path: 'buddy-contact',
     loadChildren: () => import('./home/adopt/buddy-contact/buddy-contact.module').then( m => m.BuddyContactPageModule)
+  },  {
+    path: 'settings2',
+    loadChildren: () => import('./settings2/settings2.module').then( m => m.Settings2PageModule)
   },
+
 
 
 

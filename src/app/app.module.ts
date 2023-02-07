@@ -31,9 +31,10 @@ import { AdoptModalComponent } from './home/adopt/adopt-modal/adopt-modal.compon
 import { NativeGeocoder } from '@awesome-cordova-plugins/native-geocoder/ngx';
 import { CallNumber } from '@awesome-cordova-plugins/call-number/ngx';
 import { EmailComposer } from '@awesome-cordova-plugins/email-composer/ngx';
+import { PersonalinfoComponent } from './settings2/personalinfo/personalinfo.component';
 
 @NgModule({
-  declarations: [AppComponent, SignupComponent, LoginComponent, CalModalComponent, SettingsComponent, SignupAnimalComponent, AdoptModalComponent],
+  declarations: [AppComponent, SignupComponent, LoginComponent, CalModalComponent, SettingsComponent, SignupAnimalComponent, AdoptModalComponent, PersonalinfoComponent],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, NgCalendarModule, FormsModule, ReactiveFormsModule, CommonModule,
     AngularFireModule.initializeApp(environment.firebase),

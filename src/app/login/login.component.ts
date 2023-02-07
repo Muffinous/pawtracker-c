@@ -70,10 +70,11 @@ export class LoginComponent implements OnInit {
               }
             });
           } else {
-            presentAlert('Wrong username!')
           }
         });
-      }
+      } else{
+         presentAlert('Wrong username!')
+      }            
     })
     // presentAlert('Wrong username!')
   }

@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button text="Home"(click)="goBack()">
+        <ion-icon slot="start" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item-group>
+    <ion-item-divider color="light">Adjust brightness </ion-item-divider>
+    <ion-range [(ngModel)]="brightnessValue" (ionChange)="controlBrightness()" min="0" max="1" step="0.01" color="secondary">
+      <ion-icon size="small" slot="start" name="sunny"></ion-icon>
+      <ion-icon slot="end" name="sunny"></ion-icon>
+    </ion-range>
+  </ion-item-group>
+
+    <ion-item-group> 
+      <div *ngFor="let item of actions">
+         <ion-item-divider color="light" >
+            {{item.title}}
+        </ion-item-divider>  
+        <div *ngIf="item.children">
+            <ion-item *ngFor="let child of item.children" (click)="click(child.button)">
+                <ion-label >{{child.title}}</ion-label>
+                <ion-icon size="small" slot="start" name="{{child.icon}}"></ion-icon>
+            </ion-item>
+        </div>     
+      </div>
+    </ion-item-group>
+</ion-content>

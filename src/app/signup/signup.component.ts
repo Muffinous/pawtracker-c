@@ -4,6 +4,7 @@ import { IonInput } from '@ionic/angular';
 import { AuthService } from '../services/auth/auth.service';
 import { User } from '../models/user';
 import { Router } from '@angular/router';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Component({
   selector: 'app-signup',
@@ -53,7 +54,7 @@ export class SignupComponent implements OnInit {
     ],  
   }
 
-  constructor(private router: Router, public formBuilder: FormBuilder,  public fb: FormBuilder, public authService: AuthService) { 
+  constructor(private router: Router, public formBuilder: FormBuilder,  public fb: FormBuilder, public authService: AuthService, public db: AngularFirestore) { 
 
     let EMAILPATTERN = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
 
@@ -130,8 +131,8 @@ export class SignupComponent implements OnInit {
     if (!this.ionicForm.valid) {
       console.log(this.ionicForm)
       console.log(this.ionicForm.value)
+      this.checkMailExists(this.ionicForm.get("email").value)
       console.log('Please provide all the required values!')
-      return false;
     } else {
       this.user.name = this.ionicForm.get("name").value
       this.user.surname = this.ionicForm.get("surname").value
@@ -139,10 +140,34 @@ export class SignupComponent implements OnInit {
       this.user.email = this.ionicForm.get("email").value
       this.user.nAnimals = 0
 
-      console.log("USER INTERFACE ", this.user)
       await this.authService.SignUp(this.user, this.ionicForm.get("password").value).then((result) => {
         this.router.navigateByUrl('/signupanimal', {state: {extras: this.ionicForm.value , user: this.user}, replaceUrl:true})
       })
     }
   }
+
+  checkMailExists(mail: string) {
+    this.db.collection("users").get().subscribe(snapshot => {
+      snapshot.forEach(snap => {
+        let userDB: User = snap.data() as User      
+
+        if(userDB.hasOwnProperty('email') && (userDB.email.localeCompare(mail) === 0)) {
+          console.log("Email exist.");
+          presentAlert("The email is already in use, please use another or log in.")
+        }      
+      });
+    });
+  }
+}
+
+async function presentAlert(message: string) {
+  const alert = document.createElement('ion-alert');
+  alert.cssClass = 'my-custom-class';
+  alert.header = 'Error';
+  // alert.subHeader = 'Subtitle';
+  alert.message = message;
+  alert.buttons = ['OK'];
+
+  document.body.appendChild(alert);
+  await alert.present();
 }
