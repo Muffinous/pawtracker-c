@@ -67,7 +67,7 @@ export class AuthService {
   }
 
   // Sign up with email/password
-  SignUp(user: User, password: string) {
+  async SignUp(user: User, password: string) {
     let idUser = this.afs.createId() // create id 4 each buddy
     user.id = idUser
     console.log("idUser ", idUser)
@@ -81,14 +81,18 @@ export class AuthService {
             up and returns promise */
           // this.SendVerificationMail();
             this.SetProfileData(result.user, user);          // if username doesnt exists, we save profile and user data in db  
-            return true
           })
           .catch((error) => {
-            presentAlert('Error', error.message);
-            return error.message
+            var errorCode = error.code;
+            if (errorCode === 'auth/invalid-email') {
+              presentAlert('Error', `You have entered an invalid email, please check that it's spelled correctly. Example: user@example.es`);
+            } else if (errorCode === 'auth/email-already-in-use') {
+              presentAlert('Error', `You have entered an email already registered, please use another one or log in.`);
+            }
+            return false
           });
       } else {
-        presentAlert('Error', 'Username already exists!')
+        presentAlert('Error', 'The username is already in use, please use another or log in.')
         return false
       }
     })

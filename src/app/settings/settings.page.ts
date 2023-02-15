@@ -6,11 +6,11 @@ import { UserService } from '../services/auth/user/user.service';
 import { PersonalinfoComponent } from './personalinfo/personalinfo.component';
 
 @Component({
-  selector: 'app-settings2',
-  templateUrl: './settings2.page.html',
-  styleUrls: ['./settings2.page.scss'],
+  selector: 'app-settings',
+  templateUrl: './settings.page.html',
+  styleUrls: ['./settings.page.scss'],
 })
-export class Settings2Page implements OnInit {
+export class SettingsPage implements OnInit {
   brightnessValue;
   isModalOpen = false;
 

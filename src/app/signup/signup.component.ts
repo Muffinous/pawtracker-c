@@ -47,7 +47,9 @@ export class SignupComponent implements OnInit {
       { type: 'required', message: 'Email required.' },
       { type: 'pattern', message: 'Invalid Email!' }
     ],  
+
     'password': [
+      { type: 'pattern', message: 'Your password must have at least 8 character length, lowercase and uppercase letters, numbers and at least one special character.'},
       { type: 'required', message: 'Password required.' },
       { type: 'minlength', message: 'Passwod must be at least 6 characters long.' },
       { type: 'maxlength', message: 'Password cannot be more than 30 characters long.' },
@@ -83,7 +85,7 @@ export class SignupComponent implements OnInit {
           Validators.minLength(6),
           Validators.maxLength(30),
           Validators.required,
-          // Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$') //this is for the letters (both uppercase and lowercase) and numbers validation
+          Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}') 
       ])],
       confirmed_password: ['', Validators.required],
   }, { validator: this.matchingPasswords('password', 'confirmed_password')})
@@ -139,10 +141,13 @@ export class SignupComponent implements OnInit {
       this.user.username = this.ionicForm.get("username").value
       this.user.email = this.ionicForm.get("email").value
       this.user.nAnimals = 0
-
-      await this.authService.SignUp(this.user, this.ionicForm.get("password").value).then((result) => {
-        this.router.navigateByUrl('/signupanimal', {state: {extras: this.ionicForm.value , user: this.user}, replaceUrl:true})
-      })
+      
+      await this.authService.SignUp(this.user, this.ionicForm.get("password").value).then(result => {
+        console.log('RESULT ', result)
+        if (result) {
+          this.router.navigateByUrl('/signupanimal', {state: {extras: this.ionicForm.value , user: this.user}, replaceUrl:true})
+        }
+      })         
     }
   }
 
@@ -154,10 +159,13 @@ export class SignupComponent implements OnInit {
         if(userDB.hasOwnProperty('email') && (userDB.email.localeCompare(mail) === 0)) {
           console.log("Email exist.");
           presentAlert("The email is already in use, please use another or log in.")
-        }      
+          return false
+        }
       });
     });
+    return true
   }
+
 }
 
 async function presentAlert(message: string) {

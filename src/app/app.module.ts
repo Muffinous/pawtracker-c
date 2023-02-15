@@ -22,7 +22,6 @@ import { CommonModule } from '@angular/common';
 import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
 import { CalModalComponent } from './home/cal-modal/cal-modal.component';
-import { SettingsComponent } from './settings/settings.component';
 import { SwiperModule } from 'swiper/angular';
 import { Camera } from '@ionic-native/Camera/ngx';
 import { File } from '@ionic-native/file/ngx';
@@ -31,10 +30,10 @@ import { AdoptModalComponent } from './home/adopt/adopt-modal/adopt-modal.compon
 import { NativeGeocoder } from '@awesome-cordova-plugins/native-geocoder/ngx';
 import { CallNumber } from '@awesome-cordova-plugins/call-number/ngx';
 import { EmailComposer } from '@awesome-cordova-plugins/email-composer/ngx';
-import { PersonalinfoComponent } from './settings2/personalinfo/personalinfo.component';
+import { PersonalinfoComponent } from './settings/personalinfo/personalinfo.component';
 
 @NgModule({
-  declarations: [AppComponent, SignupComponent, LoginComponent, CalModalComponent, SettingsComponent, SignupAnimalComponent, AdoptModalComponent, PersonalinfoComponent],
+  declarations: [AppComponent, SignupComponent, LoginComponent, CalModalComponent, SignupAnimalComponent, AdoptModalComponent, PersonalinfoComponent],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, NgCalendarModule, FormsModule, ReactiveFormsModule, CommonModule,
     AngularFireModule.initializeApp(environment.firebase),

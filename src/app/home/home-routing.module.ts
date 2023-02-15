@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SettingsComponent } from '../settings/settings.component';
 import { HomePage } from './home.page';
 
 const routes: Routes = [
@@ -25,7 +24,6 @@ const routes: Routes = [
         redirectTo: 'index',
         pathMatch: 'full'
       },
-      { path: 'settingsnew', component: SettingsComponent },
     ]
   },
   {
@@ -34,24 +32,9 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: '',
-    redirectTo: 'index',
-    pathMatch: 'full'
-  },     
-  { path: 'settingsnew', component: SettingsComponent },
-  {
     path: 'event-details',
     loadChildren: () => import('./event-details/event-details.module').then( m => m.EventDetailsPageModule)
   },
-  {
-    path: 'buddy',
-    loadChildren: () => import('./buddy/buddy.module').then( m => m.BuddyPageModule)
-  },
-
-  // {
-  //   path: 'settings',
-  //   loadChildren: () => import('../settings/settings.module').then( m => m.SettingsPageModule)
-  // },
 
 ];
 
