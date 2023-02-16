@@ -1,5 +1,6 @@
 import { Component, OnChanges, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 import { User } from '../models/user';
 import { AuthService } from '../services/auth/auth.service';
 import { UserService } from '../services/auth/user/user.service';
@@ -11,6 +12,8 @@ declare var google;
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
+
+
 export class HomePage implements OnChanges{
   map = null
   @ViewChild('mapElement') mapElement
@@ -20,7 +23,8 @@ export class HomePage implements OnChanges{
   selectedIndex
   selectedTheme: String;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private authService: AuthService, private userService: UserService, private renderer: Renderer2) {
+  constructor(public navCtrl: NavController, private router: Router, private activatedRoute: ActivatedRoute, private authService: AuthService, private userService: UserService, private renderer: Renderer2) {
+    
     this.activatedRoute.params.subscribe(params => {
       console.log('PARAMS ', params)
       if (params) {
@@ -72,4 +76,5 @@ export class HomePage implements OnChanges{
   public getUser() {
     return this.user
   }
+
 }
