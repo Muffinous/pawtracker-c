@@ -26,14 +26,6 @@
   </ion-card>
   
   <ion-grid  *ngIf="!editMode" class="ion-text-center">
-    <ion-row class="ion-align-items-center">
-      <ion-col class="ion-align-items-center">
-        <ion-button (click)="deleteEvent()">
-          <ion-label>Delete Event</ion-label> 
-          <ion-icon name="trash"></ion-icon>
-        </ion-button>      
-      </ion-col>
-    </ion-row>
 
     <ion-row class="ion-align-items-center">
       <ion-col *ngIf="!editMode" class="ion-align-items-center">

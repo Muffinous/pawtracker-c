@@ -40,16 +40,17 @@ export class DataService {
   }
 
   updateEvent(user: User, oldEvent: Event, newEvent: Event) {
-    console.log("NUEVO EVENTO CON EDITS ", newEvent)
+    // console.log("NUEVO EVENTO CON EDITS ", newEvent)
       return this.database.doc(`/users/${user.id}/events/${oldEvent.id}`).update(newEvent).then(() => {
-        console.log("array antes ", this.events)
+        // console.log("array antes ", this.events)
+
         this.events.forEach((item, index, array) => { 
           if(array[index].id === oldEvent.id ) {
-            console.log("son iguales ")
+            // console.log("son iguales ")
             array[index] = newEvent
   
           };
-          console.log('array despues ', this.events)
+          // console.log('array despues ', this.events)
           this.ionloaderService.autoLoader('Buddy updated');
         })
   

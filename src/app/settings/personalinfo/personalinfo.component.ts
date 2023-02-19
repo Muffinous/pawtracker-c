@@ -26,25 +26,62 @@ export class PersonalinfoComponent implements OnInit {
   }
 
   confirm() {
+    console.log('User Service before', this.userService.user)
     let userPreview = JSON.parse(JSON.stringify(this.userService.user)) as User // copy buddy image to buddypreview to keep all the values
-    console.log(' user preview ' , userPreview)
+    console.log('User Preview before ', userPreview)
+
     console.log('cambios ', this.user)
 
-    if ((this.user.name != "") && (this.user.name.localeCompare(this.userService.user.name) !== 0)) {
+    if (((this.user.name != "") && (typeof this.user.name !== "undefined")) && (this.user.name.localeCompare(this.userService.user.name) !== 0)) {
       userPreview.name = this.user.name
     }
-    if ((this.user.surname != "") && (this.user.name.localeCompare(this.userService.user.surname) !== 0)) {
+
+    if (((this.user.surname != "") && (typeof this.user.username !== "undefined")) && (this.user.surname.localeCompare(this.userService.user.surname) !== 0)) {
       userPreview.surname = this.user.surname
     }
-    if ((this.user.email != "") && (this.user.name.localeCompare(this.userService.user.email) !== 0)) {
-      userPreview.email = this.user.email
+
+    if (((this.user.email != "") && (typeof this.user.email  !== "undefined")) && (this.user.email.localeCompare(this.userService.user.email) !== 0)) {
+        userPreview.email = this.user.email
     }
-    if ((this.user.username != "") && (this.user.name.localeCompare(this.userService.user.username) !== 0)) {
+
+    if (((this.user.username != "") && (typeof this.user.username  !== "undefined")) && (this.user.username.localeCompare(this.userService.user.username) !== 0)) {
       userPreview.username = this.user.username
     }
-    console.log('user cambiado ', userPreview)
+    console.log('User Preview after ', userPreview)
 
-    // this.modalCtrl.dismiss({user: this.user})
+    let subheader : string = "You're gonna update your buddy's info. Is everything correct?"
+    let message : string = `<ul><li>Name : ${userPreview.name}</li>
+                                <li>Surname : ${userPreview.surname}</li>
+                                <li>Email : ${userPreview.email}</li>
+                                <li>Username : ${userPreview.username}</li>`
+
+    this.presentAlert(message, "Update User Info", subheader, userPreview)
+  }
+
+  async presentAlert(message: string, header: string, subheader: string, userNewInfo) {
+    const alert = document.createElement('ion-alert');
+    alert.cssClass = 'my-alert';
+    alert.header = header;
+    alert.subHeader = subheader;
+    alert.message = message;
+    alert.buttons = [
+    {
+      text: 'Cancel',
+      handler: () => {
+      }
+    },
+    {
+      text: 'Save',
+      handler: () => {
+        console.log('Save option clicked ', this.user, ' userNewInfo ', userNewInfo)
+        this.userService.updateUser(this.userService.user, userNewInfo).then(result => {
+          this.modalCtrl.dismiss(null)           
+        })
+      }
     }
+   ];
+    document.body.appendChild(alert);
+    await alert.present();
+  }
 
 }

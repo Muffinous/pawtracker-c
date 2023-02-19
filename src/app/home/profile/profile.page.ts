@@ -5,9 +5,9 @@ import { User } from 'src/app/models/user';
 import { AnimalService } from 'src/app/services/animal/animal.service';
 import { UserService } from 'src/app/services/auth/user/user.service';
 import { IonLoaderService } from 'src/app/services/ion-loader.service';
-import { BuddyPage } from '../buddy/buddy.page';
 import { CameraService } from 'src/app/services/camera/camera.service';
 import { SignupAnimalComponent } from 'src/app/signup/signup-animal-comp/signup-animal.component';
+import { BuddyDetailsPage } from '../buddy-details/buddy-details.page';
 
 @Component({
   selector: 'app-profile',
@@ -68,7 +68,7 @@ export class ProfilePage implements OnInit {
   async onAnimalSelected(buddy) {
     this.buddy = buddy
     const modal = await this.modalController.create({
-      component: BuddyPage,
+      component: BuddyDetailsPage,
       componentProps: buddy
     })
     await modal.present()

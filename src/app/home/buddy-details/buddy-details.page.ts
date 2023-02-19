@@ -9,11 +9,11 @@ import { UserService } from 'src/app/services/auth/user/user.service';
 import { IonLoaderService } from 'src/app/services/ion-loader.service';
 
 @Component({
-  selector: 'app-buddy',
-  templateUrl: './buddy.page.html',
-  styleUrls: ['./buddy.page.scss'],
+  selector: 'app-buddy-details',
+  templateUrl: './buddy-details.page.html',
+  styleUrls: ['./buddy-details.page.scss'],
 })
-export class BuddyPage implements OnInit {
+export class BuddyDetailsPage implements OnInit {
   buddy = {} as Buddy
   bday
   editMode = false;
@@ -21,8 +21,8 @@ export class BuddyPage implements OnInit {
   public ionicForm: FormGroup;
   image;
   
-  constructor(public modalControler: ModalController, private afs: AngularFirestore, public navParams: NavParams, private animalService: AnimalService,  
-    private ionLoaderService: IonLoaderService, private formBuilder: FormBuilder, private alertCtrl: AlertController,
+  constructor(public modalCtrl: ModalController, private afs: AngularFirestore, public navParams: NavParams, private animalService: AnimalService,  
+  private formBuilder: FormBuilder, private alertCtrl: AlertController,
     private userService: UserService) { 
     this.buddy.buddyName = this.navParams.get('buddyName');
     this.buddy.buddyAge = this.navParams.get('buddyAge');
@@ -64,7 +64,7 @@ export class BuddyPage implements OnInit {
   }
 
   close() {
-    this.modalControler.dismiss();
+    this.modalCtrl.dismiss();
   }
 
   deleteBuddy() {
@@ -87,7 +87,7 @@ export class BuddyPage implements OnInit {
           text: 'Delete',
           handler: () => {
             this.animalService.deleteBuddy(this.userService.user, this.buddy).then(result => {
-              this.modalControler.dismiss(null)           
+              this.modalCtrl.dismiss(null)           
             })
           }
         }
@@ -207,7 +207,7 @@ export class BuddyPage implements OnInit {
       handler: () => {
         console.log('Save option clicked ', this.buddy, ' buddynewinfo ', buddyNewInfo)
         this.animalService.updateBuddy(this.userService.user, this.buddy, buddyNewInfo).then(result => {
-          this.modalControler.dismiss(null)           
+          this.modalCtrl.dismiss(null)           
         })
       }
     }
@@ -215,4 +215,5 @@ export class BuddyPage implements OnInit {
     document.body.appendChild(alert);
     await alert.present();
   }
+
 }

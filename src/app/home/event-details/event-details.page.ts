@@ -1,10 +1,10 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AlertController, ModalController, NavParams } from '@ionic/angular';
 import { Event } from 'src/app/models/event';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { UserService } from 'src/app/services/auth/user/user.service';
 import { DataService } from 'src/app/services/data.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { formatDate } from '@angular/common';
 
 @Component({
@@ -157,7 +157,7 @@ export class EventDetailsPage implements OnInit {
       newEvent.allDay = this.editedEvent.allDay
     }
 
-    console.log("new event ", newEvent)
+    // console.log("new event ", newEvent)
     let subheader : string = "You're gonna update your event. Is everything correct?"
     let message : string = `<ul><li>  Title : ${newEvent.title}</li>
                             <li>Description : ${newEvent.description}</li>
@@ -195,7 +195,7 @@ export class EventDetailsPage implements OnInit {
     {
       text: 'Save',
       handler: () => {
-        console.log('Save option clicked ', this.event, ' eventnewinfo ', eventNewInfo)
+        // console.log('Save option clicked ', this.event, ' eventnewinfo ', eventNewInfo)
          this.dataService.updateEvent(this.userService.user, this.event, eventNewInfo).then(result => {
            this.modalControler.dismiss(null)           
          })

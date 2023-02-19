@@ -4,18 +4,18 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { BuddyPageRoutingModule } from './buddy-routing.module';
+import { BuddyDetailsPageRoutingModule } from './buddy-details-routing.module';
 
-import { BuddyPage } from './buddy.page';
+import { BuddyDetailsPage } from './buddy-details.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     IonicModule,
-    BuddyPageRoutingModule,
-    ReactiveFormsModule
+    BuddyDetailsPageRoutingModule
   ],
-  declarations: [BuddyPage]
+  declarations: [BuddyDetailsPage]
 })
-export class BuddyPageModule {}
+export class BuddyDetailsPageModule {}

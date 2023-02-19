@@ -45,14 +45,6 @@
     </ion-card-content>
 
     <ion-grid  *ngIf="!editMode && owner" class="ion-text-center">
-      <ion-row class="ion-align-items-center">
-        <ion-col class="ion-align-items-center">
-          <ion-button (click)="deleteBuddy()">
-            Delete this buddy 
-            <ion-icon name="trash-bin-outline" slot="end"></ion-icon>
-          </ion-button>        
-        </ion-col>
-      </ion-row>
 
       <ion-row class="ion-align-items-center">
         <ion-col *ngIf="!editMode" class="ion-align-items-center">
@@ -62,6 +54,16 @@
           </ion-button>      
         </ion-col>
       </ion-row>
+
+      <ion-row class="ion-align-items-center">
+        <ion-col class="ion-align-items-center">
+          <ion-button (click)="deleteBuddy()">
+            Delete this buddy 
+            <ion-icon name="trash-bin-outline" slot="end"></ion-icon>
+          </ion-button>        
+        </ion-col>
+      </ion-row>
+      
     </ion-grid>
 
   </ion-card>

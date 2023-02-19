@@ -5,6 +5,7 @@
       height: 100%;
       white-space: nowrap;
       .buddy-img {
+        object-fit: cover;
         height: 15vh;
         width: 15vh;
         border: 1px solid #fff;
@@ -23,6 +24,7 @@
     display: none; 
 }
 
-.ion-item {
-    padding: 3px;;
+ion-item {
+  padding-left: 15px !important;
+  padding-right: 15px !important;
 }

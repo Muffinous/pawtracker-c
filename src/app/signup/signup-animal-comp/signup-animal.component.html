@@ -8,160 +8,186 @@
 </ion-toolbar>
 
 <ion-content>
-    <ion-grid>
-      <ion-row color="primary">
-        <ion-col>
+  <ion-grid>
+    <ion-row color="primary">
+      <ion-col>
+        
+        <ion-row>
+          <ion-col offset="4" align-self-center>
+            <img alt="appicon" class="icon" src="../../assets/icon/caticon.png">
+          </ion-col>
+        </ion-row>
           
-          <ion-row>
-            <ion-col offset="4" align-self-center>
-              <img alt="appicon" class="icon" src="../../assets/icon/caticon.png">
-            </ion-col>
-          </ion-row>
-           
-          <ion-row>              
-              <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
-                <div class="ion-text-center">
-                  <h3>Sign Up Buddy</h3>
-                </div>
+        <ion-row>              
+          <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+            <div class="ion-text-center">
+              <h3>Sign Up Buddy</h3>
+            </div>
 
-                <form [formGroup]="ionicForm" (ngSubmit)="registerBuddies()" novalidate>
-                  <div formArrayName="attributes">
-                      <section [formGroupName]="i" *ngFor="let animals of ionicForm.controls.attributes.controls; let i = index">
-                        <ion-item-group>
-                          <ion-item-divider color="light">Buddy #{{ i + 1 }}
-                            <ion-icon id="deleteBuddy" *ngIf="ionicForm.controls.attributes.controls.length > 1" style="margin-left: auto;" (click)="deleteBuddy(i)" name="trash"></ion-icon>
-                          </ion-item-divider>
-                          <div padding>
-                            <ion-item>                    
-                              <ion-icon name="paw"></ion-icon>
-                              <ion-input formControlName="buddyName" name="buddyName" type="text" placeholder="Buddy name" required></ion-input>                    
-                            </ion-item>
-                            <!-- ERROR MESSAGES BUDDYNAME -->
-                            <!-- <div class="validation-errors">
-                              <ng-container *ngFor="let validation of validation_messages.buddyName">
-                                <div class="error-message" *ngIf="ionicForm.get('buddyName').hasError(validation.type) && (ionicForm.get('buddyName').dirty || ionicForm.get('buddyName').touched)">
-                                  {{ validation.message }}
-                                </div>
-                              </ng-container>
-                            </div> -->
-                          </div>
-                          <div linespace></div>
-                          <ion-item>
-                            <ion-icon name="heart-half"></ion-icon>
-                            <ion-select formControlName="buddyGender" name="buddyGender" placeholder="Gender" interface="action-sheet" required>
-                              <ion-select-option value="Female">Female</ion-select-option>
-                              <ion-select-option value="Male">Male</ion-select-option>
-                            </ion-select>
-                          </ion-item>
-                          <!-- ERROR MESSAGES BUDDYGENDER -->
-                          <!-- <div class="validation-errors">
-                            <ng-container *ngFor="let validation of validation_messages.buddyGender">
-                              <div class="error-message" *ngIf="ionicForm.get('buddyGender').hasError(validation.type) && (ionicForm.get('buddyGender').dirty || ionicForm.get('buddyGender').touched)">
-                                {{ validation.message }}
-                              </div>
-                            </ng-container>
-                          </div> -->
-                          <div linespace></div>
-                          <ion-item>
-                            <ion-icon name="information-circle-outline"></ion-icon>
-                            <ion-select #buddyType id="buddyType" (ionChange)="changeBreed(buddyType.value)" formControlName="buddyType" name="buddyType" placeholder="Type of animal" interface="action-sheet" required>
-                              <ion-select-option value="Dog">Dog</ion-select-option>
-                              <ion-select-option value="Cat">Cat</ion-select-option>
-                              <ion-select-option value="Pig">Pig</ion-select-option>
-                              <ion-select-option value="Bird">Bird</ion-select-option>
-                              <ion-select-option value="Fish">Fish</ion-select-option>
-                              <ion-select-option value="Hamster">Hamster</ion-select-option>
-                              <ion-select-option value="Mice">Mice</ion-select-option>
-                              <ion-select-option value="Rabbit">Rabbit</ion-select-option>
-                              <ion-select-option value="Turtle">Turtle</ion-select-option>
-                            </ion-select>
-                          </ion-item>
-
-                          <div linespace></div>
-                          <ion-item *ngIf="hasBreed">
-                            <ion-icon name="list"></ion-icon>
-                            <ion-select formControlName="buddyBreed" name="buddyBreed" placeholder="Breed/Breeds"  multiple="true" required> <!-- interface="action-sheet" -->
-                              <ion-select-option *ngFor="let breed of breeds" [value]="breed">{{breed}}</ion-select-option>
-                            </ion-select>
-                          </ion-item>
-                          <!-- ERROR MESSAGES BUDDYBREED -->
-                          <!-- <div class="validation-errors">
-                            <ng-container *ngFor="let validation of validation_messages.buddyBreed">
-                              <div class="error-message" *ngIf="ionicForm.get('buddyBreed').hasError(validation.type) && (ionicForm.get('buddyBreed').dirty || ionicForm.get('buddyBreed').touched)">
-                                {{ validation.message }}
-                              </div>
-                            </ng-container>
-                          </div> -->
-                          <div linespace></div>
+            <form [formGroup]="ionicForm" (ngSubmit)="registerBuddies()" novalidate>
+              <div formArrayName="attributes">
+                  <section [formGroupName]="i" *ngFor="let animals of ionicForm.controls.attributes.controls; let i = index">
+                    <ion-item-group>
+                      <ion-item-divider color="light">Buddy #{{ i + 1 }}
+                        <ion-icon id="deleteBuddy" *ngIf="ionicForm.controls.attributes.controls.length > 1" style="margin-left: auto;" (click)="deleteBuddy(i)" name="trash"></ion-icon>
+                      </ion-item-divider>
+                        <div padding>
                           <ion-item>                    
-                            <ion-icon name="calendar"></ion-icon>
-                            <ion-input formControlName="buddyAge" name="buddyAge" type="number" placeholder="Buddy age" required></ion-input>  
+                            <ion-icon name="paw"></ion-icon>
+                            <ion-input formControlName="buddyName" name="buddyName" type="text" placeholder="Buddy name" required></ion-input>                    
                           </ion-item>
-                          <!-- ERROR MESSAGES AGE -->
-                          <!-- <div class="validation-errors">
-                            <ng-container *ngFor="let validation of validation_messages.buddyAge">
-                              <div class="error-message" *ngIf="ionicForm.get('buddyAge').hasError(validation.type) && (ionicForm.get('buddyAge').dirty || ionicForm.get('buddyAge').touched)">
-                                {{ validation.message }}
-                              </div>
-                            </ng-container>
-                          </div> -->
-                        <div linespace></div>
-                          <ion-item [hidden]="buddyBday">
-                            <ion-icon name="gift"></ion-icon>
-                            <ion-label>Buddy Birthday</ion-label>
-                            <ion-datetime formControlName="buddyBday" name="buddyBday" (ionChange)="change($event.target.value)" displayFormat="MMM-DD-YYYY" pickerFormat="MMM DD YYYY" required></ion-datetime>
-                          </ion-item>
-                          <!-- ERROR MESSAGES BDAY -->
-                          <!-- <div class="validation-errors">
-                            <ng-container *ngFor="let validation of validation_messages.buddyBday">
-                              <div class="error-message" *ngIf="ionicForm.get('buddyBday').hasError(validation.type) && (ionicForm.get('buddyBday').dirty || ionicForm.get('buddyBday').touched)">
-                                {{ validation.message }}
-                              </div>
-                            </ng-container>
-                          </div> -->
-                          <div linespace></div>
-                          <div style="text-align:center;">
-                            <img src="{{imageUrl[i]}}" width="100"/>
-                          </div>
-
-                          <div *ngIf="percentage | async as pct">
-                            <div  style="text-align:center;" class="alert alert-success">Uploaded</div>
-                            <div class="progress">
-                              <ion-progress-bar value="percentage"></ion-progress-bar>
+                        <!-- ERROR MESSAGES BUDDYNAME -->
+                        <div class="validation-errors">
+                          <ng-container *ngFor="let validation of validation_messages.buddyName">
+                            <div class="error-message" *ngIf="ionicForm.get('attributes')['controls'][i]['controls'].buddyName.hasError('required') && (ionicForm.get('attributes')['controls'][i]['controls'].buddyName.dirty || ionicForm.get('attributes')['controls'][i]['controls'].buddyName.touched)">
+                              {{ validation.message }}
                             </div>
+                          </ng-container>
+                        </div>
+                        <!-- ERROR MESSAGES BUDDYNAME -->
+                      </div>
+                      <div linespace></div>
+                      <ion-item>
+                        <ion-icon name="heart-half"></ion-icon>
+                        <ion-select formControlName="buddyGender" name="buddyGender" placeholder="Gender" interface="action-sheet" required>
+                          <ion-select-option value="Female">Female</ion-select-option>
+                          <ion-select-option value="Male">Male</ion-select-option>
+                        </ion-select>
+                      </ion-item>
+                      <!-- ERROR MESSAGES BUDDYGENDER -->
+                      <div class="validation-errors">
+                        <ng-container *ngFor="let validation of validation_messages.buddyGender">
+                          <div class="error-message" *ngIf="ionicForm.get('attributes')['controls'][i]['controls'].buddyGender.hasError('required') && (ionicForm.get('attributes')['controls'][i]['controls'].buddyGender.dirty || ionicForm.get('attributes')['controls'][i]['controls'].buddyGender.touched)">
+                            {{ validation.message }}
                           </div>
+                        </ng-container>
+                      </div>
+                      <!-- ERROR MESSAGES BUDDYGENDER -->
 
-                          <ion-item [hidden]="buddyPic">
-                            <ion-icon name="camera"></ion-icon>
-                            <!-- <ion-label>Upload Image</ion-label> -->
-                            <ion-input formControlName="buddyPic" type="file" name="buddyPic" (change)="onFileSelected($event, i)" accept="image/png, image/jpeg" required ></ion-input>
-                          </ion-item>
-                          <div linespace></div>
+                      <div linespace></div>
+                      <ion-item>
+                        <ion-icon name="information-circle-outline"></ion-icon>
+                        <ion-select #buddyType id="buddyType" (ionChange)="changeBreed(buddyType.value)" formControlName="buddyType" name="buddyType" placeholder="Type of animal" interface="action-sheet" required>
+                          <ion-select-option value="Dog">Dog</ion-select-option>
+                          <ion-select-option value="Cat">Cat</ion-select-option>
+                          <ion-select-option value="Pig">Pig</ion-select-option>
+                          <ion-select-option value="Bird">Bird</ion-select-option>
+                          <ion-select-option value="Fish">Fish</ion-select-option>
+                          <ion-select-option value="Hamster">Hamster</ion-select-option>
+                          <ion-select-option value="Mice">Mice</ion-select-option>
+                          <ion-select-option value="Rabbit">Rabbit</ion-select-option>
+                          <ion-select-option value="Turtle">Turtle</ion-select-option>
+                        </ion-select>
+                      </ion-item>
+                      <!-- ERROR MESSAGES BUDDYTYPE -->
+                      <div class="validation-errors">
+                        <ng-container *ngFor="let validation of validation_messages.buddyType">
+                          <div class="error-message" *ngIf="ionicForm.get('attributes')['controls'][i]['controls'].buddyType.hasError('required') && (ionicForm.get('attributes')['controls'][i]['controls'].buddyType.dirty || ionicForm.get('attributes')['controls'][i]['controls'].buddyType.touched)">
+                            {{ validation.message }}
+                          </div>
+                        </ng-container>
+                      </div>
+                      <!-- ERROR MESSAGES BUDDYTYPE -->
 
-                          <ion-item [hidden]="buddyDescription">
-                            <ion-icon name="book"></ion-icon>
-                            <!-- <ion-label>Upload Image</ion-label> -->
-                            <ion-textarea formControlName="buddyDescription" id="buddyDescription" placeholder="Optional description"></ion-textarea>
-                          </ion-item>
-                          <ion-row style="height: 20px"></ion-row>
-                        </ion-item-group>
-                      </section>
+                      <div linespace></div>
+                      <ion-item *ngIf="hasBreed">
+                        <ion-icon name="list"></ion-icon>
+                        <ion-select formControlName="buddyBreed" name="buddyBreed" placeholder="Breed/Breeds"  multiple="true" required> <!-- interface="action-sheet" -->
+                          <ion-select-option *ngFor="let breed of breeds" [value]="breed">{{breed}}</ion-select-option>
+                        </ion-select>
+                      </ion-item>
+                      <!-- ERROR MESSAGES BUDDYBREED -->
+                      <div class="validation-errors">
+                        <ng-container *ngFor="let validation of validation_messages.buddyBreed">
+                          <div class="error-message" *ngIf="ionicForm.get('attributes')['controls'][i]['controls'].buddyBreed.hasError('required') && (ionicForm.get('attributes')['controls'][i]['controls'].buddyBreed.dirty || ionicForm.get('attributes')['controls'][i]['controls'].buddyBreed.touched)">
+                            {{ validation.message }}
+                          </div>
+                        </ng-container>
+                      </div>
+                      <!-- ERROR MESSAGES BUDDYBREED -->
 
-                      <div padding>
-                        <ion-button size="large" (click)="addbuddy()" expand="block">Add buddy</ion-button>  <!-- [disabled]="ionicForm.invalid" -->
-                      </div> 
-                    <div linespace></div> 
-                      <div padding>
-                        <ion-button size="large" type="submit" expand="block">Register buddies</ion-button>  <!-- [disabled]="ionicForm.invalid" -->
-                      </div>                      
-                  </div>
-             
-                </form>
-                      
-                <div linespace></div>
-              </ion-col>
-          </ion-row>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+                      <div linespace></div>
+                      <ion-item>                    
+                        <ion-icon name="calendar"></ion-icon>
+                        <ion-input formControlName="buddyAge" name="buddyAge" type="number" placeholder="Buddy age" required></ion-input>  
+                      </ion-item>
+                     <!-- ERROR MESSAGES AGE -->
+                    <div class="validation-errors">
+                      <ng-container *ngFor="let validation of validation_messages.buddyAge">
+                        <div class="error-message" *ngIf="ionicForm.get('attributes')['controls'][i]['controls'].buddyAge.hasError('required') && (ionicForm.get('attributes')['controls'][i]['controls'].buddyAge.dirty || ionicForm.get('attributes')['controls'][i]['controls'].buddyAge.touched)">
+                          {{ validation.message }}
+                        </div>
+                      </ng-container>
+                    </div>
+                    <!-- ERROR MESSAGES AGE -->
+
+                    <div linespace></div>
+                      <ion-item [hidden]="buddyBday">
+                        <ion-icon name="gift"></ion-icon>
+                        <ion-label>Buddy Birthday</ion-label>
+                        <ion-datetime formControlName="buddyBday" name="buddyBday" (ionChange)="change($event.target.value)" displayFormat="MMM-DD-YYYY" pickerFormat="MMM DD YYYY" required></ion-datetime>
+                      </ion-item>
+                    <!-- ERROR MESSAGES BDAY -->
+                    <div class="validation-errors">
+                      <ng-container *ngFor="let validation of validation_messages.buddyBday">
+                        <div class="error-message" *ngIf="ionicForm.get('attributes')['controls'][i]['controls'].buddyBday.hasError('required') && (ionicForm.get('attributes')['controls'][i]['controls'].buddyBday.dirty || ionicForm.get('attributes')['controls'][i]['controls'].buddyBday.touched)">
+                          {{ validation.message }}
+                        </div>
+                      </ng-container>
+                    </div>
+                    <!-- ERROR MESSAGES BDAY -->
+
+                      <div linespace></div>
+                      <div style="text-align:center;">
+                        <img src="{{imageUrl[i]}}" width="100"/>
+                      </div>
+
+                      <div *ngIf="percentage | async as pct">
+                        <div  style="text-align:center;" class="alert alert-success">Uploaded</div>
+                        <div class="progress">
+                          <ion-progress-bar value="percentage"></ion-progress-bar>
+                        </div>
+                      </div>
+
+                      <ion-item [hidden]="buddyPic">
+                        <ion-icon name="camera"></ion-icon>
+                        <ion-input formControlName="buddyPic" type="file" name="buddyPic" (change)="onFileSelected($event, i)" accept="image/png, image/jpeg" required ></ion-input>
+                      </ion-item>
+                      <div linespace></div>
+                    <!-- ERROR MESSAGES PHONE -->
+                    <div class="validation-errors">
+                      <ng-container *ngFor="let validation of validation_messages.contactPhone">
+                        <div class="error-message" *ngIf="ionicForm.get('attributes')['controls'][i]['controls'].contactPhone.hasError('required') && (ionicForm.get('attributes')['controls'][i]['controls'].contactPhone.dirty || ionicForm.get('attributes')['controls'][i]['controls'].contactPhone.touched)">
+                          {{ validation.message }}
+                        </div>
+                      </ng-container>
+                    </div>
+                    <!-- ERROR MESSAGES PHONE -->
+
+                      <ion-item [hidden]="buddyDescription">
+                        <ion-icon name="book"></ion-icon>
+                        <!-- <ion-label>Upload Image</ion-label> -->
+                        <ion-textarea formControlName="buddyDescription" id="buddyDescription" placeholder="Optional description"></ion-textarea>
+                      </ion-item>
+                      <ion-row style="height: 20px"></ion-row>
+                    </ion-item-group>
+                  </section>
+
+                  <div padding>
+                    <ion-button size="large" (click)="addbuddy()" expand="block">Add buddy</ion-button>  <!-- [disabled]="ionicForm.invalid" -->
+                  </div> 
+                <div linespace></div> 
+                  <div padding>
+                    <ion-button size="large" type="submit" expand="block">Register buddies</ion-button>  <!-- [disabled]="ionicForm.invalid" -->
+                  </div>                      
+              </div>
+          
+            </form>
+                  
+            <div linespace></div>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

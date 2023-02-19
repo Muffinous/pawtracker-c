@@ -61,10 +61,16 @@ export class CalModalComponent implements OnInit {
     }
   }
 
-  async save() {   
-    let idEv = this.db.createId()
-    this.event.id = idEv
-    this.modalCtrl.dismiss({event: this.event})
+  async save() { 
+    console.log("event ", this.event) 
+    console.log( (this.event.allDay || (this.event.startTime && this.event.endTime)) )
+    if ((this.event.title) && (this.event.allDay || (this.event.startTime && this.event.endTime))) {
+      let idEv = this.db.createId()
+      this.event.id = idEv
+      this.modalCtrl.dismiss({event: this.event})      
+    } else {
+      presentAlert("Please enter a title for your appointment.")
+    }
   }
  
   onViewTitleChanged(title) {
@@ -88,3 +94,15 @@ export class CalModalComponent implements OnInit {
   }
 }
 
+async function presentAlert(message: string) {
+  console.log('alert')
+  const alert = document.createElement('ion-alert');
+  alert.cssClass = 'my-custom-class';
+  alert.header = 'Error';
+  // alert.subHeader = 'Subtitle';
+  alert.message = message;
+  alert.buttons = ['OK'];
+
+  document.body.appendChild(alert);
+  await alert.present();
+}

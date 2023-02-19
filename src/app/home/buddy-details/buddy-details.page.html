@@ -11,8 +11,7 @@
 </ion-header>
 
 <ion-content>
-
-    <ion-card  *ngIf="!editMode">
+    <ion-card *ngIf="!editMode">
       <img src="{{buddy.buddyPic}}" />
       <ion-card-header>
         <ion-card-subtitle *ngIf="!editMode">{{buddy.buddyType}} - {{buddy.buddyBreed}} - {{buddy.buddyGender}}</ion-card-subtitle>
@@ -32,16 +31,6 @@
     </ion-card>
 
     <ion-grid  *ngIf="!editMode" class="ion-text-center">
-      
-      <ion-row class="ion-align-items-center">
-        <ion-col class="ion-align-items-center">
-          <ion-button (click)="deleteBuddy()">
-            Delete this buddy 
-            <ion-icon name="trash-bin-outline" slot="end"></ion-icon>
-          </ion-button>        
-        </ion-col>
-      </ion-row>
-
       <ion-row class="ion-align-items-center">
         <ion-col *ngIf="!editMode" class="ion-align-items-center">
           <ion-button (click)="editBuddy()">
@@ -50,7 +39,15 @@
           </ion-button>      
         </ion-col>
       </ion-row>
-
+            
+      <ion-row class="ion-align-items-center">
+        <ion-col class="ion-align-items-center">
+          <ion-button (click)="deleteBuddy()">
+            Delete this buddy 
+            <ion-icon name="trash-bin-outline" slot="end"></ion-icon>
+          </ion-button>        
+        </ion-col>
+      </ion-row>
     </ion-grid>
 
   <form *ngIf="editMode" [formGroup]="ionicForm" (ngSubmit)="saveEdit()" novalidate>

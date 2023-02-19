@@ -564,7 +564,7 @@ export class AdoptModalComponent implements OnInit {
       { type: 'required', message: 'Type is required.' }
     ],
     'buddyGender': [
-      { type: 'required', message: 'Gender is required.' }
+      // { type: 'required', message: 'Gender is required.' }
     ],
     'buddyAge': [
       { type: 'required', message: 'Age is required.' }
@@ -660,10 +660,7 @@ export class AdoptModalComponent implements OnInit {
   submitAdoption() {
     if (!this.ionicForm.valid) {
       console.log('Please provide all the required values!', this.ionicForm.value, this.ionicForm.controls.attributes)
-      // console.log('contactPhone : ',  this.ionicForm.get('attributes')['controls'][0]['controls'].contactPhone.errors)
-      // console.log('contactMail : ',  this.ionicForm.get('attributes')['controls'][0]['controls'].contactMail.errors)
-      // console.log('buddyName : ',  this.ionicForm.get('attributes')['controls'][0]['controls'].buddyName.hasError('required'))
-      // console.log('buddyName : ',  this.ionicForm.get('attributes')['controls'][0]['controls'].buddyName)
+      console.log('buddyType : ',  this.ionicForm.get('attributes')['controls'][0]['controls'].buddyType.errors)
 
       this.errorMessages()
       return false;
@@ -798,36 +795,36 @@ export class AdoptModalComponent implements OnInit {
       )
   }
 
-    //Return Comma saperated address
-    generateAddress(addressObj){
-      let obj = [];
-      let uniqueNames = [];
-      let address = "";
-      for (let key in addressObj) {
+  //Return Comma saperated address
+  generateAddress(addressObj){
+    let obj = [];
+    let uniqueNames = [];
+    let address = "";
+    for (let key in addressObj) {
 
-        // console.log(addressObj[key]);
-        if( key!='areasOfInterest' ){
-          obj.push(addressObj[key]);
-        }
-  
-      }
-  
-      var i = 0;
-      obj.forEach(value=>{
-  
-        // console.log('new foreach value:', obj[i]);
-        if( uniqueNames.indexOf(obj[i]) === -1 ){
-          uniqueNames.push(obj[i]);
-        }
-        i++;
-      });
-  
-      uniqueNames.reverse();
-      for (let val in uniqueNames) {
-        if(uniqueNames[val].length)
-        address += uniqueNames[val]+', ';
+      // console.log(addressObj[key]);
+      if( key!='areasOfInterest' ){
+        obj.push(addressObj[key]);
       }
 
-      return address.slice(0, -2);
     }
+
+    var i = 0;
+    obj.forEach(value=>{
+
+      // console.log('new foreach value:', obj[i]);
+      if( uniqueNames.indexOf(obj[i]) === -1 ){
+        uniqueNames.push(obj[i]);
+      }
+      i++;
+    });
+
+    uniqueNames.reverse();
+    for (let val in uniqueNames) {
+      if(uniqueNames[val].length)
+      address += uniqueNames[val]+', ';
+    }
+
+    return address.slice(0, -2);
+  }
 }
