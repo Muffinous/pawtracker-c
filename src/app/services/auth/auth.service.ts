@@ -52,7 +52,7 @@ export class AuthService {
           console.log(result.user)
           user.emailVerified = result.user.emailVerified
           user.uid = result.user.uid
-          this.userService.addUserService(user) // save the user's info 
+          this.userService.setUserService(user) // save the user's info 
           this.loadUserAnimals(user)
           this.loadUserAnimalsAdoption(user)
           this.loadAnimalsAdoption()
@@ -199,7 +199,7 @@ export class AuthService {
 
     this.saveUsername(userData, profile.id)
     
-    this.userService.addUserService(userData)
+    this.userService.setUserService(userData)
 
     console.log("USERDATA ", userData)
 

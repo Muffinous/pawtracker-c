@@ -4,15 +4,17 @@ import { Event } from '../models/event';
 import { User } from '../models/user';
 import { UserService } from './auth/user/user.service';
 import { IonLoaderService } from './ion-loader.service';
+import { LocalNotifications } from '@capacitor/local-notifications'
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
   events = [] as Event[]
+  selectedDate: Date;
 
   constructor(public database: AngularFirestore, private ionloaderService: IonLoaderService) { }
-  selectedDate: Date;
+  
 
   setSelectedDate(data) {
     this.selectedDate = data;
@@ -23,7 +25,17 @@ export class DataService {
   }
 
   
-  addEvent(event){
+  async addEvent(event){
+    console.log(' local notificatios ')
+    await LocalNotifications.schedule({
+      notifications: [
+        {
+          id: 1,
+          title: event.title,
+          body: 'Reminder',
+        }
+      ]
+    })
     this.events.push(event);
   }
 

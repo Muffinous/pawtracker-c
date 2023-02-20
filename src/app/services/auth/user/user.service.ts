@@ -35,13 +35,13 @@ export class UserService {
 
   updateUser(user: User, newInfoUser : User) {
     return this.database.doc(`/users/${user.id}`).update(newInfoUser).then(() => {
-      this.addUserService(newInfoUser)
+      this.setUserService(newInfoUser)
       this.ionloaderService.autoLoader('Buddy updated');
       console.log('User updated ')
     })
   }
 
-  addUserService(loggedUser: User) {
+  setUserService(loggedUser: User) {
     console.log('ADD USER SERVICE', loggedUser)
     this.user.id = loggedUser.id
     this.user.email = loggedUser.email

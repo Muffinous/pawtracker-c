@@ -7,6 +7,7 @@ import { DataService } from '../../services/data.service';
 import { UserService } from 'src/app/services/auth/user/user.service';
 import { AnimalService } from 'src/app/services/animal/animal.service';
 import { AngularFireStorage } from "@angular/fire/compat/storage";
+import { LocalNotifications } from '@capacitor/local-notifications';
 
 @Component({
   selector: 'app-cal-modal',
@@ -33,7 +34,9 @@ export class CalModalComponent implements OnInit {
 
   }
  
-  ngOnInit() {
+  async ngOnInit() {
+    await LocalNotifications.requestPermissions()
+
     this.setDate(this.dataService.getSelectedDate());
     this.getBuddiesImages();
   }
