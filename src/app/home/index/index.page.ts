@@ -22,8 +22,6 @@ declare var google;
 })
 
 export class IndexPage implements OnInit {
-  map = null;
-  @ViewChild('mapElement') mapElement;
   public folder: string;
   rootPage:any = 'TabsPage';
   
@@ -47,6 +45,7 @@ export class IndexPage implements OnInit {
   constructor(private userService: UserService , public db: AngularFirestore, private modalCtrl: ModalController, 
      private dataService: DataService, private authService: AuthService, private animalService: AnimalService ) {
 
+      this.userService.loadEvents();
       this.userService.loadEvents();
   }
 
@@ -103,6 +102,7 @@ export class IndexPage implements OnInit {
   onRangeChanged(ev) {
   }
 
+  // add new appointment
   async openCalModal() {
     this.dataService.setSelectedDate(this.selectedDate);
     const modal = await this.modalCtrl.create({

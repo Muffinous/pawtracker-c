@@ -22,8 +22,7 @@ export class BuddyDetailsPage implements OnInit {
   image;
   
   constructor(public modalCtrl: ModalController, private afs: AngularFirestore, public navParams: NavParams, private animalService: AnimalService,  
-  private formBuilder: FormBuilder, private alertCtrl: AlertController,
-    private userService: UserService) { 
+  private formBuilder: FormBuilder, private alertCtrl: AlertController, private userService: UserService) { 
     this.buddy.buddyName = this.navParams.get('buddyName');
     this.buddy.buddyAge = this.navParams.get('buddyAge');
     this.buddy.buddyBreed = this.navParams.get('buddyBreed');

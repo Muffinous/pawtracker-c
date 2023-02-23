@@ -10,12 +10,6 @@ import { IonLoaderService } from '../ion-loader.service';
 })
 
 export class AnimalService {
-  id: string;
-  buddyname: string
-  buddyage: number
-  buddyGender: string
-  buddyBreed: []
-  buddyBday: string
   userAnimals = [];
   userAnimalsAdoption = [];
   buddiesInAdoption = []
@@ -724,28 +718,28 @@ export class AnimalService {
   })
 }
 
-updateBuddyAdoption(user: User, oldBuddy : Buddy, newBuddy : Buddy) {
-  return this.database.doc(`/adoption/${oldBuddy.id}/`).update(newBuddy).then(() => {
+  updateBuddyAdoption(user: User, oldBuddy : Buddy, newBuddy : Buddy) {
+    return this.database.doc(`/adoption/${oldBuddy.id}/`).update(newBuddy).then(() => {
 
-    this.userAnimalsAdoption.forEach((item, index, array) => { 
-      if(array[index].id === oldBuddy.id ) {
-        console.log("son iguales ")
-        array[index] = JSON.parse(JSON.stringify(newBuddy))
-
-      };
-    })
-
-      this.buddiesInAdoption.forEach((item, index, array) => { 
+      this.userAnimalsAdoption.forEach((item, index, array) => { 
         if(array[index].id === oldBuddy.id ) {
           console.log("son iguales ")
           array[index] = JSON.parse(JSON.stringify(newBuddy))
-  
+
         };
-      console.log('array ', this.buddiesInAdoption)
-      this.ionloaderService.autoLoader('Buddy updated');
+      })
+
+        this.buddiesInAdoption.forEach((item, index, array) => { 
+          if(array[index].id === oldBuddy.id ) {
+            console.log("son iguales ")
+            array[index] = JSON.parse(JSON.stringify(newBuddy))
+    
+          };
+        console.log('array ', this.buddiesInAdoption)
+        this.ionloaderService.autoLoader('Buddy updated');
+      })
+      this.database.doc(`/users/${user.id}/inAdoption/${oldBuddy.id}`).update(newBuddy)
     })
-    this.database.doc(`/users/${user.id}/inAdoption/${oldBuddy.id}`).update(newBuddy)
-  })
-}
+  }
 
 }

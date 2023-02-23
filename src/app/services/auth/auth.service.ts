@@ -18,6 +18,7 @@ import { AnimalService } from '../animal/animal.service';
 export class AuthService {
   userData: any; // Save logged in user data
   curUser = {} as User
+
   constructor(
     public afs: AngularFirestore, // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth service
@@ -52,6 +53,7 @@ export class AuthService {
           console.log(result.user)
           user.emailVerified = result.user.emailVerified
           user.uid = result.user.uid
+          // localStorage.addItem(user)
           this.userService.setUserService(user) // save the user's info 
           this.loadUserAnimals(user)
           this.loadUserAnimalsAdoption(user)
@@ -262,7 +264,7 @@ export class AuthService {
     });        
   }
 
-  getUserEmail() {
+  getCurrentUserEmail() {
     return this.curUser.email
   }
 

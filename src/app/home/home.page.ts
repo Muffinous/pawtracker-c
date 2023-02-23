@@ -66,13 +66,14 @@ export class HomePage implements OnChanges{
     }
   }
 
-   colorTest(systemInitiatedDark) {
+  colorTest(systemInitiatedDark) {
     if (systemInitiatedDark.matches) {
       document.body.setAttribute('color-theme', 'dark');		
     } else {
       document.body.setAttribute('color-theme', 'light');
     }
   }
+
   public getUser() {
     return this.user
   }

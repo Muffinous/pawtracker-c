@@ -84,7 +84,6 @@ export class ProfilePage implements OnInit {
     });
   }
 
-
   async presentActionSheet() {
     const actionSheet = this.actionSheetCtrl.create({
       buttons: [

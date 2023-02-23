@@ -36,12 +36,7 @@ export class BuddyContactPage implements OnInit {
 
     this.bday = formatDate(this.buddy.buddyBday, 'dd-MM-yyyy', 'es-ES')
 
-
-    // console.log('userAnimalsAdoption', animalService.userAnimalsAdoption)
-    // console.log('buddy', this.buddy)
     this.userOwner()
-    // console.log('findIndex', animalService.userAnimalsAdoption.findIndex(buddy => buddy.id === this.buddy.id))
-
   }
 
   userOwner() { // check if the user has the buddy in adoption
@@ -53,7 +48,8 @@ export class BuddyContactPage implements OnInit {
     } else {
       this.owner = true
       console.log('es el dueño ', this.owner)
-    }  }
+    }  
+  }
 
   validation_messages = {
     'edit_BuddyName': [

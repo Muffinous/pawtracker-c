@@ -36,7 +36,7 @@ export class UserService {
   updateUser(user: User, newInfoUser : User) {
     return this.database.doc(`/users/${user.id}`).update(newInfoUser).then(() => {
       this.setUserService(newInfoUser)
-      this.ionloaderService.autoLoader('Buddy updated');
+      this.ionloaderService.autoLoader('User updated');
       console.log('User updated ')
     })
   }

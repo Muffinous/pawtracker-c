@@ -582,29 +582,12 @@ export class AdoptModalComponent implements OnInit {
       { type: 'required', message: 'Please, enter a valid mail like yourmail@mail.es; mail is required.' }
     ],
   }
-  data = [
-    {
-      img: "slide-1.jpg", 
-      title: "know always where your buddy is!", 
-      description: "Don't worry about your buddy, <b>always</b> be aware of where he is."
-    }, 
-    {
-      img: "slide-2.jpg", 
-      title: "know always where your buddy is!", 
-      description: "Track every step. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-    }, 
-    {
-      img: "slide-1.jpg", 
-      title: "know always where your buddy is!", 
-      description: "Donec eget est ultrices, tincidunt orci in, venenatis magna. Suspendisse mattis congue tempor."
-    }
-  ]
 
   images = []
   imageUrl = []
   percentage
   downloadURL: Observable<string>;
-  user = {} as User;
+  // user = {} as User;
   geoAddress;
 
   constructor(private userService: UserService, private modalCtrl: ModalController, private formBuilder: FormBuilder, private afs: AngularFirestore, 
@@ -643,7 +626,6 @@ export class AdoptModalComponent implements OnInit {
       contactMail: ['', Validators.compose([Validators.required, Validators.pattern(EMAILPATTERN)])]
     })
   }
-
   
   addbuddy() {
     this.formArr.push(this.initAttributesFields());
@@ -794,7 +776,7 @@ export class AdoptModalComponent implements OnInit {
         }
       )
   }
-
+  
   //Return Comma saperated address
   generateAddress(addressObj){
     let obj = [];

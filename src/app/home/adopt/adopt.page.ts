@@ -18,7 +18,8 @@ export class AdoptPage implements OnInit {
   buddiesInAdoption = [];
   buddy = {};
 
-  constructor(private modalCtrl: ModalController, private formBuilder: FormBuilder, private animalService: AnimalService, public modalController: ModalController, private userService: UserService) {
+  constructor(private modalCtrl: ModalController, private formBuilder: FormBuilder, private animalService: AnimalService, 
+    public modalController: ModalController, private userService: UserService) {
     this.mybuddiesAdopt = this.animalService.userAnimalsAdoption
     this.buddiesInAdoption = this.animalService.buddiesInAdoption
    }

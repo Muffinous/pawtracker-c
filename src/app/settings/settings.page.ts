@@ -26,18 +26,18 @@ export class SettingsPage implements OnInit {
       icon: 'person',
       button: 'personalinfo'
     }]
-    }, {
-    title: 'Settings',
-    icon: 'settings',
-    children: [{
-        title: 'Sound settings',
-        icon: 'volume-high',
-        button: ''
-    }, {
-        title: 'Notification settings',
-        icon: 'options',
-        button: ''
-    }]
+    // }, {
+    // title: 'Settings',
+    // icon: 'settings',
+    // children: [{
+    //     title: 'Sound settings',
+    //     icon: 'volume-high',
+    //     button: ''
+    // }, {
+    //     title: 'Notification settings',
+    //     icon: 'options',
+    //     button: ''
+    // }]
     }, {
     title: 'Rate',
     icon: 'heart',
@@ -75,7 +75,7 @@ export class SettingsPage implements OnInit {
     title: 'About us',
     icon: 'globe',
     children: [{
-        title: 'We are the Mobiscroll team.'
+        title: 'We are the BuddyPaw team.'
     }]
   }]
   presentingElement = undefined;
