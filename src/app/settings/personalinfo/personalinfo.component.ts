@@ -36,7 +36,7 @@ export class PersonalinfoComponent implements OnInit {
       userPreview.name = this.user.name
     }
 
-    if (((this.user.surname != "") && (typeof this.user.username !== "undefined")) && (this.user.surname.localeCompare(this.userService.user.surname) !== 0)) {
+    if (((this.user.surname != "") && (typeof this.user.surname !== "undefined")) && (this.user.surname.localeCompare(this.userService.user.surname) !== 0)) {
       userPreview.surname = this.user.surname
     }
 

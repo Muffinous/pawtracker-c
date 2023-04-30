@@ -15,13 +15,6 @@
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>
           </ion-menu-toggle>
-
-          <ion-menu-toggle auto-hide="false" side=end>
-            <ion-item routerDirection="root" (click)="coins()" lines="none" detail="false"  [class.selected]=" this.selectedIndex === 1" >
-              <ion-icon slot="start" ios="person-outline" md="person-sharp"></ion-icon>
-              <ion-label> My profile sep </ion-label>
-            </ion-item>
-          </ion-menu-toggle>
           
           <ion-menu-toggle auto-hide="false" side=end>
             <ion-item routerDirection="root" lines="none" detail="false"  [class.selected]=" this.selectedIndex === 4" >

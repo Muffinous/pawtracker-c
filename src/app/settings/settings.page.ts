@@ -83,6 +83,7 @@ export class SettingsPage implements OnInit {
   constructor(private authService: AuthService, private userService: UserService, private modalCtrl: ModalController) { }
 
   ngOnInit() {
+    this.brightnessValue = 1
     this.presentingElement = document.querySelector('.ion-page');
 
   }
