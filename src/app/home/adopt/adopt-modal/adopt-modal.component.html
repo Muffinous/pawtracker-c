@@ -143,7 +143,7 @@
                     <!-- ERROR MESSAGES PHONE -->
                     <div class="validation-errors">
                       <ng-container *ngFor="let validation of validation_messages.contactPhone">
-                        <div class="error-message" *ngIf="ionicForm.get('attributes')['controls'][i]['controls'].contactPhone.hasError('required') && (ionicForm.get('attributes')['controls'][i]['controls'].contactPhone.dirty || ionicForm.get('attributes')['controls'][i]['controls'].contactPhone.touched)">
+                        <div class="error-message" *ngIf="(ionicForm.get('attributes')['controls'][i]['controls'].contactPhone.hasError('required') || ionicForm.get('attributes')['controls'][i]['controls'].contactPhone.hasError('pattern') )&& (ionicForm.get('attributes')['controls'][i]['controls'].contactPhone.dirty || ionicForm.get('attributes')['controls'][i]['controls'].contactPhone.touched)">
                           {{ validation.message }}
                         </div>
                       </ng-container>

@@ -576,7 +576,7 @@ export class AdoptModalComponent implements OnInit {
       { type: 'required', message: 'Birthday is required.' }
     ],
     'contactPhone': [
-      { type: 'required', message: 'Please, enter a valid phone like 645264845 or +34659487235; phone is required.' }
+      { type: 'required', message: 'Please, all numbers must include the corresponding prefix such as: +34659487235; phone is required.'},
     ],    
     'contactMail': [
       { type: 'required', message: 'Please, enter a valid mail like yourmail@mail.es; mail is required.' }
@@ -623,7 +623,7 @@ export class AdoptModalComponent implements OnInit {
       buddyDescription: [''],
       buddyPic: ['', [Validators.required]],
       contactPhone: ['', Validators.compose([Validators.required, Validators.pattern(PHONEPATTERN)])],
-      contactMail: ['', Validators.compose([Validators.required, Validators.pattern(EMAILPATTERN)])]
+      contactMail: ['', Validators.compose([Validators.required, Validators.email, Validators.pattern(EMAILPATTERN)])]
     })
   }
   
@@ -642,7 +642,6 @@ export class AdoptModalComponent implements OnInit {
   submitAdoption() {
     if (!this.ionicForm.valid) {
       console.log('Please provide all the required values!', this.ionicForm.value, this.ionicForm.controls.attributes)
-      console.log('buddyType : ',  this.ionicForm.get('attributes')['controls'][0]['controls'].buddyType.errors)
 
       this.errorMessages()
       return false;
@@ -723,7 +722,7 @@ export class AdoptModalComponent implements OnInit {
       )
       .subscribe(url => {
         if (url) {
-          // console.log('url', url);
+          console.log('url', url);
         }
       });
   }

@@ -185,7 +185,7 @@ export class BuddyContactPage implements OnInit {
         {
           text: 'Delete',
           handler: () => {
-            this.animalService.deleteBuddy(this.userService.user, this.buddy).then(result => {
+            this.animalService.deleteBuddyAdoption(this.userService.user, this.buddy).then(result => {
               this.modalControler.dismiss(null)           
             })
           }
@@ -236,7 +236,7 @@ export class BuddyContactPage implements OnInit {
 
       if (this.ionicForm.value.edit_buddyLocation) {
         console.log("update buddy location", this.buddy.buddyLocation ," to ", this.ionicForm.value.edit_buddyLocation)
-        buddyPreview.buddyLocation = this.ionicForm.value.edit_BuddyLocation
+        buddyPreview.buddyLocation = this.ionicForm.value.edit_buddyLocation
       }
 
       if (this.ionicForm.value.edit_contactMail) {

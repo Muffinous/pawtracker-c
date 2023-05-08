@@ -1,7 +1,9 @@
-import { Component, OnInit, ViewEncapsulation} from '@angular/core';
-import SwiperCore, { Autoplay } from 'swiper';
+import { Component, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import SwiperCore, { Autoplay, Pagination, SwiperOptions } from 'swiper';
+import { SwiperComponent } from 'swiper/angular';
 
 SwiperCore.use([Autoplay]);
+SwiperCore.use([Pagination]);
 
 @Component({
   selector: 'app-slides',
@@ -11,6 +13,20 @@ SwiperCore.use([Autoplay]);
 })
 
 export class SlidesPage implements OnInit {
+
+  @ViewChild('swiper') swiper: SwiperComponent;
+  
+  public config: SwiperOptions = {
+    pagination: true,
+    slidesPerView: 1,
+    spaceBetween: 40,
+  }
+
+  ngAfterContentChecked () {
+    if (this.swiper) {
+      this.swiper.updateSwiper({})
+    }
+  }
 
   data = [
     {
@@ -22,7 +38,7 @@ export class SlidesPage implements OnInit {
       img: "slide-2.jpg", 
       title: "Mark important appointments on the calendar",
       description: "Create a new event for each important <b>appointment</b> or <b>reminder</b> for your buddy!"
-    }, 
+    },
     {
       img: "slide-3.jpg", 
       title: "With an adopt section, now you can have all in one app!",

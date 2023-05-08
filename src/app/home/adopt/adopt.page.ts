@@ -35,7 +35,7 @@ export class AdoptPage implements OnInit {
     });
    
     await modal.present();
-   
+   -
     modal.onDidDismiss().then((result) => {
       this.animalService.loadUserBuddiesAdoption(this.userService.user);
       this.animalService.loadBuddiesinAdoption();
@@ -57,8 +57,23 @@ export class AdoptPage implements OnInit {
         component: BuddyContactPage,
         componentProps: buddy
       })
-      return await modal.present()
+      await modal.present()
       
+      modal.onDidDismiss().then((result) => {
+        this.animalService.loadUserBuddiesAdoption(this.userService.user);
+        this.animalService.loadBuddiesinAdoption();
+        console.log("After buddy contact modal", result);
+        if (result) {
+          this.mybuddiesAdopt = this.animalService.userAnimalsAdoption
+          this.buddiesInAdoption = this.animalService.buddiesInAdoption
+          console.log('mybuddiesAdopt ', this.mybuddiesAdopt)
+          console.log('buddiesInAdoption ', this.buddiesInAdoption)
+
+        }
+      }).catch((error) => {
+        console.log('Error loading info after BuddyContactPage result', error)
+        return error
+      });
     }
 
 }

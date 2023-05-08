@@ -44,8 +44,6 @@ export class IndexPage implements OnInit {
 
   constructor(private userService: UserService , public db: AngularFirestore, private modalCtrl: ModalController, 
      private dataService: DataService, private authService: AuthService, private animalService: AnimalService ) {
-
-      this.userService.loadEvents();
       this.userService.loadEvents();
   }
 

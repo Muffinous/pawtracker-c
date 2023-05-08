@@ -27,6 +27,10 @@
 
 @import '~swiper/scss';
 @import '~@ionic/angular/css/ionic-swiper';
+/** Swiper use */
+@import "swiper/scss";
+@import "swiper/scss/navigation";
+@import "swiper/scss/pagination";
 
 .cal-modal {
     --height: 90%;

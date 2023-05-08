@@ -683,10 +683,23 @@ export class AnimalService {
     })
   }
 
-  deleteBuddyinArray(buddy: Buddy) {
+  private deleteBuddyinArray(buddy: Buddy) {
     this.userAnimals.forEach((value,index)=>{
       if(value.id===buddy.id) {
         this.userAnimals.splice(index,1); // removes element from array this.events
+      } 
+    });
+  }
+
+  private deleteBuddyinAdoptionArray(buddy: Buddy) {
+    this.buddiesInAdoption.forEach((value,index)=>{
+      if(value.id===buddy.id) {
+        this.buddiesInAdoption.splice(index,1); // removes element from array this.events
+      } 
+    });
+    this.userAnimalsAdoption.forEach((value,index)=>{
+      if(value.id===buddy.id) {
+        this.userAnimalsAdoption.splice(index,1); // removes element from array this.events
       } 
     });
   }
@@ -715,8 +728,16 @@ export class AnimalService {
         this.ionloaderService.autoLoader('Buddy updated');
       })
 
-  })
-}
+    })
+  }
+
+  deleteBuddyAdoption(user: User, buddy: Buddy) {
+    return this.database.doc(`/adoption/${buddy.id}`).delete().then(() => {    
+      this.deleteBuddyinAdoptionArray(buddy);
+      this.database.doc(`/users/${user.id}/inAdoption/${buddy.id}`).delete()
+      this.ionloaderService.autoLoader('Buddy deleted');
+    })      
+  }
 
   updateBuddyAdoption(user: User, oldBuddy : Buddy, newBuddy : Buddy) {
     return this.database.doc(`/adoption/${oldBuddy.id}/`).update(newBuddy).then(() => {

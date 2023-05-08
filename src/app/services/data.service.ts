@@ -26,7 +26,10 @@ export class DataService {
 
   
   async addEvent(event){
-    console.log(' local notificatios ')
+    console.log(' local notificatios ') 
+    if (this.events.values != event) {
+      console.log('el evento no existe')
+      this.events.push(event);
     await LocalNotifications.schedule({
       notifications: [
         {
@@ -36,7 +39,7 @@ export class DataService {
         }
       ]
     })
-    this.events.push(event);
+  } 
   }
 
   deleteEvent(event){
@@ -63,7 +66,7 @@ export class DataService {
   
           };
           // console.log('array despues ', this.events)
-          this.ionloaderService.autoLoader('Buddy updated');
+          this.ionloaderService.autoLoader('Event updated');
         })
   
     })

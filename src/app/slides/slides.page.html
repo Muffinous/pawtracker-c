@@ -5,13 +5,13 @@
 </ion-header>
 
 <ion-content>
-  <swiper [autoplay]="true" style="height: 100%" (slideChange)="onSlideChange()">
-    <ng-template swiperSlide *ngFor="let item of data; let i = index">
-      <h2 class="slidertitle">{{item.title}}</h2>     
-      <img class="sliderimg" src="../../assets/img/{{item.img}}">   
-      <p class="sliderp" [innerHTML]="item.description"></p>    
-    </ng-template>
-  </swiper>
+    <swiper #swiper [pagination]="true"[autoplay]="true" style="height: 100%" (slideChange)="onSlideChange()" >
+      <ng-template swiperSlide *ngFor="let item of data; let i = index">
+        <h2 class="slidertitle">{{item.title}}</h2>     
+        <img class="sliderimg" src="../../assets/img/{{item.img}}">   
+        <p class="sliderp" [innerHTML]="item.description"></p>    
+      </ng-template>
+    </swiper>
 
 </ion-content>
 
@@ -21,7 +21,7 @@
       <ion-col size="10" offset="1">
         <ion-button class="btn-primary" color="primary" expand="full" shape="round" [routerLink] = "['/login']">
           LOG IN
-        </ion-button>           
+        </ion-button>             
       </ion-col>
     </ion-row>   
 

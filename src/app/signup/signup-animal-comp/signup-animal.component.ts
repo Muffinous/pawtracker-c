@@ -761,7 +761,7 @@ export class SignupAnimalComponent implements OnInit {
       )
       .subscribe(url => {
         if (url) {
-          // console.log('url', url);
+          console.log('url', url);
         }
       });
   }

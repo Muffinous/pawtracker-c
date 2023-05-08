@@ -31,7 +31,7 @@
       <ion-col sizeLg="4" sizeXs="6" sizeMd="4" *ngFor="let buddy of buddiesInAdoption" (click)="onAnimalSelected(buddy)">
         <ion-card class="welcome-card">
           <h1>{{buddy.buddyName}}</h1>
-          <img src='{{buddy.buddyPic}}'>
+          <img src='{{buddy.buddyPic}}' style="object-fit: cover;">
         </ion-card>
       </ion-col>
     </ion-row>    
