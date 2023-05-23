@@ -1,5 +1,5 @@
 <p class="has-line-data" data-line-start="0" data-line-end="1"># pawtracker-c</p>
-<h1 class="code-line" data-line-start=2 data-line-end=3 ><a id="PawTracker_2"></a>PawTracker.</h1>
+<h1 class="code-line" data-line-start=2 data-line-end=3 ><a id="PawTracker_2"></a>PawBuddy.</h1>
 <p class="has-line-data" data-line-start="3" data-line-end="5">Aplicación multiplataforma con Ionic Framework para el cuidado de animales y facilitar la adopción.<br>
 La aplicación contiene tres secciones importantes: Home, Adopt y Profile.</p>
 <ul>
