@@ -34,5 +34,5 @@ Aconsejo utilizar las opciones -l -s [ionic serve -l -t], donde:<br>
 •   -t: Permite empezar el servidor con una plataforma determinada</p>
 
 
-Trabajo de Fin de Grado para Ingeniería del Software.<br>
-Raquel Alonso Fernández.
+<i>Trabajo de Fin de Grado para Ingeniería del Software.<br></i>
+<i>Raquel Alonso Fernández.</i>
