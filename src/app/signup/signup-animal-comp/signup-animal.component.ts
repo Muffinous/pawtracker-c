@@ -643,13 +643,20 @@ export class SignupAnimalComponent implements OnInit {
 
   async registerBuddies() {
     if (!this.ionicForm.valid) {
+          
+      if (this.popup === false){
+        let subheader : string = "You don't want to add buddies right now?"
+        let message : string = `You will always have the choice of register new buddies.`
+
+        this.presentAlert(message, "Register buddies later", subheader, null)
+      }
       console.log('Please provide all the required values!')
       return false;
     } else {
 
       let newBuddies = this.ionicForm.value.attributes.length
       console.log(newBuddies)
-
+      console.log('VALUES ', this.ionicForm.value)
       for (let i=0; i<newBuddies; i++) { // sign up every buddy
 
         let idBuddy = this.afs.createId() // create id 4 each buddy
@@ -755,6 +762,7 @@ export class SignupAnimalComponent implements OnInit {
             if (url) {
               this.imageUrl[id] = url;
               this.ionicForm.value.attributes[id].buddyPic = this.imageUrl[id] // URL IMAGE IN DATABASE
+              console.log('IMAGE', this.imageUrl[id])
             }
           });
         })
@@ -769,5 +777,31 @@ export class SignupAnimalComponent implements OnInit {
   close() {
     this.modalCtrl.dismiss();
   }
-  
+
+  async presentAlert(message: string, header: string, subheader: string, buddyNewInfo) {
+    const alert = document.createElement('ion-alert');
+    alert.cssClass = 'my-alert';
+    alert.header = header;
+    alert.subHeader = subheader;
+    alert.message = message;
+    alert.buttons = [
+    {
+      text: 'NO, I want to add them now.',
+      handler: () => {
+      }
+    },
+    {
+      text: 'YES, I will add them later.',
+      handler: () => {
+        console.log('sign in')
+        this.authService.SignIn(this.user, this.pass).then(result => {
+          this.modalCtrl.dismiss(null)           
+        })
+      }
+    }
+    ];
+    document.body.appendChild(alert);
+    await alert.present();
+  }
+
 }

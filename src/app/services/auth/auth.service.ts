@@ -83,6 +83,7 @@ export class AuthService {
             up and returns promise */
           // this.SendVerificationMail();
             this.SetProfileData(result.user, user);          // if username doesnt exists, we save profile and user data in db  
+            return true;
           })
           .catch((error) => {
             var errorCode = error.code;
