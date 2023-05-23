@@ -32,3 +32,7 @@ ionic serve<br>
 Aconsejo utilizar las opciones -l -s [ionic serve -l -t], donde:<br>
 •   -l: Permite ver múltiples plataformas a la vez.<br>
 •   -t: Permite empezar el servidor con una plataforma determinada</p>
+
+
+Trabajo de Fin de Grado para Ingeniería del Software.<br>
+Raquel Alonso Fernández.
