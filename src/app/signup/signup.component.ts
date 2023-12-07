@@ -89,7 +89,6 @@ export class SignupComponent implements OnInit {
       ])],
       confirmed_password: ['', Validators.required],
   }, { validator: this.matchingPasswords('password', 'confirmed_password')})
-
   }
 
   matchingPasswords(passwordKey: string, confirmPasswordKey: string) {
